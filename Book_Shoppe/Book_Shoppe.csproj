@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EADB2550-20E8-4B59-9733-C82700DDD92C}</ProjectGuid>
+    <ProjectGuid>{C9F12E69-828E-43A5-ACE0-2175A6B55627}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -168,8 +168,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,6 +182,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-Materia.css" />
+    <Content Include="Content\bootstrap-Materia.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -200,6 +204,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Styles\CustomStyle.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -234,6 +239,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Book\Index.cshtml" />
+    <Content Include="Views\Book\Edit.cshtml" />
+    <Content Include="Views\Book\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -245,6 +255,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Book_Shoppe.DAL\Book_Shoppe.DAL.csproj">
+      <Project>{0adcca8d-cd30-46d0-bad3-83882ed10fb1}</Project>
+      <Name>Book_Shoppe.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Book_Shoppe.Entity\Book_Shoppe.Entity.csproj">
+      <Project>{6809b8dc-e870-4ad5-8d96-66d1ad803911}</Project>
+      <Name>Book_Shoppe.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -262,7 +282,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>57662</DevelopmentServerPort>
+          <DevelopmentServerPort>58094</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:57662/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

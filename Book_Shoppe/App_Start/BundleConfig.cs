@@ -24,7 +24,7 @@ namespace Book_Shoppe
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-Materia.css",
                       "~/Content/site.css"));
         }
     }

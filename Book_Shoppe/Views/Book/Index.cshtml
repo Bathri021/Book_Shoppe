@@ -1,28 +1,12 @@
 ﻿@model IEnumerable<Book_Shoppe.Entity.Book>
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <div class="jumbotron">
-    <h1>Book Shoppe</h1>
-</div>
-<div class="jumbotron scroll-card ">
-    <div class="horizontal-scroll-wrapper squares">
-        @{
-            foreach (var item in Model)
-            {
-                <div class="card border-light mb-3" style="max-width: 20rem;">
-                    <div class="card-header">@item.Title</div>
-                    <div class="card-body">
-                        <p class="card-text">Author : @item.Author</p>
-                        <p class="card-text">Genere : @item.Genere</p>
-                        <p class="card-text">Price : @item.Price</p>
-                    </div>
-                </div>
-            }
-        }
-    </div>
+    <h1>Books</h1>
 </div>
 
 <h1>Book Details</h1>
@@ -35,6 +19,7 @@
             <th>Author</th>
             <th>Genere</th>
             <th>Price</th>
+            <th>Operations</th>
         </tr>
     </thead>
     <tbody>
@@ -48,10 +33,13 @@
                     <td>@item.Author</td>
                     <td>@item.Genere</td>
                     <td>@item.Price</td>
+                    <td class="btn-group" role="group" aria-label="Basic example">@Html.ActionLink("Edit", "Edit", new { id = item.BookID }, new { @class = "btn btn-secondary" }) @Html.ActionLink("Delete", "Delete", new { id = item.BookID }, new { @class = "btn btn-secondary" })</td>
                 </tr>
                 count++;
             }
         }
     </tbody>
 </table>
+<br />
+@Html.ActionLink("Add Book", "Create", null, new { @class = "btn btn-secondary" })
 

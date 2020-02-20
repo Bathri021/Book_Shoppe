@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Book_Shoppe.DAL;
+using Book_Shoppe.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +12,8 @@ namespace Book_Shoppe.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<Book> books = BookRepositary.GetAllBooks();
+            return View(books);
         }
 
         public ActionResult About()

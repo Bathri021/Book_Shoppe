@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Book_Shoppe.Entity.User>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User List</h2>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr class="table-info">
+            <th scope="col">Sno</th>
+            <th scope="col">Name</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Mail ID</th>
+            <th scope="col">Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+            foreach (var user in Model.ToList())
+            {
+                <tr class="table-light">
+                    <td>@i</td>
+                    <td> @user.Name</td>
+                    <td> @user.UserName</td>
+                    <td>@user.MailID</td>
+                    <td>@user.RoleID</td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>
