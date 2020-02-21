@@ -9,24 +9,35 @@
 {
     <h2>Create new account</h2>
 
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-dismissible alert-success" >
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>@ViewBag.Message</strong>
+            </div>
+        }
+
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
     <div class="form-group">
         <div>
             @Html.LabelFor(m => m.UserID, new { @class = "col-form-label" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.UserID, new { id = "inputDefault", @class = "form-control", placeholder = "" + (ViewBag.userCount + 1) })
+            @Html.TextBoxFor(m => m.UserID, new { Value = "" + (ViewBag.userCount + 1), id = "inputDefault", @class = "form-control", @readonly = "true" })
             @Html.ValidationMessageFor(m => m.UserID)
         </div>
     </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" })
-                @Html.ValidationMessageFor(m => m.Name)
-            </div>
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
         </div>
+        <div>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" })
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
         <div class="form-group">
             <div>
                 @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
@@ -59,13 +70,14 @@
                 @Html.LabelFor(m => m.RoleID, new { @class = "col-form-label" })
             </div>
             <div class="nav-item dropdown">
-                @Html.DropDownListFor(m=>m.RoleID,(IEnumerable<SelectListItem>) ViewBag.Roles, "Select Role", new { @class = "nav-link dropdown-toggle dropdown-menu show", @style = "position: absolute; transform: translate3d(0px, 35px, 0px); top: -5vh; left: 0px; will-change: transform;" })
+                @Html.DropDownListFor(m => m.RoleID, (IEnumerable<SelectListItem>)ViewBag.Roles, "Select Role", new { @class = "nav-link dropdown-toggle dropdown-menu show", @style = "position: absolute; transform: translate3d(0px, 35px, 0px); top: -5vh; left: 0px; will-change: transform;" })
                 @*@Html.TextBoxFor(m => m.RoleID, new { @class = "form-control", id = "inputDefault" })*@
-                @Html.ValidationMessageFor(m => m.RoleID)
+                <br/>
+                <br/>
+                @Html.ValidationMessageFor(m => m.RoleID, null, new { style = "margin-top:10vh" })
             </div>
         </div>
-        <br/>
-        <br/>
+
         <table>
             <tr>
                 <td>

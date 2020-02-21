@@ -14,9 +14,9 @@ namespace Book_Shoppe.DAL
 
         static UserRepositary()
         {
-            userList.Add(new User { Name = "Bathri", UserName = "Bathri", MailID = "bathri@gmail.com", RoleID = 1 });
-            userList.Add(new User { Name = "Vinoth", UserName = "Vinoth", MailID = "vinoth@gmail.com", RoleID = 2 });
-            userList.Add(new User { Name = "Ragav", UserName = "Ragav", MailID = "ragav@gmail.com", RoleID = 3});
+            userList.Add(new User {UserID=1, Name = "Bathri", UserName = "Bathri", MailID = "bathri@gmail.com", RoleID = 1 });
+            userList.Add(new User {UserID=2 ,Name = "Vinoth", UserName = "Vinoth", MailID = "vinoth@gmail.com", RoleID = 2 });
+            userList.Add(new User { UserID=3,Name = "Ragav", UserName = "Ragav", MailID = "ragav@gmail.com", RoleID = 3});
             rolesList.Add(new Roles { RoleID = 1, RoleName = "Admin" });
             rolesList.Add(new Roles { RoleID = 2, RoleName = "Seller" });
             rolesList.Add(new Roles { RoleID = 3, RoleName = "Customer" });
@@ -38,10 +38,10 @@ namespace Book_Shoppe.DAL
         {
             userList.Add(user);
         }
+
         public static void Updata(User user)
         {
             User userValue = userList.Find(id => id.UserID == user.UserID);
-            userValue.UserID = userList.Count() + 1;
             userValue.Name = user.Name;
             userValue.UserName = user.UserName;
             userValue.MailID = user.MailID;

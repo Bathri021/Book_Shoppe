@@ -10,7 +10,6 @@ namespace Book_Shoppe.Entity
 {
     public class User
     {
-        [Required]
         public int UserID { get; set; }
 
         [Required]

@@ -7,51 +7,12 @@
 <div class="jumbotron">
     <h1>Book Shoppe</h1>
 </div>
-<div class="jumbotron scroll-card ">
-    <div class="horizontal-scroll-wrapper squares">
-        @{
-            foreach (var item in Model)
-            {
-                <div class="card border-light mb-3" style="max-width: 20rem;">
-                    <div class="card-header">@item.Title</div>
-                    <div class="card-body">
-                        <p class="card-text">Author : @item.Author</p>
-                        <p class="card-text">Genere : @item.Genere</p>
-                        <p class="card-text">Price : @item.Price</p>
-                    </div>
-                </div>
-            }
-        }
-    </div>
+
+<div>
+    @Html.Partial("_EntityCardList")
 </div>
 
-<h1>Book Details</h1>
-
-<table class="table table-hover">
-    <thead>
-        <tr class="table-info">
-            <th>Sno</th>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Genere</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 1;
-            foreach (var item in Model)
-            {
-                <tr class="table-light">
-                    <td>@count</td>
-                    <td>@item.Title</td>
-                    <td>@item.Author</td>
-                    <td>@item.Genere</td>
-                    <td>@item.Price</td>
-                </tr>
-                count++;
-            }
-        }
-    </tbody>
-</table>
+<div>
+    @Html.Partial("_EntityTableList")
+</div>
 
