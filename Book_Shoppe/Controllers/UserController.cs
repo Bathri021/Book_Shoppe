@@ -25,7 +25,7 @@ namespace Book_Shoppe.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(/*[Bind(Include ="UserID,Name,UserName,MailID,Password,RoleID")]*/User user)
+        public ActionResult Register([Bind(Include = "UserID,Name,UserName,MailID,Password,RoleID")]User user)
         {        
             ViewBag.Roles = new SelectList(UserRepositary.GetAllRoles(), "RoleID", "RoleName");
             ViewBag.userCount = UserRepositary.getUserCount() + 1;
@@ -45,9 +45,24 @@ namespace Book_Shoppe.Controllers
             return View(user);
         }
 
-        [NonAction]
         public ActionResult LogIn()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LogIn(FormCollection form)
+        {
+            if (form!=null)
+            {
+                User currentUser = UserRepositary.ValidateLogIn(form["UserName"], form["Password"]);
+
+                if (currentUser != null)
+                {
+                    Content("LogIn Sucessfull");
+                }
+            }
+          
             return View();
         }
     }

@@ -3,10 +3,6 @@
 ::-webkit-scrollbar{width:2px;height:2px;}
 ::-webkit-scrollbar-button{width:2px;height:2px;}
 
-.card-btns a{
-    padding:5px;
-    font-size:10px;
-}
 .scroll-card{
     display:flex;
     height:30vh;

@@ -4,18 +4,19 @@
             foreach (var item in Model)
             {
                 <div class="card border-primary mb-3" style="max-width: 20rem;">
-                    <div class="card-title">@item.Title</div>
+                    <div class="card-title"><strong>@item.Title</strong></div>
                     <div class="card-body">
-                    
+
                         <div class="card-text">Author : @item.Author</div>
                         <div class="card-text">Genere : @item.Genere</div>
                         <div class="card-text">Price : @item.Price</div>
                     </div>
-                    <div class="card-btns">
-                        <button type="button" class="btn btn-outline-primary">Buy</button>
-                        <button type="button" class="btn btn-outline-info">Wish List</button>
+                    <div class="btn-group-sm">
+                        <button type="button" class="btn btn-outline-primary btn-sm">Buy&nbsp; <i class="fa fa-shopping-cart"></i></button>
+                        <button type="button" class="btn btn-outline-info btn-sm">Wish List&nbsp; &hearts;</button>
                     </div>
                 </div>
+                <div></div>
             }
         }
     </div>

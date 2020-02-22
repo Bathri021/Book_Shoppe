@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>LogIn</h2>
+
+@using (Html.BeginForm("LogIn", "User", FormMethod.Post))
+{
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>@ViewBag.Message</strong>
+        </div>
+    }
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <div>
+            @Html.Label("User Name", new { @class = "col-form-label" })
+        </div>
+        <div>
+            @Html.TextBox("UserName",null, new { @class = "form-control", id = "inputDefault" })     
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div>
+            @Html.Label("Password", new { @class = "col-form-label" })
+        </div>
+        <div>
+            @Html.TextBox("Password",null, new { @class = "form-control", id = "exampleInputPassword1", type = "password" })
+        </div>
+    </div>
+        <input type="submit" class="btn btn-outline-primary" id="submit" />
+}

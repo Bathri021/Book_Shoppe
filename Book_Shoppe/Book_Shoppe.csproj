@@ -246,6 +246,7 @@
     <Content Include="Views\Book\Create.cshtml" />
     <Content Include="Views\Shared\_EntityCardList.cshtml" />
     <Content Include="Views\Shared\_EntityTableList.cshtml" />
+    <Content Include="Views\User\LogIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
