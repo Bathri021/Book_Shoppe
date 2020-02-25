@@ -13,34 +13,34 @@ namespace Book_Shoppe.Controllers
         // GET: User
         public ActionResult Index()
         {
-            IEnumerable<User> users = UserRepositary.GetAllUsers();
+            IEnumerable<User> users = UserRepositary.GetUsers();
             return View(users);
         }
 
         public ActionResult Register()
         {
-            ViewBag.Roles = new SelectList(UserRepositary.GetAllRoles(), "RoleID", "RoleName");
-            ViewBag.userCount = UserRepositary.getUserCount() + 1;
+         //   ViewBag.Roles = new SelectList(UserRepositary.GetAllRoles(), "RoleID", "RoleName");
+         //   ViewBag.userCount = UserRepositary.getUserCount() + 1;
             return View();
         }
 
         [HttpPost]
         public ActionResult Register([Bind(Include = "UserID,Name,UserName,MailID,Password,RoleID")]User user)
         {        
-            ViewBag.Roles = new SelectList(UserRepositary.GetAllRoles(), "RoleID", "RoleName");
-            ViewBag.userCount = UserRepositary.getUserCount() + 1;
-            if (string.IsNullOrEmpty(user.RoleID.ToString()))
-            {
-                ModelState.AddModelError("RoleID", "Select The Role");
-            }
-            if (!ModelState.IsValid)
-            {
-                return View("Register", user);
-            }else
-            {
-                UserRepositary.Add(user);
-                ViewBag.Message = "Registration Successfull";
-            }
+          //  ViewBag.Roles = new SelectList(UserRepositary.GetAllRoles(), "RoleID", "RoleName");
+            //ViewBag.userCount = UserRepositary.getUserCount() + 1;
+            //if (string.IsNullOrEmpty(user.RoleID.ToString()))
+            //{
+            //    ModelState.AddModelError("RoleID", "Select The Role");
+            //}
+            //if (!ModelState.IsValid)
+            //{
+            //    return View("Register", user);
+            //}else
+            //{
+            //    UserRepositary.Add(user);
+            //    ViewBag.Message = "Registration Successfull";
+            //}
            
             return View(user);
         }
@@ -53,15 +53,15 @@ namespace Book_Shoppe.Controllers
         [HttpPost]
         public ActionResult LogIn(FormCollection form)
         {
-            if (form!=null)
-            {
-                User currentUser = UserRepositary.ValidateLogIn(form["UserName"], form["Password"]);
+        //    if (form!=null)
+        //    {
+        //        User currentUser = UserRepositary.ValidateLogIn(form["UserName"], form["Password"]);
 
-                if (currentUser != null)
-                {
-                    Content("LogIn Sucessfull");
-                }
-            }
+        //        if (currentUser != null)
+        //        {
+        //            Content("LogIn Sucessfull");
+        //        }
+        //    }
           
             return View();
         }

@@ -25,7 +25,7 @@
             @Html.LabelFor(m => m.UserID, new { @class = "col-form-label" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.UserID, new { Value = "" + (ViewBag.userCount + 1), id = "inputDefault", @class = "form-control", @readonly = "true" })
+            @Html.TextBoxFor(m => m.UserID, new { Value = "" + (ViewBag.userCount), id = "inputDefault", @class = "form-control", @readonly = "true" })
             @Html.ValidationMessageFor(m => m.UserID)
         </div>
     </div>
@@ -71,7 +71,6 @@
             </div>
             <div class="nav-item dropdown">
                 @Html.DropDownListFor(m => m.RoleID, (IEnumerable<SelectListItem>)ViewBag.Roles, "Select Role", new { @class = "nav-link dropdown-toggle dropdown-menu show", @style = "position: absolute; transform: translate3d(0px, 35px, 0px); top: -5vh; left: 0px; will-change: transform;" })
-                @*@Html.TextBoxFor(m => m.RoleID, new { @class = "form-control", id = "inputDefault" })*@
                 <br/>
                 <br/>
                 @Html.ValidationMessageFor(m => m.RoleID, null, new { style = "margin-top:10vh" })

@@ -15,5 +15,7 @@ namespace Book_Shoppe.Entity
         public string Genere { get; set; }
         public int Price { get; set; }
         public int NoOfPages { get; set; }
+
+        public User User { get; set; }
     }
 }

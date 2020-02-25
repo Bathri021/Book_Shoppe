@@ -12,28 +12,26 @@ namespace Book_Shoppe.Entity
     {
         public int UserID { get; set; }
 
-        [Required]
-        [StringLength(22)]
+        public Role Role { get; set; }
+
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(12,MinimumLength =5)]
+        
         public string UserName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        
         public string MailID { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+       
         public string Password { get; set; }
 
-        [DisplayName("Role")]
-        [Required]
-        public int RoleID { get; set; }
+        
+    
+
+        public List<Book> Books { get; set; }
 
     }
-    public class Roles
+    public class Role
     {
         public int RoleID { get; set; }
         public string RoleName { get; set; }
