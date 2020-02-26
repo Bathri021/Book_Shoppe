@@ -1,4 +1,4 @@
-﻿@model Book_Shoppe.Entity.User
+﻿@model Book_Shoppe.Models.RegistrationFormViewModel
 @{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,7 +20,7 @@
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <div class="form-group">
+    @*<div class="form-group">
         <div>
             @Html.LabelFor(m => m.UserID, new { @class = "col-form-label" })
         </div>
@@ -28,13 +28,13 @@
             @Html.TextBoxFor(m => m.UserID, new { Value = "" + (ViewBag.userCount), id = "inputDefault", @class = "form-control", @readonly = "true" })
             @Html.ValidationMessageFor(m => m.UserID)
         </div>
-    </div>
+    </div>*@
     <div class="form-group">
         <div>
             @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" , maxlength="22" })
             @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
@@ -43,7 +43,7 @@
                 @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
             </div>
             <div>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault",maxlength="22" })
                 @Html.ValidationMessageFor(m => m.UserName)
             </div>
         </div>

@@ -12,6 +12,8 @@ namespace Book_Shoppe.Entity
     {
         public int UserID { get; set; }
 
+        public int RoleID { get; set; }
+
         public Role Role { get; set; }
 
         public string Name { get; set; }

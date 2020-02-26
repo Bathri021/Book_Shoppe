@@ -7,7 +7,11 @@ namespace Book_Shoppe
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new HandleErrorAttribute
+            {
+                View = "Error"
+            },1);
+            filters.Add(new HandleErrorAttribute(), 2);
         }
     }
 }
