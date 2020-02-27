@@ -9,12 +9,10 @@ namespace Book_Shoppe.DAL
 {
     public class UserRepositary
     {
-       
-
         public static IEnumerable<User> GetUsers()
         {
-            UserDBContext userDBContext = new UserDBContext();
-           return userDBContext.Users.ToList();
+            DBContext userDBContext = new DBContext();
+            return userDBContext.Users.ToList();
         }
 
         public static IEnumerable<Role> GetRoles()
@@ -22,9 +20,14 @@ namespace Book_Shoppe.DAL
             RoleDBContext RoleContext = new RoleDBContext();
             return RoleContext.Roles.ToList();
         }
+        public static IEnumerable<Book> GetBooks()
+        {
+            DBContext BookDBContext = new DBContext();
+            return BookDBContext.Books.ToList();
+        }
         public static bool AddUser(User user)
         {
-            UserDBContext _Context = new UserDBContext();
+            DBContext _Context = new DBContext();
             _Context.Users.Add(user);
             _Context.SaveChanges();
             return true;

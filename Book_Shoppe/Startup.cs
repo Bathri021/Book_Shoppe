@@ -8,7 +8,7 @@ namespace Book_Shoppe
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+           
         }
     }
 }

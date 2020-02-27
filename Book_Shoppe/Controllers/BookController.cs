@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Book_Shoppe.BL;
 
 namespace Book_Shoppe.Controllers
 {
     public class BookController : Controller
     {
+        BookBL bookContext = new BookBL();
         // GET: Book
         public ActionResult Index()
         {
@@ -28,7 +30,7 @@ namespace Book_Shoppe.Controllers
         {
             if (ModelState.IsValid)
             {
-                BookRepositary.Add(book);
+                bookContext.Add(book);
                 TempData["Message"] = "Added Successfully";
             }
             return View(book);

@@ -1,6 +1,5 @@
 ﻿using Book_Shoppe.App_Start;
 using Book_Shoppe.BL;
-using Book_Shoppe.DAL;
 using Book_Shoppe.Entity;
 using Book_Shoppe.Models;
 using System;
@@ -19,6 +18,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Index()
         {
             IEnumerable<User> users = userBL.GetUsers();
+            userBL.GetRoles();
             return View(users);
            
         }
@@ -31,6 +31,7 @@ namespace Book_Shoppe.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(RegistrationFormViewModel user)
         {
             ViewBag.Roles = new SelectList(userBL.GetRoles(), "RoleID", "RoleName");
@@ -52,7 +53,7 @@ namespace Book_Shoppe.Controllers
                 if(userBL.AddUser(_user))
                  ViewBag.Message = "Registration Successfull";
             }
-
+            
             return View(user);
         }
 
