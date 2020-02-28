@@ -1,40 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Book_Shoppe.Entity
+namespace Book_Shoppe.Models
 {
-    public class Book
+    public class AddBookFormVM
     {
-        [Required]
-        public int BookID { get; set; }
-
         [Required]
         public int UserID { get; set; }
 
         [Required]
-        [MaxLength(55)]
         public string Title { get; set; }
 
         [Required]
-        [MaxLength(26)]
         public string Author { get; set; }
 
         [Required]
-        [MaxLength(20)]
         public string Genere { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public int Price { get; set; }
 
         [Required]
         public int NoOfPages { get; set; }
-
-        [ForeignKey("UserID")]
-        public User User { get; set; }
     }
 }

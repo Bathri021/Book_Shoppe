@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Book_Shoppe.BL;
+using Book_Shoppe.Models;
 
 namespace Book_Shoppe.Controllers
 {
@@ -26,11 +27,20 @@ namespace Book_Shoppe.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Book book)
+        public ActionResult Create(AddBookFormVM book)
         {
             if (ModelState.IsValid)
             {
-                bookContext.Add(book);
+                Book _book = new Book()
+                {
+                    UserID = book.UserID,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genere = book.Genere,
+                    Price = book.Price,
+                    NoOfPages = book.NoOfPages
+                };
+                bookContext.Add(_book);
                 TempData["Message"] = "Added Successfully";
             }
             return View(book);
@@ -38,24 +48,45 @@ namespace Book_Shoppe.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Book book = BookRepositary.GetBookByID(id);
-            return View(book);
+            Book book = bookContext.GetBookByID(id);
+
+            EditBookFormVM _book = new EditBookFormVM()
+            {
+                BookID = book.BookID,
+                UserID = book.UserID,
+                Title = book.Title,
+                Author = book.Author,
+                Genere = book.Genere,
+                Price = book.Price,
+                NoOfPages = book.NoOfPages
+            };
+            return View(_book);
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            BookRepositary.Delete(id);
+            bookContext.Delete(id);
             TempData["Message"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public ActionResult Update(Book book)
+        public ActionResult Update(EditBookFormVM book)
         {
             if (ModelState.IsValid)
             {
-                BookRepositary.Updata(book);
+                Book _book = new Book()
+                {
+                    BookID = book.BookID,
+                    UserID = book.UserID,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genere = book.Genere,
+                    Price = book.Price,
+                    NoOfPages = book.NoOfPages
+                };
+                bookContext.Edit(_book);
                 TempData["Message"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }

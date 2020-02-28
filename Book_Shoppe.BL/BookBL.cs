@@ -20,5 +20,22 @@ namespace Book_Shoppe.BL
         {
             BookRepositary.Add(book);
         }
+
+        public void Edit(Book book)
+        {
+            BookRepositary.Edit(book);
+        }
+
+     
+        public Book GetBookByID(int id)
+        {
+            return BookRepositary.GetBookByID(id);
+        }
+
+        public bool Delete(int id)
+        {
+            BookRepositary.Delete(id);
+            return true;
+        }
     }
 }

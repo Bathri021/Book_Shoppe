@@ -1,5 +1,4 @@
-﻿using Book_Shoppe.DAL.Migrations;
-using Book_Shoppe.Entity;
+﻿using Book_Shoppe.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,18 +15,8 @@ namespace Book_Shoppe.DAL
            
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Book> Books { get; set; }
     }
-   
-    public class RoleDBContext : DbContext
-    {
-        public RoleDBContext():base("Book_Shoppe")
-        {
-            Database.SetInitializer(new DBContextInitializer());
-        }
-        public DbSet<Role> Roles { get; set; }
-    }
-   
-
    
 }

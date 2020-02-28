@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Database_V1 : DbMigration
+    public partial class InitialCreate : DbMigration
     {
         public override void Up()
         {
@@ -13,26 +13,26 @@
                     {
                         BookID = c.Int(nullable: false, identity: true),
                         UserID = c.Int(nullable: false),
-                        Title = c.String(),
-                        Author = c.String(),
-                        Genere = c.String(),
+                        Title = c.String(nullable: false, maxLength: 55),
+                        Author = c.String(nullable: false, maxLength: 26),
+                        Genere = c.String(nullable: false, maxLength: 20),
                         Price = c.Int(nullable: false),
                         NoOfPages = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.BookID)
-                .ForeignKey("dbo.UserInfo", t => t.UserID, cascadeDelete: true)
+                .ForeignKey("dbo.User", t => t.UserID, cascadeDelete: true)
                 .Index(t => t.UserID);
             
             CreateTable(
-                "dbo.UserInfo",
+                "dbo.User",
                 c => new
                     {
                         UserID = c.Int(nullable: false, identity: true),
                         RoleID = c.Int(nullable: false),
-                        Name = c.String(),
-                        UserName = c.String(),
-                        MailID = c.String(),
-                        Password = c.String(),
+                        Name = c.String(nullable: false, maxLength: 26),
+                        UserName = c.String(nullable: false, maxLength: 26),
+                        MailID = c.String(nullable: false, maxLength: 64),
+                        Password = c.String(nullable: false, maxLength: 12),
                     })
                 .PrimaryKey(t => t.UserID)
                 .ForeignKey("dbo.Roles", t => t.RoleID, cascadeDelete: true)
@@ -43,7 +43,7 @@
                 c => new
                     {
                         RoleID = c.Int(nullable: false, identity: true),
-                        RoleName = c.String(),
+                        RoleName = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.RoleID);
             
@@ -51,12 +51,12 @@
         
         public override void Down()
         {
-            DropForeignKey("dbo.Books", "UserID", "dbo.UserInfo");
-            DropForeignKey("dbo.UserInfo", "RoleID", "dbo.Roles");
-            DropIndex("dbo.UserInfo", new[] { "RoleID" });
+            DropForeignKey("dbo.Books", "UserID", "dbo.User");
+            DropForeignKey("dbo.User", "RoleID", "dbo.Roles");
+            DropIndex("dbo.User", new[] { "RoleID" });
             DropIndex("dbo.Books", new[] { "UserID" });
             DropTable("dbo.Roles");
-            DropTable("dbo.UserInfo");
+            DropTable("dbo.User");
             DropTable("dbo.Books");
         }
     }

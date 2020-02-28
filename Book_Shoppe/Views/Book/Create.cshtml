@@ -1,4 +1,4 @@
-﻿@model Book_Shoppe.Entity.Book
+﻿@model Book_Shoppe.Models.AddBookFormVM
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,10 +14,10 @@
     <div>
         <div class="form-group">
             <div>
-                @Html.Label("Book ID", null, new { @class = "col-form-label" })
+                @Html.LabelFor(Model => Model.UserID, new { @class="col-form-label"})
             </div>
             <div>
-                @Html.TextBoxFor(Model => Model.BookID, null, new { id = "inputDefault", @class = "form-control" })
+                @Html.TextBoxFor(Model => Model.UserID, null, new { id = "inputDefault", @class = "form-control" })
             </div>
         </div>
         <div class="form-group">
@@ -44,7 +44,7 @@
                 @Html.TextBoxFor(Model => Model.Genere, new { id = "inputDefault", @class = "form-control" })
             </div>
         </div>
-        <div>
+        <div class="form-group">
             <div>
                 @Html.LabelFor(Model => Model.Price, new { @class = "col-form-label" })
             </div>
@@ -52,7 +52,7 @@
                 @Html.TextBoxFor(Model => Model.Price, new { id = "inputDefault", @class = "form-control" })
             </div>
         </div>
-        <div>
+        <div class="form-group">
             <div>
                 @Html.LabelFor(Model => Model.NoOfPages, new { @class = "col-form-label" })
             </div>

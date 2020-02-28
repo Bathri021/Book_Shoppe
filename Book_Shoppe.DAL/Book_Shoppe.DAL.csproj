@@ -62,9 +62,9 @@
   <ItemGroup>
     <Compile Include="BookRepositary.cs" />
     <Compile Include="DBContext.cs" />
-    <Compile Include="Migrations\202002270623331_Database_V1.cs" />
-    <Compile Include="Migrations\202002270623331_Database_V1.designer.cs">
-      <DependentUpon>202002270623331_Database_V1.cs</DependentUpon>
+    <Compile Include="Migrations\202002281735540_InitialCreate.cs" />
+    <Compile Include="Migrations\202002281735540_InitialCreate.designer.cs">
+      <DependentUpon>202002281735540_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UserRepositary.cs" />
@@ -81,8 +81,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002270623331_Database_V1.resx">
-      <DependentUpon>202002270623331_Database_V1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202002281735540_InitialCreate.resx">
+      <DependentUpon>202002281735540_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
