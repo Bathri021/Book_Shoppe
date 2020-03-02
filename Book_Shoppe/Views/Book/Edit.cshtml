@@ -11,6 +11,7 @@
 
 @using (Html.BeginForm("Update", "Book", FormMethod.Post))
 {
+
     @Html.HiddenFor(Model => Model.BookID)
     @Html.HiddenFor(Model=>Model.UserID)
     <div>
@@ -21,6 +22,9 @@
             <div>
                 @Html.TextBoxFor(Model => Model.Title, null, new { id = "inputDefault", @class = "form-control" })
             </div>
+            <div>
+                @Html.ValidationMessageFor(Model=>Model.Title)
+            </div>
         </div>
         <div class="form-group">
             <div>
@@ -28,6 +32,9 @@
             </div>
             <div>
                 @Html.TextBoxFor(Model => Model.Author, new { id = "inputDefault", @class = "form-control" })
+            </div>
+            <div>
+                @Html.ValidationMessageFor(Model=>Model.Author)
             </div>
         </div>
         <div class="form-group">
@@ -37,6 +44,9 @@
             <div>
                 @Html.TextBoxFor(Model => Model.Genere, new { id = "inputDefault", @class = "form-control" })
             </div>
+            <div>
+                @Html.ValidationMessageFor(Model=>Model.Genere)
+            </div>
         </div>
         <div>
             <div>
@@ -45,6 +55,9 @@
             <div>
                 @Html.TextBoxFor(Model => Model.Price, new { id = "inputDefault", @class = "form-control" })
             </div>
+            <div>
+                @Html.ValidationMessageFor(Model=>Model.Price)
+            </div>
         </div>
         <div>
             <div>
@@ -52,6 +65,9 @@
             </div>
             <div>
                 @Html.TextBoxFor(Model => Model.NoOfPages, new { id = "inputDefault", @class = "form-control" })
+            </div>
+            <div>
+                @Html.ValidationMessageFor(Model=>Model.NoOfPages)
             </div>
         </div>
         <br />

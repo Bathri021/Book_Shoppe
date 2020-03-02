@@ -21,12 +21,26 @@
                     <li class="nav-item">
                         @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
                     </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Books", "Index", "Book", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Users", "Index", "User", null, new { @class = "nav-link" })
-                    </li>
+                 @try
+                 {
+                    if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID == 1)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Books", "Index", "Book", null, new { @class = "nav-link" })
+                        </li>
+                    }
+                    if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID > 2)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Users", "Index", "User", null, new { @class = "nav-link" })
+                        </li>
+                    }
+                 }
+                 catch (Exception)
+                 {
+
+                 }
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -16,26 +16,24 @@
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 <strong>@ViewBag.Message</strong>
             </div>
-        }
-
+    }
+    if (ViewBag.Alert != null)
+    {
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>@ViewBag.Alert</strong>
+        </div>
+    }
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    @*<div class="form-group">
-        <div>
-            @Html.LabelFor(m => m.UserID, new { @class = "col-form-label" })
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.UserID, new { Value = "" + (ViewBag.userCount), id = "inputDefault", @class = "form-control", @readonly = "true" })
-            @Html.ValidationMessageFor(m => m.UserID)
-        </div>
-    </div>*@
+ 
     <div class="form-group">
         <div>
             @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" , maxlength="22" })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" , maxlength=26 })
             @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
@@ -44,7 +42,7 @@
                 @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
             </div>
             <div>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault",maxlength="22" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault",maxlength=26 })
                 @Html.ValidationMessageFor(m => m.UserName)
             </div>
         </div>
@@ -53,7 +51,7 @@
                 @Html.LabelFor(m => m.MailID, new { @class = "col-form-label" })
             </div>
             <div>
-                @Html.TextBoxFor(m => m.MailID, new { @class = "form-control", id = "inputDefault" })
+                @Html.TextBoxFor(m => m.MailID, new { @class = "form-control", id = "inputDefault", maxlength = 64 })
                 @Html.ValidationMessageFor(m => m.MailID)
             </div>
         </div>
@@ -62,7 +60,7 @@
                 @Html.LabelFor(m => m.Password, new { @class = "col-form-label" })
             </div>
             <div>
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "exampleInputPassword1", type = "password" })
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "exampleInputPassword1", type = "password", maxlength = 12 })
                 @Html.ValidationMessageFor(m => m.Password)
             </div>
         </div>

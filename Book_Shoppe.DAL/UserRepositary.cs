@@ -1,6 +1,8 @@
 ﻿using Book_Shoppe.Entity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +11,6 @@ namespace Book_Shoppe.DAL
 {
     public class UserRepositary
     {
-        static void InitialzeRoles()
-        {
-            List<Role> Roles = new List<Role>();
-            Roles.Add(new Role() { RoleID = 1, RoleName = "Seller" });
-            Roles.Add(new Role() { RoleID = 2, RoleName = "Customer" });
-
-            DBContext _Context = new DBContext();
-            _Context.Roles.AddRange(Roles);
-            _Context.SaveChanges();
-        }
         public static IEnumerable<User> GetUsers()
         {
             DBContext userDBContext = new DBContext();
@@ -27,17 +19,62 @@ namespace Book_Shoppe.DAL
 
         public static IEnumerable<Role> GetRoles()
         {
-            InitialzeRoles();
             DBContext RoleContext = new DBContext();
-            return RoleContext.Roles.ToList();
+            return RoleContext.Roles.Where(m => m.RoleID <=2).ToList();
         }
        
-        public static bool AddUser(User user)
+        public static string AddUser(User user)
         {
             DBContext _Context = new DBContext();
             _Context.Users.Add(user);
-            _Context.SaveChanges();
-            return true;
+          
+            try
+            {
+                _Context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException.InnerException.Message != null)
+                {
+                    return "The User Name should not be duplicated";
+                }
+                else
+                {
+                    return "Please fill out the form correctly and sumbit your values";
+                }
+            }
+            return null;
+        }
+
+        public static User ValidateLogIn(string userName,string password)
+        {
+            User _user=null;
+            DBContext _Context = new DBContext();
+            IList<User> userList = _Context.Users.ToList();
+
+            foreach (User user in userList)
+            {
+                if (user.UserName ==userName && user.Password==password)
+                {
+                    _user = user;
+                }
+            }
+            return _user;
+        }
+        public static User GetUserByID(int userID)
+        {
+            DBContext _context = new DBContext();
+            return _context.Users.SingleOrDefault(ID => ID.UserID == userID);
+        }
+        public static bool Delete(int id)
+        {
+            using (var Context = new DBContext())
+            {
+                User user = Context.Users.Where(ID => ID.UserID == id).FirstOrDefault();
+                Context.Users.Remove(user);
+                Context.SaveChanges();
+                return true;
+            }
         }
 }
 }

@@ -17,6 +17,11 @@ namespace Book_Shoppe.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Book> Books { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder builder)
+        {
+            builder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
+            builder.Entity<Book>().HasIndex(u => u.Title).IsUnique();
+        }
     }
-   
 }

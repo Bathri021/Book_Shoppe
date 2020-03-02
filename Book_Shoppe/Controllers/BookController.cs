@@ -33,15 +33,22 @@ namespace Book_Shoppe.Controllers
             {
                 Book _book = new Book()
                 {
-                    UserID = book.UserID,
+                    UserID = UserController.CurrentUser.UserID,
                     Title = book.Title,
                     Author = book.Author,
                     Genere = book.Genere,
                     Price = book.Price,
                     NoOfPages = book.NoOfPages
                 };
-                bookContext.Add(_book);
-                TempData["Message"] = "Added Successfully";
+
+                ViewBag.Alert =  bookContext.Add(_book);
+
+                if (ViewBag.Alert == null)
+                {
+                   ViewBag.Message = "Added Successfully";
+                    ViewBag.Alert = null;
+                }
+
             }
             return View(book);
         }
@@ -60,6 +67,7 @@ namespace Book_Shoppe.Controllers
                 Price = book.Price,
                 NoOfPages = book.NoOfPages
             };
+
             return View(_book);
         }
 
@@ -67,7 +75,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Delete(int id)
         {
             bookContext.Delete(id);
-            TempData["Message"] = "Deleted Successfully";
+            ViewBag.Message = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 
@@ -86,8 +94,13 @@ namespace Book_Shoppe.Controllers
                     Price = book.Price,
                     NoOfPages = book.NoOfPages
                 };
-                bookContext.Edit(_book);
-                TempData["Message"] = "Updated Successfully";
+                ViewBag.Alert = bookContext.Edit(_book);
+                if (ViewBag.Alert == null)
+                {
+                    ViewBag.Message = "Updated Successfully";
+                    ViewBag.Alert = null;
+                }
+
                 return RedirectToAction("Index");
             }
             return View("Edit", book);

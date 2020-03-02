@@ -20,9 +20,23 @@ namespace Book_Shoppe.BL
             IEnumerable<Role> Roles = UserRepositary.GetRoles();
             return Roles;
         }
-        public bool AddUser(User user)
+        public string AddUser(User user)
         {
             return UserRepositary.AddUser(user);
+        }
+        public User LogIn(string userName,string password)
+        {
+            return UserRepositary.ValidateLogIn(userName, password);
+        }
+
+        public User GetUserByID(int id)
+        {
+            return UserRepositary.GetUserByID(id);
+        }
+
+        public bool Delete(int id)
+        {
+            return UserRepositary.Delete(id);
         }
     }
 }

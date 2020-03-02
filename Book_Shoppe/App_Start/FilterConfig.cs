@@ -10,7 +10,7 @@ namespace Book_Shoppe
             filters.Add(new HandleErrorAttribute
             {
                 View = "Error"
-            },1);
+            }, 1);
             filters.Add(new HandleErrorAttribute(), 2);
         }
     }

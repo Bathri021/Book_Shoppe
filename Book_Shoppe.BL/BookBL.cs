@@ -16,14 +16,14 @@ namespace Book_Shoppe.BL
             return Books;
         }
 
-        public void Add(Book book)
+        public string Add(Book book)
         {
-            BookRepositary.Add(book);
+           return BookRepositary.Add(book);
         }
 
-        public void Edit(Book book)
+        public string Edit(Book book)
         {
-            BookRepositary.Edit(book);
+           return BookRepositary.Edit(book);
         }
 
      

@@ -1,17 +1,15 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿@if (Book_Shoppe.Controllers.UserController.CurrentUser!=null)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + Book_Shoppe.Controllers.UserController.CurrentUser.Name + "!", "Profile", "User", routeValues: null, htmlAttributes: new { @class="nav-link"})
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li>
+            @Html.ActionLink("Log out","LogOut","User",null,new { @class="nav-link"})
+        </li>
     </ul>
-    }
+    
 }
 else
 {
