@@ -6,17 +6,17 @@
     <title>@ViewBag.Title - Book Shoppe</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" type="text/css" href="~/Styles/CustomStyle.css" />
+    @*<link rel="stylesheet" type="text/css" href="~/Content/CustomStyle.css" />*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-gradient-primary">
+    <div class="navbar navbar-expand-lg navbar-dark bg-gradient-nav">
         <div class="container">
-            @Html.ActionLink("Book Shoppe", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Book Shoppe", "Index", "Home", new { area = "" }, new { @class = "navbar-brand mastertitle" })
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarColor03" aria-expanded="true" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarColor02">
+            <div class="collapse navbar-collapse na">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
@@ -26,7 +26,7 @@
                     if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID == 1)
                     {
                         <li class="nav-item">
-                            @Html.ActionLink("Books", "Index", "Book", null, new { @class = "nav-link" })
+                            @Html.ActionLink("My Books", "Index", "Book", null, new { @class = "nav-link" })
                         </li>
                     }
                     if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID > 2)
@@ -36,7 +36,7 @@
                         </li>
                     }
                  }
-                 catch (Exception)
+                 catch (NullReferenceException)
                  {
 
                  }

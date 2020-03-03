@@ -25,7 +25,10 @@ namespace Book_Shoppe
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-Materia.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/CustomStyle.css"));
+
+            bundles.Add(new StyleBundle("~/Styles/css").Include("~/Styles/CustomStyles.css"));
         }
     }
 }

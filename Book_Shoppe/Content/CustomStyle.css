@@ -1,0 +1,77 @@
+﻿@font-face {
+	font-family: ostrich-sans-bold;
+	src: url('../fonts/webfonts/ostrich-sans-bold.eot'), url('../fonts/webfonts/ostrich-sans-bold.ttf') format('truetype'), url('../fonts/webfonts/ostrich-sans-bold.woff');
+}
+
+@font-face {
+	font-family: ostrich-sans-black;
+	src: url('../fonts/webfonts/ostrich-sans-black.eot'), url('../fonts/webfonts/ostrich-sans-black.ttf') format('truetype'), url('../fonts/webfonts/ostrich-sans-black.woff');
+}
+
+
+body {
+	background-image: linear-gradient(to left top, #ffffa8, #e4ffba, #ceffce, #c1ffe1, #bdfff0, #bafff4, #b7fff9, #b5fffd, #abfffc, #a1fefa, #96fef8, #8bfdf6);
+	background-repeat:no-repeat;
+	background-attachment:fixed;
+	background-size:cover;
+}
+/*Background Gradient*/
+.bg-gradient-nav{
+	background-color:rgba(0, 217, 204, 0.91)
+}
+.navlink-dark{
+	color:black;
+}
+/*Secondary Background*/
+.secondary-bg{
+	background-color:transparent;
+	padding:60px;
+}
+/*Cards*/
+
+.scroll-card{
+	display:flex;
+	height:auto;
+}
+.horizontal-scroll-wrapper{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  overflow:hidden;
+  align-items:center;
+}
+
+.horizontal-scroll-wrapper .card{
+	margin-right:15px;
+	align-items:center;
+}
+/*Font Styles*/
+.heading{
+	font-family:ostrich-sans-black
+	font-size:3.2rem;
+	font-style:normal;
+}
+
+.masterTitle{
+	font-family:ostrich-sans-bold;
+	font-size:2rem;
+}
+
+.formTitle{
+
+}
+/*Form Styles*/
+.form{
+	margin-top:5px;
+	border:2px solid lightblue;
+	border-radius:25px;
+	justify-content:center;
+	padding: 20px;
+	background-color:rgba(255, 255, 255, 0.75)
+}
+
+
+/*Validation Error Message*/
+.field-validation-error{
+	color:red;
+}

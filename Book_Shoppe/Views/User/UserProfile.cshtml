@@ -1,21 +1,25 @@
-﻿@model Book_Shoppe.Models.RegistrationFormViewModel
+﻿@model Book_Shoppe.ViewModel.UpdateUserVM
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "UserProfile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-@using (Html.BeginForm("Register", "User", FormMethod.Post,new { @class="form"}))
-{
-    @Html.AntiForgeryToken()
-    <h2 class="heading">Create new account</h2>
 
-        if (ViewBag.Message != null)
-        {
-            <div class="alert alert-dismissible alert-primary" >
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                <strong>@ViewBag.Message</strong>
-            </div>
+@using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form" }))
+{
+    @Html.HiddenFor(Model => Model.UserID)
+    @Html.HiddenFor(Model=>Model.RoleID)
+
+    @Html.AntiForgeryToken()
+    <h2 class="heading">User Profile</h2>
+
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-dismissible alert-primary">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>@ViewBag.Message</strong>
+        </div>
     }
     if (ViewBag.Alert != null)
     {
@@ -27,25 +31,25 @@
 
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
- 
+
     <div class="form-group">
         <div>
             @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
         </div>
         <div>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault" , maxlength=26 })
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault", maxlength = 26 })
             @Html.ValidationMessageFor(m => m.Name)
         </div>
     </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault",maxlength=26 })
-                @Html.ValidationMessageFor(m => m.UserName)
-            </div>
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
         </div>
+        <div>
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault", maxlength = 26 })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+    </div>
         <div class="form-group">
             <div>
                 @Html.LabelFor(m => m.MailID, new { @class = "col-form-label" })
@@ -60,22 +64,10 @@
                 @Html.LabelFor(m => m.Password, new { @class = "col-form-label" })
             </div>
             <div>
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "exampleInputPassword1", type = "password", maxlength = 12 })
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "inputDefault", maxlength = 12,type="Password" })
                 @Html.ValidationMessageFor(m => m.Password)
             </div>
         </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(m => m.RoleID, new { @class = "col-form-label" })
-            </div>
-            <div class="nav-item dropdown">
-                @Html.DropDownListFor(m => m.RoleID, (IEnumerable<SelectListItem>)ViewBag.Roles, "Select Role", new { @class = "nav-link dropdown-toggle dropdown-menu show", @style = "position: absolute; transform: translate3d(0px, 35px, 0px); top: -5vh; left: 0px; will-change: transform;" })
-                <br/>
-                <br/>
-                @Html.ValidationMessageFor(m => m.RoleID, null, new { style = "margin-top:10vh" })
-            </div>
-        </div>
-
         <table>
             <tr>
                 <td>

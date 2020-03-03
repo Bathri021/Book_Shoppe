@@ -16,6 +16,11 @@ namespace Book_Shoppe.BL
             return Books;
         }
 
+        public IEnumerable<Book> GetUserBooks()
+        {
+            IEnumerable<Book> Books = BookRepositary.GetUserBooks();
+            return Books;
+        }
         public string Add(Book book)
         {
            return BookRepositary.Add(book);

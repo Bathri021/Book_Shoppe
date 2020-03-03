@@ -1,15 +1,22 @@
-﻿@if (Book_Shoppe.Controllers.UserController.CurrentUser!=null)
+﻿@if (Book_Shoppe.Controllers.UserController.CurrentUser != null)
 {
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + Book_Shoppe.Controllers.UserController.CurrentUser.Name + "!", "Profile", "User", routeValues: null, htmlAttributes: new { @class="nav-link"})
-        </li>
-        <li>
-            @Html.ActionLink("Log out","LogOut","User",null,new { @class="nav-link"})
-        </li>
-    </ul>
-    
+    try
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + Book_Shoppe.Controllers.UserController.CurrentUser.Name + "!", "UserProfile", "User", routeValues: new { id = Book_Shoppe.Controllers.UserController.CurrentUser.UserID }, htmlAttributes: new { @class = "nav-link" })
+            </li>
+            <li>
+                @Html.ActionLink("Log out", "LogOut", "User", null, new { @class = "nav-link" })
+            </li>
+        </ul>
+    }
+    catch (Exception)
+    {
+
+    }
+
 }
 else
 {

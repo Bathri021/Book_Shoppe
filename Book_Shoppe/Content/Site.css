@@ -22,3 +22,42 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/*Scroll card*/
+/*::-webkit-scrollbar{width:2px;height:2px;}
+::-webkit-scrollbar-button{width:2px;height:2px;}
+
+.scroll-card{
+    display:flex;
+    height:30vh;
+}
+.horizontal-scroll-wrapper{
+  display:block;
+  margin:0px;
+  justify-content:center;
+  display:inline-block;
+  box-sizing:border-box;
+  justify-content:center;
+  position:absolute;
+  max-height:50vw;
+  overflow-y:auto;
+  overflow-x:hidden;
+  transform:rotate(-90deg) translateY(-200px);
+  transform-origin:right top;
+ 
+}
+.horizontal-scroll-wrapper > div{
+  display:block;
+  padding:10px 20px;
+  transform:rotate(90deg);
+}
+
+.card{
+     padding:10px 0 0 0;
+}
+
+.card > div{
+    width:60px;
+  height:60px;
+  margin:10px;
+}*/

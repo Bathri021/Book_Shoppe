@@ -10,6 +10,16 @@ namespace Book_Shoppe.BL
 {
     public class UserBL
     {
+        private User CurrentUser;
+        public User GetCurrentUser()
+        {
+            return CurrentUser;
+        }
+        public void SetCurrentUser(User user)
+        {
+            CurrentUser = user;
+            UserRepositary.SetCurrentUser(CurrentUser);
+        }
         public IEnumerable<User> GetUsers()
         {
             IEnumerable<User> Users = UserRepositary.GetUsers();
@@ -32,6 +42,11 @@ namespace Book_Shoppe.BL
         public User GetUserByID(int id)
         {
             return UserRepositary.GetUserByID(id);
+        }
+
+        public string EditUser(User user)
+        {
+            return UserRepositary.EditUser(user);
         }
 
         public bool Delete(int id)

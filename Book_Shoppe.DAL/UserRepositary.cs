@@ -11,10 +11,21 @@ namespace Book_Shoppe.DAL
 {
     public class UserRepositary
     {
+        public static User CurrentUser { get; set; }
+        public static void SetCurrentUser(User user)
+        {
+            CurrentUser = user;
+        }
+
+        public static User GetCurrentUser()
+        {
+            return CurrentUser;
+        }
+
         public static IEnumerable<User> GetUsers()
         {
             DBContext userDBContext = new DBContext();
-            return userDBContext.Users.ToList();
+            return userDBContext.Users.Where(m=>m.RoleID<=2).ToList();
         }
 
         public static IEnumerable<Role> GetRoles()
@@ -65,6 +76,27 @@ namespace Book_Shoppe.DAL
         {
             DBContext _context = new DBContext();
             return _context.Users.SingleOrDefault(ID => ID.UserID == userID);
+        }
+        public static string EditUser(User user)
+        {
+            DBContext _context = new DBContext();
+            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException.InnerException.Message != null)
+                {
+                    return "The User Name should not be duplicated";
+                }
+                else
+                {
+                    return "Please fill out the form correctly and sumbit your values";
+                }
+            }
+            return null;
         }
         public static bool Delete(int id)
         {

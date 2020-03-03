@@ -8,6 +8,7 @@
             <th>Author</th>
             <th>Genere</th>
             <th>Price</th>
+            <th>Operations</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +21,11 @@
                     <td>@item.Title</td>
                     <td>@item.Author</td>
                     <td>@item.Genere</td>
-                    <td>@item.Price</td>
+                    <td>&#36;@item.Price</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-primary btn-sm">Buy&nbsp; <i class="fa fa-shopping-cart"></i></button>
+                        <button type="button" class="btn btn-outline-info btn-sm">Wish List&nbsp; &hearts;</button>
+                    </td>
                 </tr>
                 count++;
             }

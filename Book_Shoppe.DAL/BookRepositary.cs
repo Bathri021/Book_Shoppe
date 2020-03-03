@@ -67,6 +67,14 @@ namespace Book_Shoppe.DAL
             DBContext booksContext = new DBContext();
             return booksContext.Books.ToList();
         }
+
+        public static IEnumerable<Book> GetUserBooks()
+        {
+            DBContext _context = new DBContext();
+            UserRepositary Repos = new UserRepositary();
+            int userID = UserRepositary.GetCurrentUser().UserID;
+            return _context.Books.Where(m => m.UserID == userID).ToList();
+        }
         public static Book GetBookByID(int bookID)
         {
             DBContext booksContext = new DBContext();

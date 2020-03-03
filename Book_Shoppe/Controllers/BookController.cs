@@ -7,16 +7,19 @@ using System.Web;
 using System.Web.Mvc;
 using Book_Shoppe.BL;
 using Book_Shoppe.Models;
+using Book_Shoppe.App_Start;
 
 namespace Book_Shoppe.Controllers
 {
+    [SellerAuthorizationFilter]
+    [HandleError]
     public class BookController : Controller
     {
         BookBL bookContext = new BookBL();
         // GET: Book
         public ActionResult Index()
         {
-            IEnumerable<Book> Books = BookRepositary.GetAllBooks();
+            IEnumerable<Book> Books = bookContext.GetUserBooks();
             return View(Books);
         }
 

@@ -2,6 +2,7 @@
 using Book_Shoppe.BL;
 using Book_Shoppe.Entity;
 using Book_Shoppe.Models;
+using Book_Shoppe.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,11 @@ namespace Book_Shoppe.Controllers
     [CustomeErrorHandler()]
     public class UserController : Controller
     {
-        public static User CurrentUser { get; set; }
+        public static User CurrentUser = null;
         
       
         // GET: User
+        [AdminAuthorizationFilter]
         public ActionResult Index()
         {
             UserBL userBL = new UserBL();
@@ -63,9 +65,6 @@ namespace Book_Shoppe.Controllers
                     ViewBag.Message = "Registration Successfull";
                     ViewBag.Alert = null;
                 }
-
-              
-                
             }
             
             return View(user);
@@ -87,6 +86,7 @@ namespace Book_Shoppe.Controllers
                 if (_user != null)
                 {
                     UserController.CurrentUser = _user;
+                    userBL.SetCurrentUser(CurrentUser);
                     ViewBag.Message = "Login Successfull";
                 }
                 else
@@ -96,6 +96,47 @@ namespace Book_Shoppe.Controllers
             } 
 
             return View();
+        }
+
+        public ActionResult UserProfile(int id)
+        {
+            UserBL userBL = new UserBL();
+            User user = userBL.GetUserByID(id);
+            UpdateUserVM userModel = new UpdateUserVM()
+            {
+                UserID = user.UserID,
+                Name = user.Name,
+                UserName = user.UserName,
+                MailID = user.MailID,
+                Password = user.Password,
+                RoleID = user.RoleID
+            };
+            return View(userModel);
+        }
+        [HttpPost]
+        public ActionResult Update(UpdateUserVM userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new Entity.User()
+                {
+                    UserID = userModel.UserID,
+                    Name = userModel.Name,
+                    UserName = userModel.UserName,
+                    MailID = userModel.MailID,
+                    Password = userModel.Password,
+                    RoleID = userModel.RoleID
+                };
+                UserBL userBL = new UserBL();
+               ViewBag.Alert= userBL.EditUser(user);
+                if (ViewBag.Alert==null)
+                {
+                    ViewBag.Message = "Update Successfull";
+                    ViewBag.Alert = null;
+                }
+            }
+           
+            return RedirectToAction("LogOut");
         }
 
         public ActionResult LogOut()

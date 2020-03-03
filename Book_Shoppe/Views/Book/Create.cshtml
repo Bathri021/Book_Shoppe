@@ -4,113 +4,106 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>Add New Book!</h1>
+<div class="secondary-bg">
+    <h1 class="heading">Add New Book!</h1>
 </div>
 
 
-@using (Html.BeginForm("Create", "Book", FormMethod.Post))
+@using (Html.BeginForm("Create", "Book", FormMethod.Post,new { @class="form"}))
 {
-    if (ViewBag.Message != null)
-    {
-        <div class="alert alert-dismissible alert-primary">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.Message</strong>
-        </div>
-    }
-    if (ViewBag.Alert != null)
-    {
-        <div class="alert alert-dismissible alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.Alert</strong>
-        </div>
-    }
+    <div class="loginForm">
+        <h2 class="heading">Enter Book Details</h2>
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-dismissible alert-primary">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>@ViewBag.Message</strong>
+                </div>
+            }
+            @if (ViewBag.Alert != null)
+            {
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>@ViewBag.Alert</strong>
+                </div>
+            }
 
-    <div>
-        @*<div class="form-group">
             <div>
-                @Html.LabelFor(Model => Model.UserID, new { @class="col-form-label"})
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(Model => Model.Title, new { @class = "col-form-label" })
+                    </div>
+                    <div>
+                        @Html.TextBoxFor(Model => Model.Title, null, new { id = "inputDefault", @class = "form-control", maxlength = 55 })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(Model => Model.Title)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(Model => Model.Author, new { @class = "col-form-label" })
+                    </div>
+                    <div>
+                        @Html.TextBoxFor(Model => Model.Author, new { id = "inputDefault", @class = "form-control", maxlength = 26 })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(Model => Model.Author)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(Model => Model.Genere, new { @class = "col-form-label" })
+                    </div>
+                    <div>
+                        @Html.TextBoxFor(Model => Model.Genere, new { id = "inputDefault", @class = "form-control", maxlength = 20 })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(Model => Model.Genere)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(Model => Model.Price, new { @class = "col-form-label" })
+                    </div>
+                    <div>
+                        @Html.TextBoxFor(Model => Model.Price, new { id = "inputDefault", @class = "form-control" })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(Model => Model.Price)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        @Html.LabelFor(Model => Model.NoOfPages, new { @class = "col-form-label" })
+                    </div>
+                    <div>
+                        @Html.TextBoxFor(Model => Model.NoOfPages, new { id = "inputDefault", @class = "form-control" })
+                    </div>
+                    <div>
+                        @Html.ValidationMessageFor(Model => Model.NoOfPages)
+                    </div>
+                </div>
+                <br />
+                <table>
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Back To List", "Index", null, new { @class = "btn btn-outline-info" })
+                        </td>
+                        <td>
+                            @if (ViewBag.Message != null)
+                            {
+                                <input type="submit" class="btn btn-outline-primary" id="submit" disabled />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-outline-primary" id="submit" />
+                            }
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.UserID, null, new { id = "inputDefault", @class = "form-control" })
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.UserID)
-            </div>
-        </div>*@
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(Model => Model.Title, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.Title, null, new { id = "inputDefault", @class = "form-control",maxlength=55 })
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.Title)
-            </div>
-        </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(Model => Model.Author, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.Author, new { id = "inputDefault", @class = "form-control", maxlength = 26 })
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.Author)
-            </div>
-        </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(Model => Model.Genere, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.Genere, new { id = "inputDefault", @class = "form-control", maxlength = 20})
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.Genere)
-            </div>
-        </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(Model => Model.Price, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.Price, new { id = "inputDefault", @class = "form-control"})
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.Price)
-            </div>
-        </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(Model => Model.NoOfPages, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(Model => Model.NoOfPages, new { id = "inputDefault", @class = "form-control" })
-            </div>
-            <div>
-                @Html.ValidationMessageFor(Model=>Model.NoOfPages)
-            </div>
-        </div>
-        <br />
-        <table>
-            <tr>
-                <td>
-                    @Html.ActionLink("Back To List", "Index", null, new { @class = "btn btn-outline-info" })
-                </td>
-                <td>
-                    @if (ViewBag.Message != null)
-                    {
-                        <input type="submit" class="btn btn-outline-primary" id="submit" disabled />
-                    }
-                    else
-                    {
-                        <input type="submit" class="btn btn-outline-primary" id="submit" />
-                    }
-                </td>
-            </tr>
-        </table>
-    </div>
+</div>
+  
 }
 
