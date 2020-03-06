@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 
 namespace Book_Shoppe.Controllers
 {
@@ -49,14 +50,9 @@ namespace Book_Shoppe.Controllers
             }
             else
             {
-                User _user = new Entity.User()
-                {
-                    Name = user.Name,
-                    UserName = user.UserName,
-                    MailID =user.MailID,
-                    Password = user.Password,
-                    RoleID = user.RoleID
-                };
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<RegistrationFormViewModel, User>(); });
+                IMapper iMapper = config.CreateMapper();
+                User _user = iMapper.Map<RegistrationFormViewModel, User>(user);
 
                 ViewBag.Alert = userBL.AddUser(_user);
 
@@ -87,6 +83,9 @@ namespace Book_Shoppe.Controllers
                 {
                     UserController.CurrentUser = _user;
                     userBL.SetCurrentUser(CurrentUser);
+                    Session["UserID"] = CurrentUser.UserID.ToString();
+                    Session["RoleID"] = CurrentUser.RoleID.ToString();
+                    Session["Name"] = CurrentUser.Name.ToString();
                     ViewBag.Message = "Login Successfull";
                 }
                 else

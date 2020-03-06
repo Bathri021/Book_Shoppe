@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -45,13 +49,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,13 +63,9 @@
   <ItemGroup>
     <Compile Include="BookRepositary.cs" />
     <Compile Include="DBContext.cs" />
-    <Compile Include="Migrations\202002281735540_InitialCreate.cs" />
-    <Compile Include="Migrations\202002281735540_InitialCreate.designer.cs">
-      <DependentUpon>202002281735540_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202002290458045_Database_V1.cs" />
-    <Compile Include="Migrations\202002290458045_Database_V1.designer.cs">
-      <DependentUpon>202002290458045_Database_V1.cs</DependentUpon>
+    <Compile Include="Migrations\202003050800056_Database_V1.cs" />
+    <Compile Include="Migrations\202003050800056_Database_V1.designer.cs">
+      <DependentUpon>202003050800056_Database_V1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UserRepositary.cs" />
@@ -85,11 +82,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002281735540_InitialCreate.resx">
-      <DependentUpon>202002281735540_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202002290458045_Database_V1.resx">
-      <DependentUpon>202002290458045_Database_V1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003050800056_Database_V1.resx">
+      <DependentUpon>202003050800056_Database_V1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

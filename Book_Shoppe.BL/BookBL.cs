@@ -16,6 +16,32 @@ namespace Book_Shoppe.BL
             return Books;
         }
 
+        public static IEnumerable<Genre> GetGenres()
+        {
+            IEnumerable<Genre> Generes = BookRepositary.GetAllGenres();
+            return Generes;
+        }
+
+        public string AddGenre(Genre genre)
+        {
+            return BookRepositary.AddGenre(genre);
+        }
+
+        public string DeleteGenre(int id)
+        {
+            return BookRepositary.DeleteGenre(id);
+        }
+        public IEnumerable<Book> GetBooksByGenre(int id)
+        {
+            IEnumerable<Book> BooksByGenre = BookRepositary.GetBooksByGenre(id);
+            return BooksByGenre;
+        }
+
+        public IEnumerable<Genre> GetAllGenres()
+        {
+            IEnumerable<Genre> Generes = BookRepositary.GetAllGenres();
+            return Generes;
+        }
         public IEnumerable<Book> GetUserBooks()
         {
             IEnumerable<Book> Books = BookRepositary.GetUserBooks();

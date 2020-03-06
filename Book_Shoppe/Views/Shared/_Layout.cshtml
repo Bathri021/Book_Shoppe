@@ -21,25 +21,43 @@
                     <li class="nav-item">
                         @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
                     </li>
-                 @try
-                 {
-                    if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID == 1)
-                    {
-                        <li class="nav-item">
-                            @Html.ActionLink("My Books", "Index", "Book", null, new { @class = "nav-link" })
-                        </li>
-                    }
-                    if (Book_Shoppe.Controllers.UserController.CurrentUser.RoleID > 2)
-                    {
-                        <li class="nav-item">
-                            @Html.ActionLink("Users", "Index", "User", null, new { @class = "nav-link" })
-                        </li>
-                    }
-                 }
-                 catch (NullReferenceException)
-                 {
+                    <li class="nav-item genre-Dropdown">
+                        <button class="genre-Dropdown-btn Dropdown-down">Genres&nbsp;&#9660;</button>
+                        <button class="genre-Dropdown-btn Dropdown-up">Genres&nbsp;&#9650;</button>
 
-                 }
+                        <div class="genre-Dropdown-Content">
+                            @foreach (var item in Book_Shoppe.BL.BookBL.GetGenres())
+                            {
+                                @Html.ActionLink(linkText: item.GenreName, actionName: "Geners", controllerName: "Book", routeValues: new { id = item.GenreID }, htmlAttributes: new { @class = "" })
+                                <br />
+                            }
+                        </div>
+                    </li>
+                    @try
+                    {
+                        if (Convert.ToInt32(Session["RoleID"]) > 2)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Category", "EditGenre", "Book", null, new { @class="nav-link"})
+                            </li>
+                        }
+                        if (Convert.ToInt32(Session["RoleID"]) == 1)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("My Books", "Index", "Book", null, new { @class = "nav-link" })
+                            </li>
+                        }
+                        if (Convert.ToInt32(Session["RoleID"]) > 2)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Users", "Index", "User", null, new { @class = "nav-link" })
+                            </li>
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+
+                    }
 
                 </ul>
                 @Html.Partial("_LoginPartial")

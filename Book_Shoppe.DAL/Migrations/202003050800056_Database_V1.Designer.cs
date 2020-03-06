@@ -13,7 +13,7 @@ namespace Book_Shoppe.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202002290458045_Database_V1"; }
+            get { return "202003050800056_Database_V1"; }
         }
         
         string IMigrationMetadata.Source

@@ -44,12 +44,13 @@ namespace Book_Shoppe.Entity
         [MaxLength(12)]
         public string Password { get; set; }
 
-        
-    
+
         [NotMapped]
         public List<Book> Books { get; set; }
 
     }
+
+    [Table("Role")]
     public class Role
     {
         [Required]

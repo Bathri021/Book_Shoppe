@@ -65,9 +65,49 @@ namespace Book_Shoppe.DAL
         public static IEnumerable<Book> GetAllBooks()
         {
             DBContext booksContext = new DBContext();
-            return booksContext.Books.ToList();
+             return booksContext.Books.ToList();
         }
 
+        public static IEnumerable<Genre> GetAllGenres()
+        {
+            DBContext _context = new DBContext();
+            return _context.Genres.ToList();
+        }
+
+        public static string AddGenre(Genre genre)
+        {
+            DBContext _context = new DBContext();
+            _context.Genres.Add(genre);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                if (e.InnerException.InnerException.Message != null)
+                {
+                    return "The title of the Genre should not be duplicated";
+                }
+                throw;
+            }
+            return null;
+        }
+
+        public static string DeleteGenre(int id)
+        {
+            using(DBContext _context = new DBContext())
+            {
+                Genre genre = _context.Genres.Where(Id => Id.GenreID == id).FirstOrDefault();
+                _context.Genres.Remove(genre);
+                _context.SaveChanges();
+                return "Genre Removed Successfully";
+            }
+        }
+        public static IEnumerable<Book> GetBooksByGenre(int id)
+        {
+            DBContext _context = new DBContext();
+            return _context.Books.Where(m => m.GenreID == id).ToList();
+        }
         public static IEnumerable<Book> GetUserBooks()
         {
             DBContext _context = new DBContext();

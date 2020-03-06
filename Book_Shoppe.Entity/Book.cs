@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Book_Shoppe.Entity
 {
+    [Table("Book")]
     public class Book
     {
         [Required]
@@ -25,8 +26,8 @@ namespace Book_Shoppe.Entity
         public string Author { get; set; }
 
         [Required]
-        [MaxLength(20)]
-        public string Genere { get; set; }
+        public int GenreID { get; set; }
+
 
         [Required]
         public int Price { get; set; }
@@ -36,5 +37,20 @@ namespace Book_Shoppe.Entity
 
         [ForeignKey("UserID")]
         public User User { get; set; }
+
+        [ForeignKey("GenreID")]
+        public Genre Genre { get; set; }
     }
+
+    [Table("Genre")]
+    public class Genre
+    {
+        [Required]
+        public int GenreID { get; set; }
+
+        [Required]
+        public string GenreName { get; set; }
+    }
+
+
 }

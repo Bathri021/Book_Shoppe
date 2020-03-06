@@ -19,7 +19,7 @@ namespace Book_Shoppe.Models
         public string Author { get; set; }
 
         [Required]
-        public string Genere { get; set; }
+        public int GenreID { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]
