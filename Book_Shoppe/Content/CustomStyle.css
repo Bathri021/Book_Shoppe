@@ -37,7 +37,7 @@ body {
   display:flex;
   flex-direction:row;
   flex-wrap:wrap;
-  height:17vh;
+  height:25vh;
   overflow:hidden;
   align-items:center;
 }
@@ -123,4 +123,9 @@ body {
 /*Validation Error Message*/
 .field-validation-error{
 	color:red;
+}
+
+/* footer */
+footer{
+	text-align:center;
 }

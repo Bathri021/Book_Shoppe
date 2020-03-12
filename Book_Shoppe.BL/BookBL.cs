@@ -12,7 +12,7 @@ namespace Book_Shoppe.BL
     {
         public IEnumerable<Book> GetBooks()
         {
-            IEnumerable<Book> Books = BookRepositary.GetAllBooks();
+            IEnumerable<Book> Books =BookRepositary.GetAllBooks();
             return Books;
         }
 
@@ -20,6 +20,12 @@ namespace Book_Shoppe.BL
         {
             IEnumerable<Genre> Generes = BookRepositary.GetAllGenres();
             return Generes;
+        }
+
+        public string GetGenreByGenreID(int id)
+        {
+            string GenreName = BookRepositary.GetGenreByGenreID(id);
+            return GenreName;
         }
 
         public string AddGenre(Genre genre)
@@ -44,7 +50,7 @@ namespace Book_Shoppe.BL
         }
         public IEnumerable<Book> GetUserBooks()
         {
-            IEnumerable<Book> Books = BookRepositary.GetUserBooks();
+            IEnumerable<Book> Books = BookRepositary.GetBookByUserID();
             return Books;
         }
         public string Add(Book book)

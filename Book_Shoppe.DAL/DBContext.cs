@@ -24,6 +24,7 @@ namespace Book_Shoppe.DAL
             builder.Entity<User>().HasIndex(u => u.MailID).IsUnique();
             builder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
             builder.Entity<Book>().HasIndex(u => u.Title).IsUnique();
+            builder.Entity<User>().MapToStoredProcedures();
         }
     }
 }

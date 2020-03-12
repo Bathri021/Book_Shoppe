@@ -32,7 +32,19 @@ namespace Book_Shoppe.BL
         }
         public string AddUser(User user)
         {
-            return UserRepositary.AddUser(user);
+            IEnumerable<User> Users = UserRepositary.GetUsers();
+            bool duplications=false;
+            foreach (var item in Users)
+            {
+               if( item.UserName == user.UserName)
+                {
+                    duplications = true;
+                } 
+            }
+            if (!duplications)
+                return UserRepositary.AddUser(user);
+            else
+                return "User Name Should Not Be Duplicated";
         }
         public User LogIn(string userName,string password)
         {

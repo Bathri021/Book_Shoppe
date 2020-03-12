@@ -1,4 +1,5 @@
-﻿using Book_Shoppe.DAL;
+﻿using Book_Shoppe.BL;
+using Book_Shoppe.DAL;
 using Book_Shoppe.Entity;
 using System;
 using System.Collections.Generic;
@@ -12,22 +13,11 @@ namespace Book_Shoppe.Controllers
     {
         public ActionResult Index()
         {
-            IEnumerable<Book> books = BookRepositary.GetAllBooks();
+            BookBL bookContext = new BookBL();
+            IEnumerable<Book> books = bookContext.GetBooks();
             return View(books);
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
+       
     }
 }

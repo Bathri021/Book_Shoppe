@@ -42,7 +42,7 @@ namespace Book_Shoppe.Entity
         public Genre Genre { get; set; }
     }
 
-    [Table("Genre")]
+
     public class Genre
     {
         [Required]

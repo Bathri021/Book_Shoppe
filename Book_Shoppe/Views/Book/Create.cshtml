@@ -11,6 +11,7 @@
 
 @using (Html.BeginForm("Create", "Book", FormMethod.Post,new { @class="form"}))
 {
+    @Html.AntiForgeryToken()
     <div class="loginForm">
         <h2 class="heading">Enter Book Details</h2>
             @if (ViewBag.Message != null)

@@ -8,10 +8,10 @@
 
 @using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form" }))
 {
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(Model => Model.UserID)
     @Html.HiddenFor(Model=>Model.RoleID)
 
-    @Html.AntiForgeryToken()
     <h2 class="heading">User Profile</h2>
 
     if (ViewBag.Message != null)
@@ -81,9 +81,7 @@
                     }
 
                 </td>
-                <td>
-                    @Html.ActionLink("View List", "Index", null, new { @class = "btn btn-outline-info" })
-                </td>
+             
             </tr>
         </table>
 }

@@ -24,22 +24,22 @@ namespace Book_Shoppe.Entity
         [ForeignKey("RoleID")]
         public Role Role { get; set; }
 
-        [Column("Name")]
+       
         [Required]
         [MaxLength(26)]
         public string Name { get; set; }
 
-        [Column("UserName")]
+       
         [Required]
         [MaxLength(26)]
         public string UserName { get; set; }
 
-        [Column("MailID")]
+
         [Required]
         [MaxLength(64)]
         public string MailID { get; set; }
 
-        [Column("Password")]
+ 
         [Required]
         [MaxLength(12)]
         public string Password { get; set; }
@@ -50,7 +50,7 @@ namespace Book_Shoppe.Entity
 
     }
 
-    [Table("Role")]
+
     public class Role
     {
         [Required]

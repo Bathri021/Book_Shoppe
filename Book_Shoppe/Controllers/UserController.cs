@@ -72,6 +72,7 @@ namespace Book_Shoppe.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LogIn(LogInFormViewModel user)
         {
             UserBL userBL = new UserBL();
@@ -101,31 +102,39 @@ namespace Book_Shoppe.Controllers
         {
             UserBL userBL = new UserBL();
             User user = userBL.GetUserByID(id);
-            UpdateUserVM userModel = new UpdateUserVM()
-            {
-                UserID = user.UserID,
-                Name = user.Name,
-                UserName = user.UserName,
-                MailID = user.MailID,
-                Password = user.Password,
-                RoleID = user.RoleID
-            };
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<User,UpdateUserVM>(); });
+            IMapper iMapper = config.CreateMapper();
+            UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
+            //UpdateUserVM userModel = new UpdateUserVM()
+            //{
+            //    UserID = user.UserID,
+            //    Name = user.Name,
+            //    UserName = user.UserName,
+            //    MailID = user.MailID,
+            //    Password = user.Password,
+            //    RoleID = user.RoleID
+            //};
             return View(userModel);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Update(UpdateUserVM userModel)
         {
             if (ModelState.IsValid)
             {
-                User user = new Entity.User()
-                {
-                    UserID = userModel.UserID,
-                    Name = userModel.Name,
-                    UserName = userModel.UserName,
-                    MailID = userModel.MailID,
-                    Password = userModel.Password,
-                    RoleID = userModel.RoleID
-                };
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<UpdateUserVM,User>(); });
+                IMapper iMapper = config.CreateMapper();
+                User user = iMapper.Map<UpdateUserVM,User>(userModel);
+
+                //User user = new Entity.User()
+                //{
+                //    UserID = userModel.UserID,
+                //    Name = userModel.Name,
+                //    UserName = userModel.UserName,
+                //    MailID = userModel.MailID,
+                //    Password = userModel.Password,
+                //    RoleID = userModel.RoleID
+                //};
                 UserBL userBL = new UserBL();
                ViewBag.Alert= userBL.EditUser(user);
                 if (ViewBag.Alert==null)
@@ -141,6 +150,9 @@ namespace Book_Shoppe.Controllers
         public ActionResult LogOut()
         {
             UserController.CurrentUser = null;
+            Session["UserID"] = null;
+            Session["RoleID"] = null;
+            Session["Name"] = null;
             return RedirectToAction("LogIn");
         }
         public ActionResult ViewDetails(int id)

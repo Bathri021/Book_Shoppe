@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Book_Shoppe.BL;
 using Book_Shoppe.Models;
 using Book_Shoppe.App_Start;
+using AutoMapper;
 
 namespace Book_Shoppe.Controllers
 {
@@ -36,6 +37,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Geners(int id)
         {
             IEnumerable<Book> BooksByGenre = bookContext.GetBooksByGenre(id);
+            Session["Genre"] = bookContext.GetGenreByGenreID(id);
             return View(BooksByGenre);
         }
 
@@ -71,21 +73,26 @@ namespace Book_Shoppe.Controllers
 
         [HttpPost]
         [SellerAuthorizationFilter]
-        public ActionResult Create(FormCollection Fc ,AddBookFormVM book)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(AddBookFormVM book)
         {
             ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
 
             if (ModelState.IsValid)
             {
-                Book _book = new Book()
-                {
-                    UserID = UserController.CurrentUser.UserID,
-                    Title = book.Title,
-                    Author = book.Author,
-                    GenreID = book.GenreID,
-                    Price = book.Price,
-                    NoOfPages = book.NoOfPages
-                };
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<AddBookFormVM,Book>(); });
+                IMapper iMapper = config.CreateMapper();
+                Book _book = iMapper.Map<AddBookFormVM, Book>(book);
+                _book.UserID = UserController.CurrentUser.UserID;
+                //Book _book = new Book()
+                //{
+                //    UserID = UserController.CurrentUser.UserID,
+                //    Title = book.Title,
+                //    Author = book.Author,
+                //    GenreID = book.GenreID,
+                //    Price = book.Price,
+                //    NoOfPages = book.NoOfPages
+                //};
 
                 ViewBag.Alert =  bookContext.Add(_book);
 
@@ -105,17 +112,20 @@ namespace Book_Shoppe.Controllers
             Book book = bookContext.GetBookByID(id);
             ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
 
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<Book,EditBookFormVM>(); });
+            IMapper iMapper = config.CreateMapper();
+            EditBookFormVM _book = iMapper.Map<Book,EditBookFormVM>(book);
 
-            EditBookFormVM _book = new EditBookFormVM()
-            {
-                BookID = book.BookID,
-                UserID = book.UserID,
-                Title = book.Title,
-                Author = book.Author,
-                GenreID = book.GenreID,
-                Price = book.Price,
-                NoOfPages = book.NoOfPages
-            };
+            //EditBookFormVM _book = new EditBookFormVM()
+            //{
+            //    BookID = book.BookID,
+            //    UserID = book.UserID,
+            //    Title = book.Title,
+            //    Author = book.Author,
+            //    GenreID = book.GenreID,
+            //    Price = book.Price,
+            //    NoOfPages = book.NoOfPages
+            //};
 
             return View(_book);
         }
@@ -131,22 +141,27 @@ namespace Book_Shoppe.Controllers
 
         [HttpPost]
         [SellerAuthorizationFilter]
+        [ValidateAntiForgeryToken]
         public ActionResult Update(EditBookFormVM book)
         {
             ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
 
             if (ModelState.IsValid)
             {
-                Book _book = new Book()
-                {
-                    BookID = book.BookID,
-                    UserID = book.UserID,
-                    Title = book.Title,
-                    Author = book.Author,
-                    GenreID = book.GenreID,
-                    Price = book.Price,
-                    NoOfPages = book.NoOfPages
-                };
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<EditBookFormVM, Book>(); });
+                IMapper iMapper = config.CreateMapper();
+                Book _book = iMapper.Map<EditBookFormVM, Book>(book);
+
+                //Book _book = new Book()
+                //{
+                //    BookID = book.BookID,
+                //    UserID = book.UserID,
+                //    Title = book.Title,
+                //    Author = book.Author,
+                //    GenreID = book.GenreID,
+                //    Price = book.Price,
+                //    NoOfPages = book.NoOfPages
+                //};
                 ViewBag.Alert = bookContext.Edit(_book);
                 if (ViewBag.Alert == null)
                 {

@@ -15,21 +15,27 @@ namespace Book_Shoppe.DAL
        
         public static string Add(Book book)
         {
-            DBContext booksContext = new DBContext();
-            booksContext.Books.Add(book);
-            try
+            using (DBContext booksContext = new DBContext())
             {
-                booksContext.SaveChanges();
-            }
-            catch (DbUpdateException e)
-            {
-                if(e.InnerException.InnerException.Message != null)
+                using(DbContextTransaction dbTran = booksContext.Database.BeginTransaction())
                 {
-                    return "The title of the book should not be duplicated";
-                }
-                else
-                {
-                    return "Please fill out the form correctly and sumbit your values";
+                    try
+                    {
+                        if (book.UserID==0)
+                        {
+                            return "User ID needed";
+                        }
+                        booksContext.Books.Add(book);
+                        booksContext.SaveChanges();
+                        dbTran.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbTran.Rollback();
+                        return null;
+                    }
+
+                  
                 }
             }
             return null;
@@ -68,12 +74,21 @@ namespace Book_Shoppe.DAL
              return booksContext.Books.ToList();
         }
 
+       
         public static IEnumerable<Genre> GetAllGenres()
         {
             DBContext _context = new DBContext();
             return _context.Genres.ToList();
         }
 
+        public static string GetGenreByGenreID(int id)
+        {
+            using(DBContext _context = new DBContext())
+            {
+                Genre genre = _context.Genres.Where(ID => ID.GenreID == id).SingleOrDefault();
+                return genre.GenreName;
+            }
+        }
         public static string AddGenre(Genre genre)
         {
             DBContext _context = new DBContext();
@@ -108,7 +123,7 @@ namespace Book_Shoppe.DAL
             DBContext _context = new DBContext();
             return _context.Books.Where(m => m.GenreID == id).ToList();
         }
-        public static IEnumerable<Book> GetUserBooks()
+        public static IEnumerable<Book> GetBookByUserID()
         {
             DBContext _context = new DBContext();
             UserRepositary Repos = new UserRepositary();

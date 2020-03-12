@@ -11,7 +11,7 @@
 
 @using (Html.BeginForm("Update", "Book", FormMethod.Post,new { @class="form"}))
 {
-
+    @Html.AntiForgeryToken()
   <div class="editBookForm">
       <h2 class="heading">Book Details</h2>
       @Html.HiddenFor(Model => Model.BookID)

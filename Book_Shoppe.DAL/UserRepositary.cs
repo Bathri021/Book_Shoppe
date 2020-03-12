@@ -38,22 +38,9 @@ namespace Book_Shoppe.DAL
         {
             DBContext _Context = new DBContext();
             _Context.Users.Add(user);
-          
-            try
-            {
+    
                 _Context.SaveChanges();
-            }
-            catch (DbUpdateException e)
-            {
-                if (e.InnerException.InnerException.Message != null)
-                {
-                    return "The User Name should not be duplicated";
-                }
-                else
-                {
-                    return "Please fill out the form correctly and sumbit your values";
-                }
-            }
+          
             return null;
         }
 
@@ -61,15 +48,7 @@ namespace Book_Shoppe.DAL
         {
             User _user=null;
             DBContext _Context = new DBContext();
-            IList<User> userList = _Context.Users.ToList();
-
-            foreach (User user in userList)
-            {
-                if (user.UserName ==userName && user.Password==password)
-                {
-                    _user = user;
-                }
-            }
+            _user = _Context.Users.Where(u=> u.UserName==userName && u.Password==password).SingleOrDefault();
             return _user;
         }
         public static User GetUserByID(int userID)

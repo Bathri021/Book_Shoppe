@@ -7,7 +7,8 @@
 
 
 @using (Html.BeginForm("LogIn", "User", FormMethod.Post, new { @class = "form" }))
-{
+{ 
+    @Html.AntiForgeryToken()
    <div class="loginForm">
        <h2 class="heading">LogIn</h2>
 
