@@ -11,6 +11,7 @@ namespace Book_Shoppe.BL
     public class UserBL
     {
         private User CurrentUser;
+        IUserRepositary IUserRepos = new UserRepositary();
         public User GetCurrentUser()
         {
             return CurrentUser;
@@ -18,21 +19,21 @@ namespace Book_Shoppe.BL
         public void SetCurrentUser(User user)
         {
             CurrentUser = user;
-            UserRepositary.SetCurrentUser(CurrentUser);
+            IUserRepos.SetCurrentUser(CurrentUser);
         }
         public IEnumerable<User> GetUsers()
         {
-            IEnumerable<User> Users = UserRepositary.GetUsers();
+            IEnumerable<User> Users = IUserRepos.GetUsers();
             return Users;
         }
         public IEnumerable<Role> GetRoles()
         {
-            IEnumerable<Role> Roles = UserRepositary.GetRoles();
+            IEnumerable<Role> Roles = IUserRepos.GetRoles();
             return Roles;
         }
         public string AddUser(User user)
         {
-            IEnumerable<User> Users = UserRepositary.GetUsers();
+            IEnumerable<User> Users = IUserRepos.GetUsers();
             bool duplications=false;
             foreach (var item in Users)
             {
@@ -42,28 +43,40 @@ namespace Book_Shoppe.BL
                 } 
             }
             if (!duplications)
-                return UserRepositary.AddUser(user);
+                return IUserRepos.AddUser(user);
             else
                 return "User Name Should Not Be Duplicated";
         }
         public User LogIn(string userName,string password)
         {
-            return UserRepositary.ValidateLogIn(userName, password);
+            return IUserRepos.ValidateLogIn(userName, password);
         }
 
         public User GetUserByID(int id)
         {
-            return UserRepositary.GetUserByID(id);
+            return IUserRepos.GetUserByID(id);
         }
 
         public string EditUser(User user)
         {
-            return UserRepositary.EditUser(user);
+            return IUserRepos.EditUser(user);
         }
 
         public bool Delete(int id)
         {
-            return UserRepositary.Delete(id);
+            return IUserRepos.Delete(id);
+        }
+
+        public string AddToWishList(int userID, int bookID)
+        {
+            if (IUserRepos.CheckBookInWishList(userID, bookID))
+                return "Book already added in the wishlist";
+            return IUserRepos.AddToWishList(userID, bookID);
+        }
+
+        public IEnumerable<Book> GetUserWishlist(int id)
+        {
+            return IUserRepos.GetUserWishlist(id);
         }
     }
 }

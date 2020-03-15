@@ -97,8 +97,17 @@ namespace Book_Shoppe.Controllers
 
             return View();
         }
-
         public ActionResult UserProfile(int id)
+        {
+            UserBL userBL = new UserBL();
+            User user = userBL.GetUserByID(id);
+            var config = new MapperConfiguration(cfg => { cfg.CreateMap<User, UpdateUserVM>(); });
+            IMapper iMapper = config.CreateMapper();
+            UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
+            ViewBag.WishList=userBL.GetUserWishlist(id);
+            return View(userModel);
+        }
+        public ActionResult EditProfile(int id)
         {
             UserBL userBL = new UserBL();
             User user = userBL.GetUserByID(id);
@@ -166,6 +175,30 @@ namespace Book_Shoppe.Controllers
             UserBL userBL = new UserBL();
             userBL.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AddToWishList(int id)
+        {
+            Session["WishList_Message"] = null;
+            UserBL userBL = new UserBL();
+            if (CurrentUser==null)
+            {
+                return RedirectToAction("LogIn");
+            }
+            int userID = CurrentUser.UserID;
+            Session["WishList_Message"] = userBL.AddToWishList(userID, id);
+
+            if (Session["WishList_Message"] == null)
+                Session["WishList_Message"] = "Book added into the wishlist";
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        
+        public JsonResult GetBookDetails(int BookID)
+        {
+            BookBL bookBL = new BookBL();
+            Book book = bookBL.GetBookDetails(BookID);
+            return Json(book, JsonRequestBehavior.AllowGet);
         }
     }
 }

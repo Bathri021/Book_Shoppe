@@ -40,6 +40,9 @@ namespace Book_Shoppe.Entity
 
         [ForeignKey("GenreID")]
         public Genre Genre { get; set; }
+
+        public List<WishList> WishLists { get; set; }
+
     }
 
 

@@ -9,11 +9,25 @@ using System.Threading.Tasks;
 
 namespace Book_Shoppe.DAL
 {
-    public class BookRepositary
+    public interface IBookRepositary
     {
-
-       
-        public static string Add(Book book)
+        string Add(Book book);
+        void Delete(int BookID);
+        string Edit(Book book);
+        IEnumerable<Book> GetAllBooks();
+        IEnumerable<Genre> GetAllGenres();
+        string GetGenreByGenreID(int id);
+        string AddGenre(Genre genre);
+        string DeleteGenre(int id);
+        IEnumerable<Book> GetBooksByGenre(int id);
+        IEnumerable<Book> GetBookByUserID();
+        Book GetBookByID(int bookID);
+        IEnumerable<Book> SearchResult(string SearchValue);
+        Book GetBookDetails(int bookID);
+    }
+    public class BookRepositary : IBookRepositary
+    {
+        public string Add(Book book)
         {
             using (DBContext booksContext = new DBContext())
             {
@@ -40,7 +54,7 @@ namespace Book_Shoppe.DAL
             }
             return null;
         }
-        public static void Delete(int BookID)
+        public void Delete(int BookID)
         {
             using(var bookContext = new DBContext())
             {
@@ -49,7 +63,7 @@ namespace Book_Shoppe.DAL
                 bookContext.SaveChanges();
             }
         }
-        public static string Edit(Book book)
+        public string Edit(Book book)
         {
             DBContext booksContext = new DBContext();
 
@@ -68,20 +82,20 @@ namespace Book_Shoppe.DAL
             }
             return null;
         }
-        public static IEnumerable<Book> GetAllBooks()
+        public IEnumerable<Book> GetAllBooks()
         {
             DBContext booksContext = new DBContext();
              return booksContext.Books.ToList();
         }
 
        
-        public static IEnumerable<Genre> GetAllGenres()
+        public IEnumerable<Genre> GetAllGenres()
         {
             DBContext _context = new DBContext();
             return _context.Genres.ToList();
         }
 
-        public static string GetGenreByGenreID(int id)
+        public string GetGenreByGenreID(int id)
         {
             using(DBContext _context = new DBContext())
             {
@@ -89,7 +103,7 @@ namespace Book_Shoppe.DAL
                 return genre.GenreName;
             }
         }
-        public static string AddGenre(Genre genre)
+        public string AddGenre(Genre genre)
         {
             DBContext _context = new DBContext();
             _context.Genres.Add(genre);
@@ -108,7 +122,7 @@ namespace Book_Shoppe.DAL
             return null;
         }
 
-        public static string DeleteGenre(int id)
+        public string DeleteGenre(int id)
         {
             using(DBContext _context = new DBContext())
             {
@@ -118,23 +132,50 @@ namespace Book_Shoppe.DAL
                 return "Genre Removed Successfully";
             }
         }
-        public static IEnumerable<Book> GetBooksByGenre(int id)
+        public IEnumerable<Book> GetBooksByGenre(int id)
         {
             DBContext _context = new DBContext();
             return _context.Books.Where(m => m.GenreID == id).ToList();
         }
-        public static IEnumerable<Book> GetBookByUserID()
+        public IEnumerable<Book> GetBookByUserID()
         {
+            UserRepositary IUserRepos = new UserRepositary();
             DBContext _context = new DBContext();
             UserRepositary Repos = new UserRepositary();
-            int userID = UserRepositary.GetCurrentUser().UserID;
+            int userID = IUserRepos.GetCurrentUser().UserID;
             return _context.Books.Where(m => m.UserID == userID).ToList();
         }
-        public static Book GetBookByID(int bookID)
+        public Book GetBookByID(int bookID)
         {
             DBContext booksContext = new DBContext();
             Book book = booksContext.Books.SingleOrDefault(ID => ID.BookID==bookID);
             return book;
+        }
+
+        public IEnumerable<Book> SearchResult(string SearchValue)
+        {
+            IEnumerable<Book> SearchedBooks;
+            using (DBContext _context = new DBContext())
+            {
+                try
+                {
+                  SearchedBooks = _context.Books.Where(b => b.Title.Contains(SearchValue) || b.Author.Contains(SearchValue) || SearchValue == null).ToList();
+                }
+                catch (Exception)
+                {
+                    return null;
+                    throw;
+                }
+                return SearchedBooks;
+            }
+        }
+
+        public Book GetBookDetails(int bookID)
+        {
+            using(DBContext _context = new DBContext())
+            {
+                return _context.Books.Where(ID => ID.BookID == bookID).SingleOrDefault();
+            }
         }
     }
    

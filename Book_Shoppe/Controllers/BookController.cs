@@ -84,15 +84,7 @@ namespace Book_Shoppe.Controllers
                 IMapper iMapper = config.CreateMapper();
                 Book _book = iMapper.Map<AddBookFormVM, Book>(book);
                 _book.UserID = UserController.CurrentUser.UserID;
-                //Book _book = new Book()
-                //{
-                //    UserID = UserController.CurrentUser.UserID,
-                //    Title = book.Title,
-                //    Author = book.Author,
-                //    GenreID = book.GenreID,
-                //    Price = book.Price,
-                //    NoOfPages = book.NoOfPages
-                //};
+              
 
                 ViewBag.Alert =  bookContext.Add(_book);
 
@@ -116,16 +108,7 @@ namespace Book_Shoppe.Controllers
             IMapper iMapper = config.CreateMapper();
             EditBookFormVM _book = iMapper.Map<Book,EditBookFormVM>(book);
 
-            //EditBookFormVM _book = new EditBookFormVM()
-            //{
-            //    BookID = book.BookID,
-            //    UserID = book.UserID,
-            //    Title = book.Title,
-            //    Author = book.Author,
-            //    GenreID = book.GenreID,
-            //    Price = book.Price,
-            //    NoOfPages = book.NoOfPages
-            //};
+           
 
             return View(_book);
         }
@@ -152,16 +135,6 @@ namespace Book_Shoppe.Controllers
                 IMapper iMapper = config.CreateMapper();
                 Book _book = iMapper.Map<EditBookFormVM, Book>(book);
 
-                //Book _book = new Book()
-                //{
-                //    BookID = book.BookID,
-                //    UserID = book.UserID,
-                //    Title = book.Title,
-                //    Author = book.Author,
-                //    GenreID = book.GenreID,
-                //    Price = book.Price,
-                //    NoOfPages = book.NoOfPages
-                //};
                 ViewBag.Alert = bookContext.Edit(_book);
                 if (ViewBag.Alert == null)
                 {

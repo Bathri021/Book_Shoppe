@@ -18,6 +18,7 @@ namespace Book_Shoppe.DAL
         public DbSet<Role> Roles { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<WishList> WishList { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder builder)
         {

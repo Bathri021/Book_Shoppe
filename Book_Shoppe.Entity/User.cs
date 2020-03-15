@@ -45,9 +45,8 @@ namespace Book_Shoppe.Entity
         public string Password { get; set; }
 
 
-        [NotMapped]
-        public List<Book> Books { get; set; }
-
+        
+        public List<WishList> WishLists { get; set; }
     }
 
 
@@ -57,5 +56,16 @@ namespace Book_Shoppe.Entity
         public int RoleID { get; set; }
         [Required]
         public string RoleName { get; set; }
+    }
+
+    public class WishList
+    {
+        public int WishListID { get; set; }
+
+        public int UserID { get; set; }
+        public User User { get; set; }
+
+        public int BookID { get; set; }
+        public Book Book { get; set; }
     }
 }

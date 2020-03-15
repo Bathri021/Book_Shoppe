@@ -6,8 +6,8 @@
     <title>@ViewBag.Title - Book Shoppe</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*<link rel="stylesheet" type="text/css" href="~/Content/CustomStyle.css" />*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://kit.fontawesome.com/e5012b6799.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-gradient-nav">
@@ -24,7 +24,7 @@
                     <li class="nav-item genre-Dropdown">
                         @if (Session["Genre"] == null)
                         {   <button class="genre-Dropdown-btn Dropdown-down">Genres&nbsp;&#9660;</button>
-                            <button class="genre-Dropdown-btn Dropdown-up">Genres&nbsp;&#9650;</button>
+                        <button class="genre-Dropdown-btn Dropdown-up">Genres&nbsp;&#9650;</button>
                         }
                         else
                         {
@@ -33,13 +33,14 @@
                         }
 
                         <div class="genre-Dropdown-Content">
-                                @foreach (var item in Book_Shoppe.BL.BookBL.GetGenres())
-                                {
-                                    @Html.ActionLink(linkText: item.GenreName, actionName: "Geners", controllerName: "Book", routeValues: new { id = item.GenreID }, htmlAttributes: new { @class = ""})
-                                    <br />
-                                }
-                            </div>
-                       
+
+                            @foreach (var item in Book_Shoppe.BL.BookBL.GetGenres())
+                            {
+                                @Html.ActionLink(linkText: item.GenreName, actionName: "Geners", controllerName: "Book", routeValues: new { id = item.GenreID }, htmlAttributes: new { @class = "" })
+                                <br />
+                            }
+                        </div>
+
                     </li>
                     @try
                     {
@@ -67,16 +68,22 @@
 
                     }
                     <li>
-                        <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+
                     </li>
                 </ul>
+                <div class="Search-bar">
+                    <div id="search">
+                        <i class="fas fa-search" id="search-icon"></i>
+                        <input type="text" id="search-input" name="search" autocomplete="off">
+                    </div>
+                </div>
                 @Html.Partial("_LoginPartial")
             </div>
+
         </div>
     </div>
+
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -88,5 +95,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

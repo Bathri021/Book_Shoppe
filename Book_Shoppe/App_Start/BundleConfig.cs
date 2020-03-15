@@ -21,14 +21,14 @@ namespace Book_Shoppe
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/CustomScript.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap-Materia.css",
                       "~/Content/site.css",
                       "~/Content/CustomStyle.css"));
 
-            bundles.Add(new StyleBundle("~/Styles/css").Include("~/Styles/CustomStyles.css"));
         }
     }
 }

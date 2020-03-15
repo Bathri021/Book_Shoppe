@@ -4,84 +4,131 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h3 class="heading">User Profile</h3>
 
+<div class="form">
+    <h3>User Details</h3>
+    <hr />
+    <h4>Name : @Model.Name</h4>
+    <h4>User Name : @Model.UserName</h4>
+    <h4>Mail ID : @Model.MailID</h4>
+    <hr />
+    @Html.ActionLink("Edit Profile", "EditProfile", new { id = Model.UserID }, new { @class = "btn btn-outline-info btn-sm" })
+    <br />
 
-@using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(Model => Model.UserID)
-    @Html.HiddenFor(Model=>Model.RoleID)
-
-    <h2 class="heading">User Profile</h2>
-
-    if (ViewBag.Message != null)
-    {
-        <div class="alert alert-dismissible alert-primary">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.Message</strong>
-        </div>
-    }
-    if (ViewBag.Alert != null)
-    {
-        <div class="alert alert-dismissible alert-warning">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.Alert</strong>
-        </div>
-    }
-
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
-
-    <div class="form-group">
-        <div>
-            @Html.LabelFor(m => m.Name, new { @class = "col-form-label" })
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "inputDefault", maxlength = 26 })
-            @Html.ValidationMessageFor(m => m.Name)
-        </div>
-    </div>
-    <div class="form-group">
-        <div>
-            @Html.LabelFor(m => m.UserName, new { @class = "col-form-label" })
-        </div>
-        <div>
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", id = "inputDefault", maxlength = 26 })
-            @Html.ValidationMessageFor(m => m.UserName)
-        </div>
-    </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(m => m.MailID, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(m => m.MailID, new { @class = "form-control", id = "inputDefault", maxlength = 64 })
-                @Html.ValidationMessageFor(m => m.MailID)
-            </div>
-        </div>
-        <div class="form-group">
-            <div>
-                @Html.LabelFor(m => m.Password, new { @class = "col-form-label" })
-            </div>
-            <div>
-                @Html.TextBoxFor(m => m.Password, new { @class = "form-control", id = "inputDefault", maxlength = 12,type="Password" })
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-        </div>
-        <table>
-            <tr>
-                <td>
-                    @if (ViewBag.Message != null)
-                    {
-                        <input type="submit" class="btn btn-outline-primary" id="submit" disabled />
-                    }
-                    else
-                    {
-                        <input type="submit" class="btn btn-outline-primary" id="submit" />
-                    }
-
-                </td>
-             
+</div>
+<div>
+    <h3>Wish List</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <td>Sno</td>
+                <td>Book Title</td>
+                <td>Operations</td>
             </tr>
-        </table>
-}
+        </thead>
+        <tbody>
+            @{
+                int Sno = 1;
+                foreach (var item in ViewBag.WishList)
+                {
+                    <tr class="table-light">
+                        <td>@Sno</td>
+                        <td>@item.Title</td>
+                        <td>
+                            @*@Html.ActionLink("_Buy", "GetBookDetails", "User", new { id = @item.BookID }, new { @class = "btn btn-outline-primary btn-sm fa fa-shopping-cart", id = "btn-ViewDetails", @onclick = "return displyModel(" + @Sno + ")" })*@
+                            <button type="button"id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                            <button type="button" class="btn btn-outline-info btn-sm">Remove&nbsp; &hearts;</button>
+                        </td>
+                    </tr>
+
+                    Sno++;
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".view-details").click(function () {
+            var BookID = $(this).val();
+            var SetData = $("#Book-Details");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/User/GetBookDetails?BookID=" + BookID,
+                contentType: "html",
+                success: function (result) {
+                    if (result != null) {
+                        var Data = "<div>" +
+                          "<div>Author : " + result.Title + "</div>" +
+                          "<div>Genere :" + result.GenreID + "</div>" +
+                          "<div>Price :" + result.Price + "</div>" +
+                        "</div>" +
+                            "<div class=\"modal-footer\">" +
+                            "<button type=\"button\" class=\"btn btn-primary\">Buy</button>" +
+                            "<button type=\"button\" id=\"close\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>" +
+                            "</div>";
+                        SetData.append(Data);
+                    }
+                }
+            });
+        });
+    });  
+
+    </script>
+<div class="modal" id="BookModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Book Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="Book-Details">
+               
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-primary">Buy</button>
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("BookModel");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("btn-ViewDetails");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    var close = document.getElementById("close");
+
+    // When the user clicks on the button, open the modal
+    function displyModel(id) {
+        modal.style.display = "block";
+    }
+
+    // btn.addEventListener("click", displyModel(id));
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    close.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
