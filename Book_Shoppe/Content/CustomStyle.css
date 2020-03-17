@@ -47,13 +47,18 @@ body {
 	flex-wrap:wrap;
 	margin-right:15px;
 	align-items:center;
-	height:21vh;
+	height:20vh;
 }
 
 .card .card-title{
 	padding:8px;
 }
 
+.btns-card{
+   margin-top:15vh;
+   position:relative;
+   padding:5px;
+}
 /*Font Styles*/
 .heading{
 	font-family:ostrich-sans-black;
@@ -183,6 +188,24 @@ body {
 	display:none;
 	color:#fff;
 }
+
+/* User Profile Page */
+.Users-BooksList{
+	display:flex;
+}
+.WishList{
+	align-content:flex-start;
+	margin-right:20px;
+}
+.OrderList{
+	align-content:flex-end;
+}
+
+/*.WishList-heading{
+	position:sticky;
+	margin-bottom:10px;
+}*/
+
 /*Validation Error Message*/
 .field-validation-error{
 	color:red;

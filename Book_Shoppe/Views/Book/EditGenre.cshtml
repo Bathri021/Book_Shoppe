@@ -36,9 +36,10 @@
 
 @using (Html.BeginForm("AddGenre", "Book", FormMethod.Post,new { @class="form"}))
 {
-<label class="col-form-label">Genre</label>
-<input class="form-control" type="text" name="GenreName" />
-<br />
-<input type="submit" class="btn btn-outline-primary" id="submit" />
+    @Html.AntiForgeryToken()
+    <label class="col-form-label">Add New Genre</label>
+    <input class="form-control" type="text" name="GenreName" />
+    <br />
+    <input type="submit" class="btn btn-outline-primary" id="submit" />
 }
 

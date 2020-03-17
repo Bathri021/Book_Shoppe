@@ -68,4 +68,38 @@ namespace Book_Shoppe.Entity
         public int BookID { get; set; }
         public Book Book { get; set; }
     }
+
+    public class Order
+    {
+        public int OrderID { get; set; }
+
+        public int UserID { get; set; }
+        public User User { get; set; }
+
+        public int BookID { get; set; }
+        public Book Book { get; set; }
+
+        public ICollection<OrdersShipment> OrdersShipments { get; set; }
+    }
+
+    public class Shipment
+    {
+        public int ShipmentID { get; set; }
+
+
+        public string Address { get; set; }
+
+        public ICollection<OrdersShipment> OrdersShipments { get; set; }
+    }
+
+    public class OrdersShipment
+    {
+        public int OrdersShipmentID { get; set; }
+
+        public int OrderID { get; set; }
+        public Order Order { get; set; }
+
+        public int ShipmentID { get; set; }
+        public Shipment Shipment { get; set; }
+    }
 }

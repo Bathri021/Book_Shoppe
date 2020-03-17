@@ -48,51 +48,46 @@ namespace Book_Shoppe.DAL
                         dbTran.Rollback();
                         return null;
                     }
-
-                  
                 }
             }
             return null;
         }
+
         public void Delete(int BookID)
         {
-            using(var bookContext = new DBContext())
+            using(DBContext bookContext = new DBContext())
             {
                 Book book = bookContext.Books.Where(id => id.BookID == BookID).FirstOrDefault();
                 bookContext.Books.Remove(book);
                 bookContext.SaveChanges();
             }
         }
+
         public string Edit(Book book)
         {
-            DBContext booksContext = new DBContext();
-
-            booksContext.Entry(book).State = EntityState.Modified;
-            try
+            using (DBContext booksContext = new DBContext())
             {
+                booksContext.Entry(book).State = EntityState.Modified;
                 booksContext.SaveChanges();
+                return null;
             }
-            catch (DbUpdateException e)
-            {
-                if (e.InnerException.InnerException.Message != null)
-                {
-                    return "The title of the book should not be duplicated";
-                }
-                throw;
-            }
-            return null;
         }
+
         public IEnumerable<Book> GetAllBooks()
         {
-            DBContext booksContext = new DBContext();
-             return booksContext.Books.ToList();
+            using (DBContext booksContext = new DBContext())
+            {
+                return booksContext.Books.ToList();
+            }
         }
 
        
         public IEnumerable<Genre> GetAllGenres()
         {
-            DBContext _context = new DBContext();
-            return _context.Genres.ToList();
+            using (DBContext _context = new DBContext())
+            {
+                return _context.Genres.ToList();
+            }
         }
 
         public string GetGenreByGenreID(int id)
@@ -103,23 +98,22 @@ namespace Book_Shoppe.DAL
                 return genre.GenreName;
             }
         }
+
         public string AddGenre(Genre genre)
         {
-            DBContext _context = new DBContext();
-            _context.Genres.Add(genre);
-            try
+            using (DBContext _context = new DBContext())
             {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateException e)
-            {
-                if (e.InnerException.InnerException.Message != null)
+                _context.Genres.Add(genre);
+                try
                 {
-                    return "The title of the Genre should not be duplicated";
+                    _context.SaveChanges();
                 }
-                throw;
+                catch (DbUpdateException e)
+                {
+                   return e.Message;
+                }
+                return null;
             }
-            return null;
         }
 
         public string DeleteGenre(int id)
@@ -132,24 +126,33 @@ namespace Book_Shoppe.DAL
                 return "Genre Removed Successfully";
             }
         }
+
         public IEnumerable<Book> GetBooksByGenre(int id)
         {
-            DBContext _context = new DBContext();
-            return _context.Books.Where(m => m.GenreID == id).ToList();
+            using (DBContext _context = new DBContext())
+            {
+                return _context.Books.Where(m => m.GenreID == id).ToList();
+            }
         }
+
         public IEnumerable<Book> GetBookByUserID()
         {
             UserRepositary IUserRepos = new UserRepositary();
-            DBContext _context = new DBContext();
-            UserRepositary Repos = new UserRepositary();
-            int userID = IUserRepos.GetCurrentUser().UserID;
-            return _context.Books.Where(m => m.UserID == userID).ToList();
+            using (DBContext _context = new DBContext())
+            {
+                UserRepositary Repos = new UserRepositary();
+                int userID = IUserRepos.GetCurrentUser().UserID;
+                return _context.Books.Where(m => m.UserID == userID).ToList();
+            }
         }
+
         public Book GetBookByID(int bookID)
         {
-            DBContext booksContext = new DBContext();
-            Book book = booksContext.Books.SingleOrDefault(ID => ID.BookID==bookID);
-            return book;
+            using (DBContext booksContext = new DBContext())
+            {
+                Book book = booksContext.Books.SingleOrDefault(ID => ID.BookID == bookID);
+                return book;
+            }
         }
 
         public IEnumerable<Book> SearchResult(string SearchValue)

@@ -17,38 +17,76 @@
     <br />
 
 </div>
-<div>
-    <h3>Wish List</h3>
-    <table class="table table-hover">
-        <thead>
-            <tr class="table-primary">
-                <td>Sno</td>
-                <td>Book Title</td>
-                <td>Operations</td>
-            </tr>
-        </thead>
-        <tbody>
-            @{
-                int Sno = 1;
-                foreach (var item in ViewBag.WishList)
-                {
-                    <tr class="table-light">
-                        <td>@Sno</td>
-                        <td>@item.Title</td>
-                        <td>
-                            @*@Html.ActionLink("_Buy", "GetBookDetails", "User", new { id = @item.BookID }, new { @class = "btn btn-outline-primary btn-sm fa fa-shopping-cart", id = "btn-ViewDetails", @onclick = "return displyModel(" + @Sno + ")" })*@
-                            <button type="button"id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                            <button type="button" class="btn btn-outline-info btn-sm">Remove&nbsp; &hearts;</button>
-                        </td>
-                    </tr>
 
-                    Sno++;
+<br />
+<div class="Users-BooksList">
+    <div class="WishList">
+        <h3>Wish List</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <td>Sno</td>
+                    <td>Book Title</td>
+                    <td>Operations</td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int Sno = 1;
+                    foreach (var item in ViewBag.WishList)
+                    {
+                        <tr class="table-light">
+                            <td>@Sno</td>
+                            <td>@item.Title</td>
+                            <td>
+                                <button type="button" id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                @Html.ActionLink("_Remove", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
+                            </td>
+                        </tr>
+
+                        Sno++;
+                    }
+
                 }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <div>
+        <br />
+    </div>
+    <div class="OrderList">
+        <h3 class="OrderList-heading">Order List</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <td>Sno</td>
+                    <td>Book Title</td>
+                    <td>Operations</td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int no = 1;
+                    foreach (var item in ViewBag.OrderList)
+                    {
+                        <tr class="table-light">
+                            <td>@no</td>
+                            <td>@item.Title</td>
+                            <td>
+                                <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
+                            </td>
+                        </tr>
+                        no++;
+                    }
 
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -63,7 +101,8 @@
                 success: function (result) {
                     if (result != null) {
                         var Data = "<div>" +
-                          "<div>Author : " + result.Title + "</div>" +
+                          "<div>Title : " + result.Title + "</div>" +
+                          "<div>Author : " + result.Author + "</div>" +
                           "<div>Genere :" + result.GenreID + "</div>" +
                           "<div>Price :" + result.Price + "</div>" +
                         "</div>" +
@@ -79,6 +118,36 @@
     });  
 
     </script>
+<script>
+    $(document).ready(function () {
+        $(".viewOrderBookDetails").click(function () {
+            var BookID = $(this).val();
+            var SetData = $("#Book-Details");
+            SetData.html("");
+            $.ajax({
+                type: "post",
+                url: "/User/GetOrderedBookDetails?BookID=" + BookID,
+                contentType: "html",
+                success: function (result) {
+                    if (result != null) {
+                        var Data = "<div>" +
+                          "<div>Title : " + result.Title + "</div>" +
+                          "<div>Author : " + result.Author + "</div>" +
+                          "<div>Genere :" + result.GenreID + "</div>" +
+                          "<div>Price :" + result.Price + "</div>" +
+                        "</div>" +
+                            "<div class=\"modal-footer\">" +
+                            "<button type=\"button\" class=\"btn btn-primary\">Edit</button>" +
+                            "<button type=\"button\" id=\"close\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>" +
+                            "</div>";
+                        SetData.append(Data);
+                    }
+                }
+            });
+        });
+    });
+
+</script>
 <div class="modal" id="BookModel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -114,8 +183,6 @@
     function displyModel(id) {
         modal.style.display = "block";
     }
-
-    // btn.addEventListener("click", displyModel(id));
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function () {

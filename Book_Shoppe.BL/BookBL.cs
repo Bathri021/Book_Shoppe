@@ -11,6 +11,7 @@ namespace Book_Shoppe.BL
     public class BookBL
     {
         IBookRepositary IBookRepos = new BookRepositary();
+
         public IEnumerable<Book> GetBooks()
         {
             IEnumerable<Book> Books = IBookRepos.GetAllBooks();
@@ -61,13 +62,40 @@ namespace Book_Shoppe.BL
             return Books;
         }
         public string Add(Book book)
-        {
-           return IBookRepos.Add(book);
+        {  
+            // Check the Book Title of the current requested Book from Existing Books
+            IEnumerable<Book> Books = IBookRepos.GetAllBooks();
+            bool duplications = false;
+            foreach (var item in Books)
+            {
+                if (item.Title == book.Title)
+                {
+                    duplications = true;
+                }
+            }
+            if (!duplications)
+                return IBookRepos.Add(book);
+            else
+                return "Duplication Not Allowed In Book Title!";
+           
         }
 
         public string Edit(Book book)
         {
-           return IBookRepos.Edit(book);
+            // Check the Book Title of the current requested Book from Existing Books
+            IEnumerable<Book> Books = IBookRepos.GetAllBooks();
+            bool duplications = false;
+            foreach (var item in Books)
+            {
+                if (item.Title == book.Title)
+                {
+                    duplications = true;
+                }
+            }
+            if (!duplications)
+                return IBookRepos.Edit(book);
+            else
+                return "Duplication Not Allowed In Book Title!";
         }
 
      
@@ -86,5 +114,6 @@ namespace Book_Shoppe.BL
         {
             return IBookRepos.GetBookDetails(BookID);
         }
+
     }
 }

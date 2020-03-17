@@ -22,7 +22,7 @@
                   @Html.LabelFor(Model => Model.Title, new { @class = "col-form-label" })
               </div>
               <div>
-                  @Html.TextBoxFor(Model => Model.Title, null, new { id = "inputDefault", @class = "form-control" })
+                  @Html.TextBoxFor(Model => Model.Title, null, new { id = "inputDefault", @class = "form-control" , maxlength = 55 })
               </div>
               <div>
                   @Html.ValidationMessageFor(Model => Model.Title)
@@ -33,7 +33,7 @@
                   @Html.LabelFor(Model => Model.Author, new { @class = "col-form-label" })
               </div>
               <div>
-                  @Html.TextBoxFor(Model => Model.Author, new { id = "inputDefault", @class = "form-control" })
+                  @Html.TextBoxFor(Model => Model.Author, new { id = "inputDefault", @class = "form-control" , maxlength = 26})
               </div>
               <div>
                   @Html.ValidationMessageFor(Model => Model.Author)
@@ -89,5 +89,8 @@
   </div>
 }
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 

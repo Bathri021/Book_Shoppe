@@ -23,6 +23,10 @@ namespace Book_Shoppe.DAL
        string AddToWishList(int userID,int bookID);
        IEnumerable<Book> GetUserWishlist(int id);
        bool CheckBookInWishList(int userID, int bookID);
+       void RemoveBookFormWishlist(int id);
+       bool CheckBookInOrderList(int userID, int bookID);
+       string AddToOrder(int userID, int bookID);
+       IEnumerable<Book> GetUserOrderList(int id);
     }
 
     public class UserRepositary : IUserRepositary
@@ -119,6 +123,16 @@ namespace Book_Shoppe.DAL
             }
         }
 
+        public void RemoveBookFormWishlist(int id)
+        {
+            using(DBContext _context = new DBContext())
+            {
+                WishList wishlist = _context.WishList.Where(w => w.BookID == id).SingleOrDefault();
+                _context.WishList.Remove(wishlist);
+                _context.SaveChanges();
+            }
+        }
+
         public IEnumerable<Book> GetUserWishlist(int id)
         {
             List<Book> books = new List<Book>();
@@ -143,6 +157,48 @@ namespace Book_Shoppe.DAL
                 if (wishlist==null)
                     return false;
                 return true;
+            }
+        }
+
+        public bool CheckBookInOrderList(int userID, int bookID)
+        {
+            using (DBContext _context = new DBContext())
+            {
+                Order order = _context.Orders.Where(u => u.UserID == userID && u.BookID == bookID).SingleOrDefault();
+                if (order == null)
+                    return false;
+                return true;
+            }
+        }
+
+        public string AddToOrder(int userID, int bookID)
+        {
+            using(DBContext _context = new DBContext())
+            {
+                Order order = new Order()
+                {
+                    UserID = userID,
+                    BookID = bookID
+                };
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                return null;
+            }
+        }
+
+        public IEnumerable<Book> GetUserOrderList(int id)
+        {
+            List<Book> books = new List<Book>();
+            using (DBContext _context = new DBContext())
+            {
+                List<Order> orderlist = _context.Orders.Where(ID => ID.UserID == id).ToList();
+
+                foreach (var item in orderlist)
+                {
+                    Book book = _context.Books.Where(ID => ID.BookID == item.BookID).SingleOrDefault();
+                    books.Add(book);
+                }
+                return books;
             }
         }
 }

@@ -12,14 +12,12 @@ using AutoMapper;
 
 namespace Book_Shoppe.Controllers
 {
-   
-    [HandleError]
     public class BookController : Controller
     {
         BookBL bookContext = new BookBL();
 
-
-        // // GET: Book 
+        // GET: Book 
+        // Sellers Books Page
         [SellerAuthorizationFilter]
         public ActionResult Index()
         {
@@ -34,6 +32,7 @@ namespace Book_Shoppe.Controllers
             return View(Genres);
         }
 
+        // Master nav link Geners filter
         public ActionResult Geners(int id)
         {
             IEnumerable<Book> BooksByGenre = bookContext.GetBooksByGenre(id);
@@ -41,6 +40,7 @@ namespace Book_Shoppe.Controllers
             return View(BooksByGenre);
         }
 
+        // Remove the Genre
         public ActionResult DeleteGenre(int id)
         {
             ViewBag.Message =  bookContext.DeleteGenre(id);
@@ -48,6 +48,8 @@ namespace Book_Shoppe.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AdminAuthorizationFilter]
         public ActionResult AddGenre(FormCollection fc)
         {
             Genre Genre = new Genre();
@@ -63,6 +65,7 @@ namespace Book_Shoppe.Controllers
             return RedirectToAction("EditGenre");
         }
 
+        // Get Meathod for Add new Book
         [HttpGet]
         [SellerAuthorizationFilter]
         public ActionResult Create()
@@ -71,6 +74,8 @@ namespace Book_Shoppe.Controllers
             return View();
         }
 
+
+        // Post Meathod for Add new Book
         [HttpPost]
         [SellerAuthorizationFilter]
         [ValidateAntiForgeryToken]
@@ -97,6 +102,8 @@ namespace Book_Shoppe.Controllers
             }
             return View(book);
         }
+
+        // Edit the Details of the Existing Book
         [HttpGet]
         [SellerAuthorizationFilter]
         public ActionResult Edit(int id)
@@ -113,6 +120,7 @@ namespace Book_Shoppe.Controllers
             return View(_book);
         }
 
+        // Delete the Existing Book
         [HttpGet]
         [SellerAuthorizationFilter]
         public ActionResult Delete(int id)
@@ -122,6 +130,7 @@ namespace Book_Shoppe.Controllers
             return RedirectToAction("Index");
         }
 
+        // Post Meathod for Update the Edited Book Details
         [HttpPost]
         [SellerAuthorizationFilter]
         [ValidateAntiForgeryToken]
