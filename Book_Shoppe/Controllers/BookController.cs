@@ -14,36 +14,36 @@ namespace Book_Shoppe.Controllers
 {
     public class BookController : Controller
     {
-        BookBL bookContext = new BookBL();
+        IBookBL IBookBL = new BookBL();
 
         // GET: Book 
         // Sellers Books Page
         [SellerAuthorizationFilter]
         public ActionResult Index()
         {
-            IEnumerable<Book> Books = bookContext.GetUserBooks();
+            IEnumerable<Book> Books = IBookBL.GetUserBooks();
             return View(Books);
         }
 
         [AdminAuthorizationFilter]
         public ActionResult EditGenre()
         {
-            IEnumerable<Genre> Genres = bookContext.GetAllGenres();
+            IEnumerable<Genre> Genres = IBookBL.GetAllGenres();
             return View(Genres);
         }
 
         // Master nav link Geners filter
         public ActionResult Geners(int id)
         {
-            IEnumerable<Book> BooksByGenre = bookContext.GetBooksByGenre(id);
-            Session["Genre"] = bookContext.GetGenreByGenreID(id);
+            IEnumerable<Book> BooksByGenre = IBookBL.GetBooksByGenre(id);
+            Session["Genre"] = IBookBL.GetGenreByGenreID(id);
             return View(BooksByGenre);
         }
 
         // Remove the Genre
         public ActionResult DeleteGenre(int id)
         {
-            ViewBag.Message =  bookContext.DeleteGenre(id);
+            ViewBag.Message =  IBookBL.DeleteGenre(id);
             return RedirectToAction("EditGenre");
         }
 
@@ -55,7 +55,7 @@ namespace Book_Shoppe.Controllers
             Genre Genre = new Genre();
             Genre.GenreName = fc[0];
 
-            ViewBag.Alert = bookContext.AddGenre(Genre);
+            ViewBag.Alert = IBookBL.AddGenre(Genre);
 
             if (ViewBag.Alert==null)
             {
@@ -70,7 +70,7 @@ namespace Book_Shoppe.Controllers
         [SellerAuthorizationFilter]
         public ActionResult Create()
         {
-            ViewBag.Genres = new SelectList(bookContext.GetAllGenres(),"GenreID","GenreName");
+            ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(),"GenreID","GenreName");
             return View();
         }
 
@@ -81,7 +81,7 @@ namespace Book_Shoppe.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(AddBookFormVM book)
         {
-            ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
+            ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
 
             if (ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Book_Shoppe.Controllers
                 _book.UserID = UserController.CurrentUser.UserID;
               
 
-                ViewBag.Alert =  bookContext.Add(_book);
+                ViewBag.Alert =  IBookBL.Add(_book);
 
                 if (ViewBag.Alert == null)
                 {
@@ -108,8 +108,8 @@ namespace Book_Shoppe.Controllers
         [SellerAuthorizationFilter]
         public ActionResult Edit(int id)
         {
-            Book book = bookContext.GetBookByID(id);
-            ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
+            Book book = IBookBL.GetBookByID(id);
+            ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
 
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<Book,EditBookFormVM>(); });
             IMapper iMapper = config.CreateMapper();
@@ -125,7 +125,7 @@ namespace Book_Shoppe.Controllers
         [SellerAuthorizationFilter]
         public ActionResult Delete(int id)
         {
-            bookContext.Delete(id);
+            IBookBL.Delete(id);
             ViewBag.Message = "Deleted Successfully";
             return RedirectToAction("Index");
         }
@@ -136,7 +136,7 @@ namespace Book_Shoppe.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Update(EditBookFormVM book)
         {
-            ViewBag.Genres = new SelectList(bookContext.GetAllGenres(), "GenreID", "GenreName");
+            ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
 
             if (ModelState.IsValid)
             {
@@ -144,7 +144,7 @@ namespace Book_Shoppe.Controllers
                 IMapper iMapper = config.CreateMapper();
                 Book _book = iMapper.Map<EditBookFormVM, Book>(book);
 
-                ViewBag.Alert = bookContext.Edit(_book);
+                ViewBag.Alert = IBookBL.Edit(_book);
                 if (ViewBag.Alert == null)
                 {
                     ViewBag.Message = "Updated Successfully";

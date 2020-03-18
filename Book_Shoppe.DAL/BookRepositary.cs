@@ -31,6 +31,7 @@ namespace Book_Shoppe.DAL
         {
             using (DBContext booksContext = new DBContext())
             {
+                // Transaction Meathod Testing
                 using(DbContextTransaction dbTran = booksContext.Database.BeginTransaction())
                 {
                     try

@@ -8,7 +8,23 @@ using System.Threading.Tasks;
 
 namespace Book_Shoppe.BL
 {
-    public class BookBL
+    public interface IBookBL
+    {
+        IEnumerable<Book> GetBooks();
+        string GetGenreByGenreID(int id);
+        string AddGenre(Genre genre);
+        string DeleteGenre(int id);
+        IEnumerable<Book> GetBooksByGenre(int id);
+        IEnumerable<Book> SearchResult(string SearchValue);
+        IEnumerable<Genre> GetAllGenres();
+        IEnumerable<Book> GetUserBooks();
+        string Add(Book book);
+        string Edit(Book book);
+        Book GetBookByID(int id);
+        bool Delete(int id);
+        Book GetBookDetails(int BookID);
+    }
+    public class BookBL : IBookBL
     {
         IBookRepositary IBookRepos = new BookRepositary();
 
@@ -18,6 +34,7 @@ namespace Book_Shoppe.BL
             return Books;
         }
 
+        // Static Meathod To Get the Genres for the Master page Nav
         public static IEnumerable<Genre> GetGenres()
         {
             BookRepositary IBookRepos = new BookRepositary();

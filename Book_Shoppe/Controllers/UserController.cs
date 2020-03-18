@@ -16,15 +16,14 @@ namespace Book_Shoppe.Controllers
     public class UserController : Controller
     {
         public static User CurrentUser = null;
-        
+        IUserBL IUserBL = new UserBL();
         // Admin Page for Manage The Users
         // GET: User
         [AdminAuthorizationFilter]
         public ActionResult Index()
         {
-            UserBL userBL = new UserBL();
-            IEnumerable<User> users = userBL.GetUsers();
-            userBL.GetRoles();
+            IEnumerable<User> users = IUserBL.GetUsers();
+            IUserBL.GetRoles();
             return View(users);
            
         }
@@ -43,8 +42,7 @@ namespace Book_Shoppe.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegistrationFormViewModel user)
         {
-            UserBL userBL = new UserBL();
-            ViewBag.Roles = new SelectList(userBL.GetRoles(), "RoleID", "RoleName");
+            ViewBag.Roles = new SelectList(IUserBL.GetRoles(), "RoleID", "RoleName");
            
             if (!ModelState.IsValid)
             {
@@ -56,7 +54,7 @@ namespace Book_Shoppe.Controllers
                 IMapper iMapper = config.CreateMapper();
                 User _user = iMapper.Map<RegistrationFormViewModel, User>(user);
 
-                ViewBag.Alert = userBL.AddUser(_user);
+                ViewBag.Alert = IUserBL.AddUser(_user);
 
                 if (ViewBag.Alert == null)
                 {
@@ -79,15 +77,15 @@ namespace Book_Shoppe.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogIn(LogInFormViewModel user)
         {
-            UserBL userBL = new UserBL();
             if (ModelState.IsValid)
             {
-                User _user = userBL.LogIn(user.UserName, user.Password);
+                User _user = IUserBL.LogIn(user.UserName, user.Password);
 
                 if (_user != null)
                 {
-                    UserController.CurrentUser = _user;
-                    userBL.SetCurrentUser(CurrentUser);
+
+                    CurrentUser = _user;
+                    IUserBL.SetCurrentUser(CurrentUser);
                     Session["UserID"] = CurrentUser.UserID.ToString();
                     Session["RoleID"] = CurrentUser.RoleID.ToString();
                     Session["Name"] = CurrentUser.Name.ToString();
@@ -105,21 +103,19 @@ namespace Book_Shoppe.Controllers
         // UserProfile Page
         public ActionResult UserProfile(int id)
         {
-            UserBL userBL = new UserBL();
-            User user = userBL.GetUserByID(id);
+            User user = IUserBL.GetUserByID(id);
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<User, UpdateUserVM>(); });
             IMapper iMapper = config.CreateMapper();
             UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
-            ViewBag.WishList=userBL.GetUserWishlist(id);
-            ViewBag.OrderList = userBL.GetUserOrderList(id);
+            ViewBag.WishList= IUserBL.GetUserWishlist(id);
+            ViewBag.OrderList = IUserBL.GetUserOrderList(id);
             return View(userModel);
         }
 
         // Get Meathod for Edit User Profile 
         public ActionResult EditProfile(int id)
         {
-            UserBL userBL = new UserBL();
-            User user = userBL.GetUserByID(id);
+            User user = IUserBL.GetUserByID(id);
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<User,UpdateUserVM>(); });
             IMapper iMapper = config.CreateMapper();
             UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
@@ -136,8 +132,7 @@ namespace Book_Shoppe.Controllers
                 var config = new MapperConfiguration(cfg => { cfg.CreateMap<UpdateUserVM,User>(); });
                 IMapper iMapper = config.CreateMapper();
                 User user = iMapper.Map<UpdateUserVM,User>(userModel);
-                UserBL userBL = new UserBL();
-               ViewBag.Alert= userBL.EditUser(user);
+                ViewBag.Alert= IUserBL.EditUser(user);
                 if (ViewBag.Alert==null)
                 {
                     ViewBag.Message = "Update Successfull";
@@ -161,8 +156,7 @@ namespace Book_Shoppe.Controllers
         // View Particular User Details
         public ActionResult ViewDetails(int id)
         {
-            UserBL userBL = new UserBL();
-            User user = userBL.GetUserByID(id);
+            User user = IUserBL.GetUserByID(id);
             return View(user);
         }
 
@@ -170,8 +164,7 @@ namespace Book_Shoppe.Controllers
         [AdminAuthorizationFilter]
         public ActionResult Delete(int id)
         {
-            UserBL userBL = new UserBL();
-            userBL.Delete(id);
+            IUserBL.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -179,13 +172,12 @@ namespace Book_Shoppe.Controllers
         public ActionResult AddToWishList(int id)
         {
             ViewData["WishList_Message"] = null;
-            UserBL userBL = new UserBL();
             if (CurrentUser==null)
             {
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewData["WishList_Message"] = userBL.AddToWishList(userID, id);
+            ViewData["WishList_Message"] = IUserBL.AddToWishList(userID, id);
 
             if (ViewData["WishList_Message"] == null)
                 ViewData["WishList_Message"] = "Book added into the wishlist";
@@ -195,16 +187,15 @@ namespace Book_Shoppe.Controllers
         // Remove the Book From The Users WishList
         public ActionResult RemoveBookFormWishlist(int id)
         {
-            UserBL userBL = new UserBL();
-            userBL.RemoveBookFormWishlist(id);
+            IUserBL.RemoveBookFormWishlist(id);
             return Redirect(Request.UrlReferrer.ToString());
         }
 
         // Get The Particular Book Details From BookList
         public JsonResult GetBookDetails(int BookID)
         {
-            BookBL bookBL = new BookBL();
-            Book book = bookBL.GetBookDetails(BookID);
+            IBookBL IBookBL = new BookBL();
+            Book book = IBookBL.GetBookDetails(BookID);
             return Json(book, JsonRequestBehavior.AllowGet);
         }
 
@@ -219,7 +210,7 @@ namespace Book_Shoppe.Controllers
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewData["OrderList_Message"] = userBL.AddToOrder(userID,id);
+            ViewData["OrderList_Message"] = IUserBL.AddToOrder(userID,id);
 
             if (ViewData["OrderList_Message"] == null)
                 ViewData["OrderList_Message"] = "Book added into the Order List";
@@ -229,8 +220,8 @@ namespace Book_Shoppe.Controllers
         // Get the Book Details From Book List
         public JsonResult GetOrderedBookDetails(int BookID)
         {
-            BookBL bookBL = new BookBL();
-            Book book = bookBL.GetBookDetails(BookID);
+            IBookBL IBookBL = new BookBL();
+            Book book = IBookBL.GetBookDetails(BookID);
             return Json(book, JsonRequestBehavior.AllowGet);
         }
     }

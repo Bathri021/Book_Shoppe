@@ -8,7 +8,24 @@ using System.Threading.Tasks;
 
 namespace Book_Shoppe.BL
 {
-    public class UserBL
+    public interface IUserBL
+    {
+        User GetCurrentUser();
+        void SetCurrentUser(User user);
+        IEnumerable<User> GetUsers();
+        IEnumerable<Role> GetRoles();
+        string AddUser(User user);
+        User LogIn(string userName, string password);
+        User GetUserByID(int id);
+        string EditUser(User user);
+        bool Delete(int id);
+        string AddToWishList(int userID, int bookID);
+        void RemoveBookFormWishlist(int id);
+        IEnumerable<Book> GetUserWishlist(int id);
+        IEnumerable<Book> GetUserOrderList(int id);
+        string AddToOrder(int userID, int bookID);
+    }
+    public class UserBL : IUserBL
     {
         private User CurrentUser;
         IUserRepositary IUserRepos = new UserRepositary();

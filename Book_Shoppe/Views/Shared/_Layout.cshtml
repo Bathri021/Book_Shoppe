@@ -8,7 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="http://kit.fontawesome.com/e5012b6799.js" crossorigin="anonymous"></script>
-</head>
+s</head>
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-gradient-nav">
         <div class="container">
@@ -33,7 +33,7 @@
                         }
 
                         <div class="genre-Dropdown-Content">
-
+                            @* Get the Genres form the BookBL Static Meathod *@
                             @foreach (var item in Book_Shoppe.BL.BookBL.GetGenres())
                             {
                                 @Html.ActionLink(linkText: item.GenreName, actionName: "Geners", controllerName: "Book", routeValues: new { id = item.GenreID }, htmlAttributes: new { @class = "" })
