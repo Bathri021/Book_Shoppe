@@ -20,7 +20,7 @@ namespace Book_Shoppe.DAL
         string AddGenre(Genre genre);
         string DeleteGenre(int id);
         IEnumerable<Book> GetBooksByGenre(int id);
-        IEnumerable<Book> GetBookByUserID();
+        IEnumerable<Book> GetBookByUserID(int userID);
         Book GetBookByID(int bookID);
         IEnumerable<Book> SearchResult(string SearchValue);
         Book GetBookDetails(int bookID);
@@ -29,7 +29,7 @@ namespace Book_Shoppe.DAL
     {
         public string Add(Book book)
         {
-            using (DBContext booksContext = new DBContext())
+            using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
                 // Transaction Meathod Testing
                 using(DbContextTransaction dbTran = booksContext.Database.BeginTransaction())
@@ -56,7 +56,7 @@ namespace Book_Shoppe.DAL
 
         public void Delete(int BookID)
         {
-            using(DBContext bookContext = new DBContext())
+            using(BookShoppeDBContext bookContext = new BookShoppeDBContext())
             {
                 Book book = bookContext.Books.Where(id => id.BookID == BookID).FirstOrDefault();
                 bookContext.Books.Remove(book);
@@ -66,7 +66,7 @@ namespace Book_Shoppe.DAL
 
         public string Edit(Book book)
         {
-            using (DBContext booksContext = new DBContext())
+            using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
                 booksContext.Entry(book).State = EntityState.Modified;
                 booksContext.SaveChanges();
@@ -76,7 +76,7 @@ namespace Book_Shoppe.DAL
 
         public IEnumerable<Book> GetAllBooks()
         {
-            using (DBContext booksContext = new DBContext())
+            using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
                 return booksContext.Books.Include("Genre").ToList();
             }
@@ -85,7 +85,7 @@ namespace Book_Shoppe.DAL
        
         public IEnumerable<Genre> GetAllGenres()
         {
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 return _context.Genres.ToList();
             }
@@ -93,7 +93,7 @@ namespace Book_Shoppe.DAL
 
         public string GetGenreByGenreID(int id)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 Genre genre = _context.Genres.Where(ID => ID.GenreID == id).SingleOrDefault();
                 return genre.GenreName;
@@ -102,7 +102,7 @@ namespace Book_Shoppe.DAL
 
         public string AddGenre(Genre genre)
         {
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 _context.Genres.Add(genre);
                 try
@@ -119,7 +119,7 @@ namespace Book_Shoppe.DAL
 
         public string DeleteGenre(int id)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 Genre genre = _context.Genres.Where(Id => Id.GenreID == id).FirstOrDefault();
                 _context.Genres.Remove(genre);
@@ -130,26 +130,23 @@ namespace Book_Shoppe.DAL
 
         public IEnumerable<Book> GetBooksByGenre(int id)
         {
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 return _context.Books.Include("Genre").Where(m => m.GenreID == id).ToList();
             }
         }
 
-        public IEnumerable<Book> GetBookByUserID()
+        public IEnumerable<Book> GetBookByUserID(int userID)
         {
-            UserRepositary IUserRepos = new UserRepositary();
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                UserRepositary Repos = new UserRepositary();
-                int userID = IUserRepos.GetCurrentUser().UserID;
                 return _context.Books.Include("Genre").Where(m => m.UserID == userID).ToList();
             }
         }
 
         public Book GetBookByID(int bookID)
         {
-            using (DBContext booksContext = new DBContext())
+            using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
                 Book book = booksContext.Books.SingleOrDefault(ID => ID.BookID == bookID);
                 return book;
@@ -159,7 +156,7 @@ namespace Book_Shoppe.DAL
         public IEnumerable<Book> SearchResult(string SearchValue)
         {
             IEnumerable<Book> SearchedBooks;
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 try
                 {
@@ -176,7 +173,7 @@ namespace Book_Shoppe.DAL
 
         public Book GetBookDetails(int bookID)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 return _context.Books.Where(ID => ID.BookID == bookID).SingleOrDefault();
             }

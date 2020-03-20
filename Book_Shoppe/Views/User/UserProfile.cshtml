@@ -22,34 +22,42 @@
 <div class="Users-BooksList">
     <div class="WishList">
         <h3>Wish List</h3>
-        <table class="table table-hover">
-            <thead>
-                <tr class="table-primary">
-                    <td>Sno</td>
-                    <td>Book Title</td>
-                    <td>Operations</td>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int Sno = 1;
-                    foreach (var item in ViewBag.WishList)
-                    {
-                        <tr class="table-light">
-                            <td>@Sno</td>
-                            <td>@item.Title</td>
-                            <td>
-                                <button type="button" id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                                @Html.ActionLink("_Remove", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
-                            </td>
-                        </tr>
+        @if (ViewBag.WishList.Count != 0)
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        <td>Sno</td>
+                        <td>Book Title</td>
+                        <td>Operations</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int Sno = 1;
+                        foreach (var item in ViewBag.WishList)
+                        {
+                            <tr class="table-light">
+                                <td>@Sno</td>
+                                <td>@item.Title</td>
+                                <td>
+                                    <button type="button" id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                    @Html.ActionLink("_Remove", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
+                                </td>
+                            </tr>
 
-                        Sno++;
+                            Sno++;
+                        }
+
                     }
+                </tbody>
+            </table>
+                        }
+                        else
+                        {
+                            <h5> There is no books available in your wishlist!</h5>
+                        }
 
-                }
-            </tbody>
-        </table>
     </div>
     <br />
     <div>
@@ -57,37 +65,49 @@
     </div>
     <div class="OrderList">
         <h3 class="OrderList-heading">Cart Details</h3>
-        <table class="table table-hover">
-            <thead>
-                <tr class="table-primary">
-                    <td>Sno</td>
-                    <td>Book Title</td>
-                    <td>Operations</td>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    int no = 1;
-                    if (ViewBag.UserCartDetails != null)
-                    {
-
-                        foreach (var item in ViewBag.UserCartDetails)
+        @if (ViewBag.UserCartDetails != null)
+        {
+            <table class="table table-hover">
+                <thead>
+                    <tr class="table-primary">
+                        <td>Sno</td>
+                        <td>Book Title</td>
+                        <td>Operations</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int no = 1;
+                        if (ViewBag.UserCartDetails != null)
                         {
-                            <tr class="table-light">
-                                <td>@no</td>
-                                <td>@item.Title</td>
-                                <td>
-                                    <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                                    @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
-                                </td>
-                            </tr>
-                            no++;
-                        }
-                    }
 
-                }
-            </tbody>
-        </table>
+                            foreach (var item in ViewBag.UserCartDetails)
+                            {
+                                <tr class="table-light">
+                                    <td>@no</td>
+                                    <td>@item.Title</td>
+                                    <td>
+                                        <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                        @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
+                                    </td>
+                                </tr>
+                                no++;
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+
+            @Html.ActionLink("Place Order", "PlaceOrder", null, new { @class = "btn btn-outline-primary btn-sm" })
+            @Html.ActionLink("Edit Cart", "EditCart", null, new { @class = "btn btn-outline-info btn-sm" })
+        }
+        else
+        {
+            <h5>There is no books available in your cart!</h5>
+        }
+
+
     </div>
 </div>
 
@@ -119,9 +139,9 @@
                 }
             });
         });
-    });  
+    });
 
-    </script>
+</script>
 <script>
     $(document).ready(function () {
         $(".viewOrderBookDetails").click(function () {
@@ -162,12 +182,12 @@
                 </button>
             </div>
             <div class="modal-body" id="Book-Details">
-               
+
             </div>
             @*<div class="modal-footer">
-                <button type="button" class="btn btn-primary">Buy</button>
-                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>*@
+                    <button type="button" class="btn btn-primary">Buy</button>
+                    <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>*@
         </div>
     </div>
 </div>

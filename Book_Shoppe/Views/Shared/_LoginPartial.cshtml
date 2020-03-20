@@ -1,11 +1,11 @@
-﻿@if (Book_Shoppe.Controllers.UserController.CurrentUser != null)
+﻿@if (HttpContext.Current.User.Identity.IsAuthenticated)
 {
 
     try
     {
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink("Hello " + Session["Name"]+"!", "UserProfile", "User", routeValues: new { id = Book_Shoppe.Controllers.UserController.CurrentUser.UserID }, htmlAttributes: new { @class = "nav-link" })
+                @Html.ActionLink("Hello " + HttpContext.Current.User.Identity.Name+ "!", "UserProfile", "User", routeValues: new { id = Book_Shoppe.Controllers.UserController.CurrentUser.UserID }, htmlAttributes: new { @class = "nav-link" })
             </li>
             <li>
                 @Html.ActionLink("Log out", "LogOut", "User", null, new { @class = "nav-link" })

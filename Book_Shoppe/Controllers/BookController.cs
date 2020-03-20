@@ -22,7 +22,8 @@ namespace Book_Shoppe.Controllers
         [Authorize(Roles ="Seller")]
         public ActionResult Index()
         {
-            IEnumerable<Book> Books = IBookBL.GetUserBooks();
+            int userID = Convert.ToInt32(Session["UserID"]);
+            IEnumerable<Book> Books = IBookBL.GetUserBooks(userID);
             return View(Books);
         }
 

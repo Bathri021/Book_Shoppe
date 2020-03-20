@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Book_Shoppe.DAL
 {
-    public class DBContext : DbContext
+    public class BookShoppeDBContext : DbContext
     {
-        public DBContext():base("Book_Shoppe")
+        public BookShoppeDBContext():base("Book_Shoppe")
         {
            
         }

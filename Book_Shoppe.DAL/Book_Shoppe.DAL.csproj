@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookRepositary.cs" />
-    <Compile Include="DBContext.cs" />
+    <Compile Include="BookShoppeDBContext.cs" />
     <Compile Include="Migrations\202003191103477_Database_V1.cs" />
     <Compile Include="Migrations\202003191103477_Database_V1.designer.cs">
       <DependentUpon>202003191103477_Database_V1.cs</DependentUpon>

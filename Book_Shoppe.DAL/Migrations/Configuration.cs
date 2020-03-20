@@ -5,14 +5,14 @@
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Book_Shoppe.DAL.DBContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Book_Shoppe.DAL.BookShoppeDBContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Book_Shoppe.DAL.DBContext context)
+        protected override void Seed(Book_Shoppe.DAL.BookShoppeDBContext context)
         {
             //  This method will be called after migrating to the latest version.
 

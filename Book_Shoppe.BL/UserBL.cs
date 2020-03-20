@@ -10,8 +10,6 @@ namespace Book_Shoppe.BL
 {
     public interface IUserBL
     {
-        User GetCurrentUser();
-        void SetCurrentUser(User user);
         IEnumerable<User> GetUsers();
         IEnumerable<Role> GetRoles();
         string AddUser(User user);
@@ -27,19 +25,7 @@ namespace Book_Shoppe.BL
     }
     public class UserBL : IUserBL
     {
-        private User CurrentUser;
         IUserRepositary IUserRepos = new UserRepositary();
-
-        public User GetCurrentUser()
-        {
-            return CurrentUser;
-        }
-
-        public void SetCurrentUser(User user)
-        {
-            CurrentUser = user;
-            IUserRepos.SetCurrentUser(CurrentUser);
-        }
 
         public IEnumerable<User> GetUsers()
         {

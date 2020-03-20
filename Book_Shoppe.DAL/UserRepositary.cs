@@ -11,8 +11,6 @@ namespace Book_Shoppe.DAL
 {
     public interface IUserRepositary
     {
-       void SetCurrentUser(User user);
-       User GetCurrentUser();
        IEnumerable<User> GetUsers();
        IEnumerable<Role> GetRoles();
        string AddUser(User user);
@@ -31,32 +29,21 @@ namespace Book_Shoppe.DAL
 
     public class UserRepositary : IUserRepositary
     {
-        public static User CurrentUser { get; set; }
-        public void SetCurrentUser(User user)
-        {
-            CurrentUser = user;
-        }
-
-        public User GetCurrentUser()
-        {
-            return CurrentUser;
-        }
-
         public IEnumerable<User> GetUsers()
         {
-            DBContext userDBContext = new DBContext();
+            BookShoppeDBContext userDBContext = new BookShoppeDBContext();
             return userDBContext.Users.Include("Role").Where(m=>m.RoleID<=2).ToList();
         }
 
         public IEnumerable<Role> GetRoles()
         {
-            DBContext RoleContext = new DBContext();
-            return RoleContext.Roles.Where(m => m.RoleID <=2).ToList();
+            BookShoppeDBContext RoleContext = new BookShoppeDBContext();
+            return RoleContext.Roles.Where(m => m.RoleName=="Seller"&&m.RoleName=="Customer").ToList();
         }
        
         public string AddUser(User user)
         {
-            DBContext _Context = new DBContext();
+            BookShoppeDBContext _Context = new BookShoppeDBContext();
             _Context.Users.Add(user);
     
                 _Context.SaveChanges();
@@ -67,18 +54,18 @@ namespace Book_Shoppe.DAL
         public User ValidateLogIn(string userName,string password)
         {
             User _user=null;
-            DBContext _Context = new DBContext();
+            BookShoppeDBContext _Context = new BookShoppeDBContext();
             _user = _Context.Users.Include("Role").Where(u=> u.UserName==userName && u.Password==password).SingleOrDefault();
             return _user;
         }
         public User GetUserByID(int userID)
         {
-            DBContext _context = new DBContext();
+            BookShoppeDBContext _context = new BookShoppeDBContext();
             return _context.Users.Include("Role").SingleOrDefault(ID => ID.UserID == userID);
         }
         public string EditUser(User user)
         {
-            DBContext _context = new DBContext();
+            BookShoppeDBContext _context = new BookShoppeDBContext();
             _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
             try
             {
@@ -99,7 +86,7 @@ namespace Book_Shoppe.DAL
         }
         public bool Delete(int id)
         {
-            using (var Context = new DBContext())
+            using (var Context = new BookShoppeDBContext())
             {
                 User user = Context.Users.Where(ID => ID.UserID == id).FirstOrDefault();
                 Context.Users.Remove(user);
@@ -110,7 +97,7 @@ namespace Book_Shoppe.DAL
 
         public string AddToWishList(int userID, int bookID)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 WishList wishlist = new WishList()
                 {
@@ -125,7 +112,7 @@ namespace Book_Shoppe.DAL
 
         public void RemoveBookFormWishlist(int id)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 WishList wishlist = _context.WishList.Where(w => w.BookID == id).SingleOrDefault();
                 _context.WishList.Remove(wishlist);
@@ -136,7 +123,7 @@ namespace Book_Shoppe.DAL
         public IEnumerable<Book> GetUserWishlist(int id)
         {
             List<Book> books = new List<Book>();
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
               List<WishList> wishlist =  _context.WishList.Where(ID => ID.UserID == id).ToList();
 
@@ -151,7 +138,7 @@ namespace Book_Shoppe.DAL
 
         public bool CheckBookInWishList(int userID, int bookID)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
               WishList wishlist =  _context.WishList.Where(ID => ID.UserID == userID && ID.BookID == bookID).SingleOrDefault();
                 if (wishlist==null)
@@ -162,7 +149,7 @@ namespace Book_Shoppe.DAL
 
         public bool CheckBookInUserCart(int userID, int bookID)
         {
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 Cart cart = _context.Carts.Where(u => u.UserID == userID).SingleOrDefault();
 
@@ -183,7 +170,7 @@ namespace Book_Shoppe.DAL
 
         public string AddToCart(int userID, int bookID)
         {
-            using(DBContext _context = new DBContext())
+            using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 Cart _cart = _context.Carts.Where(c => c.UserID == userID).SingleOrDefault();
 
@@ -213,7 +200,7 @@ namespace Book_Shoppe.DAL
         public IEnumerable<Book> GetUserCartDetails(int id)
         {
             List<Book> books = new List<Book>();
-            using (DBContext _context = new DBContext())
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 try
                 {

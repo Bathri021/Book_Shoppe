@@ -17,7 +17,7 @@ namespace Book_Shoppe.BL
         IEnumerable<Book> GetBooksByGenre(int id);
         IEnumerable<Book> SearchResult(string SearchValue);
         IEnumerable<Genre> GetAllGenres();
-        IEnumerable<Book> GetUserBooks();
+        IEnumerable<Book> GetUserBooks(int userID);
         string Add(Book book);
         string Edit(Book book);
         Book GetBookByID(int id);
@@ -85,9 +85,9 @@ namespace Book_Shoppe.BL
             IEnumerable<Genre> Generes = IBookRepos.GetAllGenres();
             return Generes;
         }
-        public IEnumerable<Book> GetUserBooks()
+        public IEnumerable<Book> GetUserBooks(int userID)
         {
-            IEnumerable<Book> Books = IBookRepos.GetBookByUserID();
+            IEnumerable<Book> Books = IBookRepos.GetBookByUserID(userID);
             return Books;
         }
         public string Add(Book book)

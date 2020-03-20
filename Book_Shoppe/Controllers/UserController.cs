@@ -84,16 +84,14 @@ namespace Book_Shoppe.Controllers
 
                 if (_user != null)
                 {
-                    FormsAuthentication.SetAuthCookie(_user.UserName, false);
-                    var authTicket = new FormsAuthenticationTicket(1, _user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30), false,_user.Role.RoleName);
+                    FormsAuthentication.SetAuthCookie(_user.Name, false);
+                    var authTicket = new FormsAuthenticationTicket(1, _user.Name, DateTime.Now, DateTime.Now.AddMinutes(30), false,_user.Role.RoleName);
                     string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                     var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                     HttpContext.Response.Cookies.Add(authCookie);
 
                     CurrentUser = _user;
-                    IUserBL.SetCurrentUser(CurrentUser);
                     Session["UserID"] = CurrentUser.UserID.ToString();
-                    Session["RoleID"] = CurrentUser.RoleID.ToString();
                     Session["Name"] = CurrentUser.Name.ToString();
                     ViewBag.Message = "Login Successfull";
 
