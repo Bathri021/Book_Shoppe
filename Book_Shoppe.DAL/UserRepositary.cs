@@ -24,9 +24,9 @@ namespace Book_Shoppe.DAL
        IEnumerable<Book> GetUserWishlist(int id);
        bool CheckBookInWishList(int userID, int bookID);
        void RemoveBookFormWishlist(int id);
-       bool CheckBookInOrderList(int userID, int bookID);
-       string AddToOrder(int userID, int bookID);
-       IEnumerable<Book> GetUserOrderList(int id);
+       bool CheckBookInUserCart(int userID, int bookID);
+       string AddToCart(int userID, int bookID);
+       IEnumerable<Book> GetUserCartDetails(int id);
     }
 
     public class UserRepositary : IUserRepositary
@@ -45,7 +45,7 @@ namespace Book_Shoppe.DAL
         public IEnumerable<User> GetUsers()
         {
             DBContext userDBContext = new DBContext();
-            return userDBContext.Users.Where(m=>m.RoleID<=2).ToList();
+            return userDBContext.Users.Include("Role").Where(m=>m.RoleID<=2).ToList();
         }
 
         public IEnumerable<Role> GetRoles()
@@ -68,13 +68,13 @@ namespace Book_Shoppe.DAL
         {
             User _user=null;
             DBContext _Context = new DBContext();
-            _user = _Context.Users.Where(u=> u.UserName==userName && u.Password==password).SingleOrDefault();
+            _user = _Context.Users.Include("Role").Where(u=> u.UserName==userName && u.Password==password).SingleOrDefault();
             return _user;
         }
         public User GetUserByID(int userID)
         {
             DBContext _context = new DBContext();
-            return _context.Users.SingleOrDefault(ID => ID.UserID == userID);
+            return _context.Users.Include("Role").SingleOrDefault(ID => ID.UserID == userID);
         }
         public string EditUser(User user)
         {
@@ -160,45 +160,81 @@ namespace Book_Shoppe.DAL
             }
         }
 
-        public bool CheckBookInOrderList(int userID, int bookID)
+        public bool CheckBookInUserCart(int userID, int bookID)
         {
             using (DBContext _context = new DBContext())
             {
-                Order order = _context.Orders.Where(u => u.UserID == userID && u.BookID == bookID).SingleOrDefault();
-                if (order == null)
-                    return false;
-                return true;
+                Cart cart = _context.Carts.Where(u => u.UserID == userID).SingleOrDefault();
+
+                if (cart == null)
+                {
+                    return false; 
+                }
+                else
+                {
+                   int cartID = cart.CartID;
+                   CartBook cartBook = _context.CartBooks.Where(cb => cb.CartID == cartID && cb.BookID == bookID).SingleOrDefault();
+                    if(cartBook==null)
+                        return false; // Book is not exist in User Cart
+                    return true; // Book is already added in User Cart 
+                }
             }
         }
 
-        public string AddToOrder(int userID, int bookID)
+        public string AddToCart(int userID, int bookID)
         {
             using(DBContext _context = new DBContext())
             {
-                Order order = new Order()
+                Cart _cart = _context.Carts.Where(c => c.UserID == userID).SingleOrDefault();
+
+                if (_cart==null)
                 {
-                    UserID = userID,
-                    BookID = bookID
+                    Cart cart = new Cart()
+                    {
+                        UserID = userID,
+                    };
+                    _context.Carts.Add(cart);
+                    _context.SaveChanges();
+                    _cart = _context.Carts.Where(c => c.UserID == userID).SingleOrDefault();
+                }
+
+
+                CartBook cartbook = new CartBook()
+                {
+                     CartID = _cart.CartID,
+                     BookID = bookID,
                 };
-                _context.Orders.Add(order);
+                _context.CartBooks.Add(cartbook);
                 _context.SaveChanges();
                 return null;
             }
         }
 
-        public IEnumerable<Book> GetUserOrderList(int id)
+        public IEnumerable<Book> GetUserCartDetails(int id)
         {
             List<Book> books = new List<Book>();
             using (DBContext _context = new DBContext())
             {
-                List<Order> orderlist = _context.Orders.Where(ID => ID.UserID == id).ToList();
-
-                foreach (var item in orderlist)
+                try
                 {
-                    Book book = _context.Books.Where(ID => ID.BookID == item.BookID).SingleOrDefault();
-                    books.Add(book);
+                    Cart cart = new Cart();
+                    cart = _context.Carts.Where(ID => ID.UserID == id).SingleOrDefault();
+
+                    int cartID = cart.CartID;
+
+                    List<CartBook> cartBooks = _context.CartBooks.Where(cb => cb.CartID == cartID).ToList();
+
+                    foreach (var item in cartBooks)
+                    {
+                        Book book = _context.Books.Where(ID => ID.BookID == item.BookID).SingleOrDefault();
+                        books.Add(book);
+                    }
+                    return books;
                 }
-                return books;
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 }

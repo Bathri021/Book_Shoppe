@@ -13,7 +13,8 @@
         <tr class="table-info">
             <th scope="col">Sno</th>
             <th scope="col">Name</th>
-            <th scope="col">UserID</th>
+            <th scope="col">Mail ID</th>
+            <th scope="col">Role</th>
             <th scope="col">Operations</th>
            
         </tr>
@@ -26,7 +27,8 @@
                 <tr class="table-light">
                     <td>@i</td>
                     <td> @user.Name</td>
-                    <td>@user.UserID</td>
+                    <td>@user.MailID</td>
+                    <td>@user.Role.RoleName</td>
                     <td class="btn-group" role="group" aria-label="Basic example">@Html.ActionLink("View Details", "ViewDetails","User", new { id = user.UserID }, new { @class = "btn btn-secondary" }) @Html.ActionLink("Delete", "Delete", new { id = user.UserID }, new { @class = "btn btn-secondary", onclick = "return confirm('Are you sure, you want delete this User?');" })</td>
                 </tr>
                 i++;

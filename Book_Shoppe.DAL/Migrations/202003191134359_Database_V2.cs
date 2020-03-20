@@ -3,16 +3,16 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Database_v4 : DbMigration
+    public partial class Database_V2 : DbMigration
     {
         public override void Up()
         {
-            RenameTable(name: "dbo.Users", newName: "User");
+            CreateIndex("dbo.Genres", "GenreName", unique: true);
         }
         
         public override void Down()
         {
-            RenameTable(name: "dbo.User", newName: "Users");
+            DropIndex("dbo.Genres", new[] { "GenreName" });
         }
     }
 }

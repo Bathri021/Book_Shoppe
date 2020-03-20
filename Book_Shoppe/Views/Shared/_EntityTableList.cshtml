@@ -20,10 +20,10 @@
                     <td>@count</td>
                     <td>@item.Title</td>
                     <td>@item.Author</td>
-                    <td>@item.GenreID</td>
+                    <td>@item.Genre.GenreName</td>
                     <td>&#36;@item.Price</td>
                     <td>
-                        @Html.ActionLink("_Buy", "AddToOrder", "User", new { id = @item.BookID }, new { @class = "btn btn-outline-primary btn-sm fa fa-shopping-cart" })
+                        @Html.ActionLink("_Cart", "AddToCart", "User", new { id = @item.BookID }, new { @class = "btn btn-outline-primary btn-sm fa fa-shopping-cart" })
                         @Html.ActionLink("_Wishlist", "AddToWishList", "User", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart" })
                     </td>
                 </tr>

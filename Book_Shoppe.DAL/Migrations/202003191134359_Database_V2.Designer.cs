@@ -7,13 +7,13 @@ namespace Book_Shoppe.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class Database_v6 : IMigrationMetadata
+    public sealed partial class Database_V2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Database_v6));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Database_V2));
         
         string IMigrationMetadata.Id
         {
-            get { return "202003161006012_Database_v6"; }
+            get { return "202003191134359_Database_V2"; }
         }
         
         string IMigrationMetadata.Source

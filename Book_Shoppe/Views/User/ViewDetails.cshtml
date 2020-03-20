@@ -17,10 +17,6 @@
     </thead>
     <tbody>
         <tr class="table-light">
-            <td>@Html.LabelFor(m => m.UserID)</td>
-            <td>@Html.DisplayFor(m => m.UserID)</td>
-        </tr>
-        <tr class="table-light">
             <td>@Html.LabelFor(m => m.Name)</td>
             <td>@Html.DisplayFor(m => m.Name)</td>
         </tr>
@@ -33,8 +29,8 @@
             <td>@Html.DisplayFor(m => m.MailID)</td>
         </tr>
         <tr class="table-light">
-            <td>@Html.LabelFor(m => m.RoleID)</td>
-            <td>@Html.DisplayFor(m => m.RoleID)</td>
+            <td>@Html.LabelFor(m => m.Role)</td>
+            <td>@Html.DisplayFor(m => m.Role.RoleName)</td>
         </tr>
     </tbody>
 </table>

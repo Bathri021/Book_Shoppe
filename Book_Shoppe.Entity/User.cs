@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Book_Shoppe.Entity
 {
@@ -14,7 +10,6 @@ namespace Book_Shoppe.Entity
     {
         [Key]
         [Column("UserID")]
-        [Required]
         public int UserID { get; set; }
 
         [Column("RoleID")]
@@ -52,54 +47,96 @@ namespace Book_Shoppe.Entity
 
     public class Role
     {
-        [Required]
+        [Key]
         public int RoleID { get; set; }
+
         [Required]
+        [MaxLength(8)]
         public string RoleName { get; set; }
     }
 
     public class WishList
     {
+        [Key]
         public int WishListID { get; set; }
 
+        [Required]
         public int UserID { get; set; }
+        [ForeignKey("UserID")]
         public User User { get; set; }
 
+        [Required]
         public int BookID { get; set; }
+        [ForeignKey("BookID")]
         public Book Book { get; set; }
     }
 
     public class Order
     {
+        [Key]
         public int OrderID { get; set; }
 
-        public int UserID { get; set; }
-        public User User { get; set; }
+        [Required]
+        public int CartID { get; set; }
+        [ForeignKey("CartID")]
+        public Cart Cart { get; set; }
+       
+        [Required]
+        public int ShipmentID { get; set; }
+        [ForeignKey("ShipmentID")]
+        public Shipment Shipment { get; set; }
 
-        public int BookID { get; set; }
-        public Book Book { get; set; }
-
-        public ICollection<OrdersShipment> OrdersShipments { get; set; }
     }
 
     public class Shipment
     {
+        [Key]
         public int ShipmentID { get; set; }
 
-
+        [Required]
         public string Address { get; set; }
 
-        public ICollection<OrdersShipment> OrdersShipments { get; set; }
+        [Required]
+        public int UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User User { get; set; }
     }
 
-    public class OrdersShipment
+    public class Cart
     {
-        public int OrdersShipmentID { get; set; }
+        public int CartID { get; set; }
 
-        public int OrderID { get; set; }
-        public Order Order { get; set; }
+        [Required]
+        public int UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User User { get; set; }
 
-        public int ShipmentID { get; set; }
-        public Shipment Shipment { get; set; }
+        public List<CartBook> CartBooks { get; set; }
     }
+
+    public class CartBook
+    {
+        [Key]
+        public int CartBookID { get; set; }
+
+        [Required]
+        public int CartID { get; set; }
+        [ForeignKey("CartID")]
+        public Cart Cart { get; set; }
+
+        [Required]
+        public int BookID { get; set; }
+        [ForeignKey("BookID")]
+        public Book Book { get; set; }
+    }
+    //public class OrdersShipment
+    //{
+    //    public int OrdersShipmentID { get; set; }
+
+    //    public int OrderID { get; set; }
+    //    public Order Order { get; set; }
+
+    //    public int ShipmentID { get; set; }
+    //    public Shipment Shipment { get; set; }
+    //}
 }

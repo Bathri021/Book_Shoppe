@@ -22,8 +22,8 @@ namespace Book_Shoppe.BL
         string AddToWishList(int userID, int bookID);
         void RemoveBookFormWishlist(int id);
         IEnumerable<Book> GetUserWishlist(int id);
-        IEnumerable<Book> GetUserOrderList(int id);
-        string AddToOrder(int userID, int bookID);
+        IEnumerable<Book> GetUserCartDetails(int id);
+        string AddToCart(int userID, int bookID);
     }
     public class UserBL : IUserBL
     {
@@ -109,16 +109,16 @@ namespace Book_Shoppe.BL
             return IUserRepos.GetUserWishlist(id);
         }
 
-        public IEnumerable<Book> GetUserOrderList(int id)
+        public IEnumerable<Book> GetUserCartDetails(int id)
         {
-            return IUserRepos.GetUserOrderList(id);
+            return IUserRepos.GetUserCartDetails(id);
         }
 
-        public string AddToOrder(int userID,int bookID)
+        public string AddToCart(int userID,int bookID)
         {
-            if (IUserRepos.CheckBookInOrderList(userID, bookID))
+            if (IUserRepos.CheckBookInUserCart(userID, bookID))
                 return "Book already added in the Orders";
-            return IUserRepos.AddToOrder(userID, bookID);
+            return IUserRepos.AddToCart(userID, bookID);
         }
     }
 }

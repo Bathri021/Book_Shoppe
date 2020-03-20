@@ -18,14 +18,16 @@ namespace Book_Shoppe.Controllers
 
         // GET: Book 
         // Sellers Books Page
-        [SellerAuthorizationFilter]
+       // [SellerAuthorizationFilter]
+        [Authorize(Roles ="Seller")]
         public ActionResult Index()
         {
             IEnumerable<Book> Books = IBookBL.GetUserBooks();
             return View(Books);
         }
 
-        [AdminAuthorizationFilter]
+        // [AdminAuthorizationFilter]
+         [Authorize(Roles ="Admin")]
         public ActionResult EditGenre()
         {
             IEnumerable<Genre> Genres = IBookBL.GetAllGenres();
@@ -49,11 +51,12 @@ namespace Book_Shoppe.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AdminAuthorizationFilter]
+       // [AdminAuthorizationFilter]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddGenre(FormCollection fc)
         {
             Genre Genre = new Genre();
-            Genre.GenreName = fc[0];
+            Genre.GenreName = fc[1];
 
             ViewBag.Alert = IBookBL.AddGenre(Genre);
 
@@ -67,7 +70,8 @@ namespace Book_Shoppe.Controllers
 
         // Get Meathod for Add new Book
         [HttpGet]
-        [SellerAuthorizationFilter]
+       // [SellerAuthorizationFilter]
+       [Authorize(Roles ="Seller")]
         public ActionResult Create()
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(),"GenreID","GenreName");
@@ -77,8 +81,9 @@ namespace Book_Shoppe.Controllers
 
         // Post Meathod for Add new Book
         [HttpPost]
-        [SellerAuthorizationFilter]
+       // [SellerAuthorizationFilter]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Seller")]
         public ActionResult Create(AddBookFormVM book)
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
@@ -104,8 +109,9 @@ namespace Book_Shoppe.Controllers
         }
 
         // Edit the Details of the Existing Book
+       // [SellerAuthorizationFilter]
         [HttpGet]
-        [SellerAuthorizationFilter]
+        [Authorize(Roles ="Seller")]
         public ActionResult Edit(int id)
         {
             Book book = IBookBL.GetBookByID(id);
@@ -122,7 +128,8 @@ namespace Book_Shoppe.Controllers
 
         // Delete the Existing Book
         [HttpGet]
-        [SellerAuthorizationFilter]
+        //[SellerAuthorizationFilter]
+        [Authorize(Roles ="Seller")]
         public ActionResult Delete(int id)
         {
             IBookBL.Delete(id);
@@ -132,8 +139,9 @@ namespace Book_Shoppe.Controllers
 
         // Post Meathod for Update the Edited Book Details
         [HttpPost]
-        [SellerAuthorizationFilter]
+       // [SellerAuthorizationFilter]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Seller")]
         public ActionResult Update(EditBookFormVM book)
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");

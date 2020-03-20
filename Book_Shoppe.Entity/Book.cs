@@ -43,15 +43,16 @@ namespace Book_Shoppe.Entity
 
         public List<WishList> WishLists { get; set; }
 
+        public List<CartBook> CartBooks { get; set; }
     }
 
 
     public class Genre
     {
-        [Required]
         public int GenreID { get; set; }
 
         [Required]
+        [MaxLength(16)]
         public string GenreName { get; set; }
     }
 

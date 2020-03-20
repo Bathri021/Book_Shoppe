@@ -9,6 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
+using System.Web.Security;
 
 namespace Book_Shoppe.Controllers
 {
@@ -19,13 +20,13 @@ namespace Book_Shoppe.Controllers
         IUserBL IUserBL = new UserBL();
         // Admin Page for Manage The Users
         // GET: User
-        [AdminAuthorizationFilter]
+        //[AdminAuthorizationFilter]
+        [Authorize(Roles ="Admin")]
         public ActionResult Index()
         {
             IEnumerable<User> users = IUserBL.GetUsers();
             IUserBL.GetRoles();
             return View(users);
-           
         }
 
         // Get Meathod for the User Registration Page
@@ -83,6 +84,11 @@ namespace Book_Shoppe.Controllers
 
                 if (_user != null)
                 {
+                    FormsAuthentication.SetAuthCookie(_user.UserName, false);
+                    var authTicket = new FormsAuthenticationTicket(1, _user.UserName, DateTime.Now, DateTime.Now.AddMinutes(30), false,_user.Role.RoleName);
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    HttpContext.Response.Cookies.Add(authCookie);
 
                     CurrentUser = _user;
                     IUserBL.SetCurrentUser(CurrentUser);
@@ -90,15 +96,19 @@ namespace Book_Shoppe.Controllers
                     Session["RoleID"] = CurrentUser.RoleID.ToString();
                     Session["Name"] = CurrentUser.Name.ToString();
                     ViewBag.Message = "Login Successfull";
+
+                    int userId = Convert.ToInt32(Session["UserID"]);
+                    return RedirectToAction("UserProfile", new { id = userId });
                 }
                 else
                 {
                     ViewBag.Alert = "Login Failed";
+                    return RedirectToAction("LogIn");
                 }
-            } 
-
-            return View();
+            }
+                    return RedirectToAction("LogIn");
         }
+
 
         // UserProfile Page
         public ActionResult UserProfile(int id)
@@ -108,7 +118,7 @@ namespace Book_Shoppe.Controllers
             IMapper iMapper = config.CreateMapper();
             UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
             ViewBag.WishList= IUserBL.GetUserWishlist(id);
-            ViewBag.OrderList = IUserBL.GetUserOrderList(id);
+            ViewBag.UserCartDetails = IUserBL.GetUserCartDetails(id);
             return View(userModel);
         }
 
@@ -144,12 +154,12 @@ namespace Book_Shoppe.Controllers
         }
 
         // Log out Meathod
+        [AllowAnonymous]
         public ActionResult LogOut()
         {
+            Session.Abandon();
+            FormsAuthentication.SignOut();
             UserController.CurrentUser = null;
-            Session["UserID"] = null;
-            Session["RoleID"] = null;
-            Session["Name"] = null;
             return RedirectToAction("LogIn");
         }
 
@@ -161,7 +171,8 @@ namespace Book_Shoppe.Controllers
         }
 
         // Delete the User
-        [AdminAuthorizationFilter]
+       // [AdminAuthorizationFilter]
+        [Authorize(Roles ="Admin")]
         public ActionResult Delete(int id)
         {
             IUserBL.Delete(id);
@@ -171,16 +182,16 @@ namespace Book_Shoppe.Controllers
         // Add the Book Into the Users WishList
         public ActionResult AddToWishList(int id)
         {
-            ViewData["WishList_Message"] = null;
+            ViewBag.WishList_Message = null;
             if (CurrentUser==null)
             {
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewData["WishList_Message"] = IUserBL.AddToWishList(userID, id);
+            ViewBag.WishList_Message = IUserBL.AddToWishList(userID, id);
 
-            if (ViewData["WishList_Message"] == null)
-                ViewData["WishList_Message"] = "Book added into the wishlist";
+            if (ViewBag.WishList_Message == null)
+                ViewBag.WishList_Message = "Book added into the wishlist";
             return Redirect(Request.UrlReferrer.ToString());
         }
 
@@ -200,9 +211,9 @@ namespace Book_Shoppe.Controllers
         }
 
         // Add The Book Into the Users Orders
-        public ActionResult AddToOrder(int id)
+        public ActionResult AddToCart(int id)
         {
-            ViewData["OrderList_Message"] = null;
+            ViewBag.OrderList_Message = null;
             UserBL userBL = new UserBL();
 
             if (CurrentUser == null)
@@ -210,10 +221,10 @@ namespace Book_Shoppe.Controllers
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewData["OrderList_Message"] = IUserBL.AddToOrder(userID,id);
+            ViewBag.OrderList_Message = IUserBL.AddToCart(userID,id);
 
-            if (ViewData["OrderList_Message"] == null)
-                ViewData["OrderList_Message"] = "Book added into the Order List";
+            if (ViewBag.OrderList_Message == null)
+                ViewBag.OrderList_Message = "Book added into the Order List";
             return Redirect(Request.UrlReferrer.ToString());
         }
 

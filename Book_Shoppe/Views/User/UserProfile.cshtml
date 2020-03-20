@@ -56,7 +56,7 @@
         <br />
     </div>
     <div class="OrderList">
-        <h3 class="OrderList-heading">Order List</h3>
+        <h3 class="OrderList-heading">Cart Details</h3>
         <table class="table table-hover">
             <thead>
                 <tr class="table-primary">
@@ -68,17 +68,21 @@
             <tbody>
                 @{
                     int no = 1;
-                    foreach (var item in ViewBag.OrderList)
+                    if (ViewBag.UserCartDetails != null)
                     {
-                        <tr class="table-light">
-                            <td>@no</td>
-                            <td>@item.Title</td>
-                            <td>
-                                <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                                @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
-                            </td>
-                        </tr>
-                        no++;
+
+                        foreach (var item in ViewBag.UserCartDetails)
+                        {
+                            <tr class="table-light">
+                                <td>@no</td>
+                                <td>@item.Title</td>
+                                <td>
+                                    <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                    @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
+                                </td>
+                            </tr>
+                            no++;
+                        }
                     }
 
                 }

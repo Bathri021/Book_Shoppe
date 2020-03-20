@@ -78,7 +78,7 @@ namespace Book_Shoppe.DAL
         {
             using (DBContext booksContext = new DBContext())
             {
-                return booksContext.Books.ToList();
+                return booksContext.Books.Include("Genre").ToList();
             }
         }
 
@@ -107,7 +107,7 @@ namespace Book_Shoppe.DAL
                 _context.Genres.Add(genre);
                 try
                 {
-                    _context.SaveChanges();
+                   _context.SaveChanges();
                 }
                 catch (DbUpdateException e)
                 {
@@ -132,7 +132,7 @@ namespace Book_Shoppe.DAL
         {
             using (DBContext _context = new DBContext())
             {
-                return _context.Books.Where(m => m.GenreID == id).ToList();
+                return _context.Books.Include("Genre").Where(m => m.GenreID == id).ToList();
             }
         }
 
@@ -143,7 +143,7 @@ namespace Book_Shoppe.DAL
             {
                 UserRepositary Repos = new UserRepositary();
                 int userID = IUserRepos.GetCurrentUser().UserID;
-                return _context.Books.Where(m => m.UserID == userID).ToList();
+                return _context.Books.Include("Genre").Where(m => m.UserID == userID).ToList();
             }
         }
 
@@ -163,7 +163,7 @@ namespace Book_Shoppe.DAL
             {
                 try
                 {
-                  SearchedBooks = _context.Books.Where(b => b.Title.Contains(SearchValue) || b.Author.Contains(SearchValue) || SearchValue == null).ToList();
+                  SearchedBooks = _context.Books.Include("Genre").Where(b => b.Title.Contains(SearchValue) || b.Author.Contains(SearchValue) || SearchValue == null).ToList();
                 }
                 catch (Exception)
                 {

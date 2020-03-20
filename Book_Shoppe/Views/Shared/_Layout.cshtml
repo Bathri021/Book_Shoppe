@@ -42,35 +42,30 @@ s</head>
                         </div>
 
                     </li>
-                    @try
+                    @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
-                        if (Convert.ToInt32(Session["RoleID"]) > 2)
+                        if (HttpContext.Current.User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 @Html.ActionLink("Category", "EditGenre", "Book", null, new { @class = "nav-link" })
                             </li>
                         }
-                        if (Convert.ToInt32(Session["RoleID"]) == 1)
-                        {
-                            <li class="nav-item">
-                                @Html.ActionLink("My Books", "Index", "Book", null, new { @class = "nav-link" })
-                            </li>
-                        }
-                        if (Convert.ToInt32(Session["RoleID"]) > 2)
+                        if (HttpContext.Current.User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 @Html.ActionLink("Users", "Index", "User", null, new { @class = "nav-link" })
                             </li>
                         }
+                        if (HttpContext.Current.User.IsInRole("Seller"))
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("My Books", "Index", "Book", null, new { @class = "nav-link" })
+                            </li>
+                        }
                     }
-                    catch (NullReferenceException)
-                    {
-
-                    }
-                    <li>
-
-                    </li>
+                  
                 </ul>
+
                 <div class="Search-bar">
                     <div id="search">
                         <i class="fas fa-search" id="search-icon"></i>

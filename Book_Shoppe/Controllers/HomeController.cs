@@ -11,6 +11,7 @@ namespace Book_Shoppe.Controllers
 {
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public ActionResult Index()
         {
             BookBL bookContext = new BookBL();

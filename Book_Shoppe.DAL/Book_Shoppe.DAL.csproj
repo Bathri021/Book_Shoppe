@@ -63,29 +63,13 @@
   <ItemGroup>
     <Compile Include="BookRepositary.cs" />
     <Compile Include="DBContext.cs" />
-    <Compile Include="Migrations\202003050800056_Database_V1.cs" />
-    <Compile Include="Migrations\202003050800056_Database_V1.designer.cs">
-      <DependentUpon>202003050800056_Database_V1.cs</DependentUpon>
+    <Compile Include="Migrations\202003191103477_Database_V1.cs" />
+    <Compile Include="Migrations\202003191103477_Database_V1.designer.cs">
+      <DependentUpon>202003191103477_Database_V1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202003100516358_Database_v2.cs" />
-    <Compile Include="Migrations\202003100516358_Database_v2.designer.cs">
-      <DependentUpon>202003100516358_Database_v2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003100802548_Database_v3.cs" />
-    <Compile Include="Migrations\202003100802548_Database_v3.designer.cs">
-      <DependentUpon>202003100802548_Database_v3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003111052250_Database_v4.cs" />
-    <Compile Include="Migrations\202003111052250_Database_v4.designer.cs">
-      <DependentUpon>202003111052250_Database_v4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003131229116_Database_v5.cs" />
-    <Compile Include="Migrations\202003131229116_Database_v5.designer.cs">
-      <DependentUpon>202003131229116_Database_v5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202003161006012_Database_v6.cs" />
-    <Compile Include="Migrations\202003161006012_Database_v6.designer.cs">
-      <DependentUpon>202003161006012_Database_v6.cs</DependentUpon>
+    <Compile Include="Migrations\202003191134359_Database_V2.cs" />
+    <Compile Include="Migrations\202003191134359_Database_V2.designer.cs">
+      <DependentUpon>202003191134359_Database_V2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="UserRepositary.cs" />
@@ -102,23 +86,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202003050800056_Database_V1.resx">
-      <DependentUpon>202003050800056_Database_V1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003191103477_Database_V1.resx">
+      <DependentUpon>202003191103477_Database_V1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003100516358_Database_v2.resx">
-      <DependentUpon>202003100516358_Database_v2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003100802548_Database_v3.resx">
-      <DependentUpon>202003100802548_Database_v3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003111052250_Database_v4.resx">
-      <DependentUpon>202003111052250_Database_v4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003131229116_Database_v5.resx">
-      <DependentUpon>202003131229116_Database_v5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202003161006012_Database_v6.resx">
-      <DependentUpon>202003161006012_Database_v6.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202003191134359_Database_V2.resx">
+      <DependentUpon>202003191134359_Database_V2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

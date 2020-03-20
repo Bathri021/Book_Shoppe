@@ -50,7 +50,19 @@ namespace Book_Shoppe.BL
 
         public string AddGenre(Genre genre)
         {
-            return IBookRepos.AddGenre(genre);
+            // Check the Genre is already exists in the list
+            IEnumerable<Genre> genres = IBookRepos.GetAllGenres();
+            bool duplications = false;
+            foreach (Genre item in genres)
+            {
+                if (item.GenreName==genre.GenreName)
+                {
+                    duplications = true;
+                }
+            }
+            if (!duplications)
+                return IBookRepos.AddGenre(genre);
+            return "Duplication Not Allowed In Genre!";
         }
 
         public string DeleteGenre(int id)

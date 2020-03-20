@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Book_Shoppe.Entity.Book>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "My Books";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -34,7 +34,7 @@
                     <td>@count</td>
                     <td>@item.Title</td>
                     <td>@item.Author</td>
-                    <td>@item.GenreID</td>
+                    <td>@item.Genre.GenreName</td>
                     <td>@item.Price</td>
                     <td class="btn-group" role="group" aria-label="Basic example">@Html.ActionLink("Edit", "Edit", new { id = item.BookID }, new { @class = "btn btn-secondary" }) @Html.ActionLink("Delete", "Delete", new { id = item.BookID }, new { @class = "btn btn-secondary" ,onclick="return confirm('Are you sure, you want delete this Book?');"})</td>
                 </tr>

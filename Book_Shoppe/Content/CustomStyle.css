@@ -43,7 +43,6 @@ body {
 }
 
 .horizontal-scroll-wrapper .card{
-	display:flex;
 	flex-wrap:wrap;
 	margin-right:15px;
 	align-items:center;
@@ -54,10 +53,10 @@ body {
 	padding:8px;
 }
 
-.btns-card{
+/*.btns-card{
    margin-top:15vh;
    padding:5px;
-}
+}*/
 /*Font Styles*/
 .heading{
 	font-family:ostrich-sans-black;
