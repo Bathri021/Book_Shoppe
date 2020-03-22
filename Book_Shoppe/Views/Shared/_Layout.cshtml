@@ -8,7 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="http://kit.fontawesome.com/e5012b6799.js" crossorigin="anonymous"></script>
-s</head>
+</head>
 <body>
     <div class="navbar navbar-expand-lg navbar-dark bg-gradient-nav">
         <div class="container">
@@ -23,13 +23,13 @@ s</head>
                     </li>
                     <li class="nav-item genre-Dropdown">
                         @if (Session["Genre"] == null)
-                        {   <button class="genre-Dropdown-btn Dropdown-down">Genres&nbsp;&#9660;</button>
-                        <button class="genre-Dropdown-btn Dropdown-up">Genres&nbsp;&#9650;</button>
+                        {   <button class="genre-Dropdown-btn genre-Dropdown-down">Genres&nbsp;&#9660;</button>
+                        <button class="genre-Dropdown-btn genre-Dropdown-up">Genres&nbsp;&#9650;</button>
                         }
                         else
                         {
-                            <button class="genre-Dropdown-btn Dropdown-down">@Session["Genre"]&nbsp;&#9660;</button>
-                            <button class="genre-Dropdown-btn Dropdown-up">@Session["Genre"]&nbsp;&#9650;</button>
+                            <button class="genre-Dropdown-btn genre-Dropdown-down">@Session["Genre"]&nbsp;&#9660;</button>
+                            <button class="genre-Dropdown-btn genre-Dropdown-up">@Session["Genre"]&nbsp;&#9650;</button>
                         }
 
                         <div class="genre-Dropdown-Content">
@@ -40,14 +40,33 @@ s</head>
                                 <br />
                             }
                         </div>
-
+                    </li>
+                    <li class="nav-item language-Dropdown">
+                        @if (Session["Language"] == null)
+                        {
+                            <button class="language-Dropdown-btn language-Dropdown-down">Language&nbsp;&#9660;</button>
+                            <button class= "language-Dropdown-btn language-Dropdown-up">Language&nbsp;&#9650;</button>
+                        }
+                        else
+                        {
+                            <button class="language-Dropdown-btn language-Dropdown-down">@Session["Language"]&nbsp;&#9660;</button>
+                            <button class="language-Dropdown-btn language-Dropdown-up">@Session["Language"]&nbsp;&#9650;</button>
+                        }
+                        <div class="language-Dropdown-Content">
+                            @* Get the Genres form the BookBL Static Meathod *@
+                            @foreach (var item in Book_Shoppe.BL.BookBL.GetLanguages())
+                            {
+                                @Html.ActionLink(linkText: item.LanguageName, actionName: "Languages", controllerName: "Book", routeValues: new { id = item.LanguageID }, htmlAttributes: new { @class = "" })
+                                <br />
+                            }
+                        </div>
                     </li>
                     @if (HttpContext.Current.User.Identity.IsAuthenticated)
                     {
                         if (HttpContext.Current.User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                @Html.ActionLink("Category", "EditGenre", "Book", null, new { @class = "nav-link" })
+                                @Html.ActionLink("Category", "ManageBookCategory", "Book", null, new { @class = "nav-link" })
                             </li>
                         }
                         if (HttpContext.Current.User.IsInRole("Admin"))
@@ -63,8 +82,9 @@ s</head>
                             </li>
                         }
                     }
-                  
+
                 </ul>
+
 
                 <div class="Search-bar">
                     <div id="search">

@@ -8,6 +8,7 @@
             <th>Book Title</th>
             <th>Author</th>
             <th>Genere</th>
+            <th>Language</th>
             <th>Price</th>
             <th>Operations</th>
         </tr>
@@ -22,6 +23,7 @@
                     <td>@item.Title</td>
                     <td>@item.Author</td>
                     <td>@item.GenreID</td>
+                    <td>@item.Language.LanguageName</td>
                     <td>&#36;@item.Price</td>
                     <td>
                         <button type="button" class="btn btn-outline-primary btn-sm">Buy&nbsp; <i class="fa fa-shopping-cart"></i></button>
@@ -55,6 +57,7 @@
                                       "<td>" + value.Title + "</td>" +
                                       "<td>" + value.Author + "</td>" +
                                       "<td>" + value.Genre.GenreName + "</td>" +
+                                      "<td>" + value.Language.LanguageName + "</td>" +
                                       "<td>" + value.Price + "</td>" +
                                        "<td>"+
                                         "<button type=\"button\" class=\"btn btn-outline-primary btn-sm\">Cart&nbsp; <i class=\"fa fa-shopping-cart\"></i></button>"+

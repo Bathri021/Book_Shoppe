@@ -28,13 +28,19 @@ namespace Book_Shoppe.Controllers
         }
 
         // [AdminAuthorizationFilter]
-         [Authorize(Roles ="Admin")]
-        public ActionResult EditGenre()
+        [Authorize(Roles ="Admin")]
+        public ActionResult ManageBookCategory()
         {
             IEnumerable<Genre> Genres = IBookBL.GetAllGenres();
             return View(Genres);
         }
 
+        [Authorize(Roles ="Admin")]
+        public ActionResult ManageBookLanguage()
+        {
+            IEnumerable<Language> Languages = IBookBL.GetAllLanguages();
+            return View(Languages);
+        }
         // Master nav link Geners filter
         public ActionResult Geners(int id)
         {
@@ -43,11 +49,25 @@ namespace Book_Shoppe.Controllers
             return View(BooksByGenre);
         }
 
+        // Master nav link Language Filter
+        public ActionResult Languages(int id)
+        {
+            IEnumerable<Book> BooksByLanguage = IBookBL.GetBooksByLanguage(id);
+            Session["Language"] = IBookBL.GetLanguageByLanguageID(id);
+            return View(BooksByLanguage);
+        }
+        //Remove the Language
+        public ActionResult DeleteLanguage(int id)
+        {
+            ViewBag.Message = IBookBL.DeleteLanguage(id);
+            return RedirectToAction("ManageBookLanguage");
+        }
+
         // Remove the Genre
         public ActionResult DeleteGenre(int id)
         {
             ViewBag.Message =  IBookBL.DeleteGenre(id);
-            return RedirectToAction("EditGenre");
+            return RedirectToAction("ManageBookCategory");
         }
 
         [HttpPost]
@@ -66,7 +86,23 @@ namespace Book_Shoppe.Controllers
                 ViewBag.Message = "Added Successfully";
                 ViewBag.Alert = null;
             }
-            return RedirectToAction("EditGenre");
+            return RedirectToAction("ManageBookCategory");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
+        public ActionResult AddLanguage(FormCollection fc)
+        {
+            Language language = new Language();
+            language.LanguageName = fc[1];
+            ViewBag.Alert = IBookBL.AddLanguage(language);
+            if(ViewBag.Alert == null)
+            {
+                ViewBag.Message = "Added Successfully";
+                ViewBag.Alert = null;
+            }
+            return RedirectToAction("ManageBookLanguage");
         }
 
         // Get Meathod for Add new Book
@@ -76,6 +112,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Create()
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(),"GenreID","GenreName");
+            ViewBag.Languages = new SelectList(IBookBL.GetAllLanguages(), "LanguageID", "LanguageName");
             return View();
         }
 
@@ -88,6 +125,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Create(AddBookFormVM book)
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
+            ViewBag.Languages = new SelectList(IBookBL.GetAllLanguages(), "LanguageID", "LanguageName");
 
             if (ModelState.IsValid)
             {
@@ -117,6 +155,7 @@ namespace Book_Shoppe.Controllers
         {
             Book book = IBookBL.GetBookByID(id);
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
+            ViewBag.Languages = new SelectList(IBookBL.GetAllLanguages(), "LanguageID", "LanguageName");
 
             var config = new MapperConfiguration(cfg => { cfg.CreateMap<Book,EditBookFormVM>(); });
             IMapper iMapper = config.CreateMapper();
@@ -146,6 +185,7 @@ namespace Book_Shoppe.Controllers
         public ActionResult Update(EditBookFormVM book)
         {
             ViewBag.Genres = new SelectList(IBookBL.GetAllGenres(), "GenreID", "GenreName");
+            ViewBag.Languages = new SelectList(IBookBL.GetAllLanguages(), "LanguageID", "LanguageName");
 
             if (ModelState.IsValid)
             {

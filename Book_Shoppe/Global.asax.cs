@@ -26,12 +26,17 @@ namespace Book_Shoppe
             if (authCookie != null)
             {
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (HttpContext.Current.User.Identity.IsAuthenticated)
+                {
+
+                }
                 if (authTicket != null && !authTicket.Expired)
                 {
                     var roles = authTicket.UserData.Split(',');
                     HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
                 }
             }
+            
         }
     }
 }

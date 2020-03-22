@@ -243,9 +243,11 @@
     <Content Include="Views\User\ViewDetails.cshtml" />
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Views\Book\Geners.cshtml" />
-    <Content Include="Views\Book\EditGenre.cshtml" />
+    <Content Include="Views\Book\ManageBookCategory.cshtml" />
     <Content Include="Views\Shared\_SearchResult.cshtml" />
     <Content Include="Views\User\EditProfile.cshtml" />
+    <Content Include="Views\Book\ManageBookLanguage.cshtml" />
+    <Content Include="Views\Book\Languages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

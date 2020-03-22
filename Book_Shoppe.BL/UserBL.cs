@@ -22,6 +22,7 @@ namespace Book_Shoppe.BL
         IEnumerable<Book> GetUserWishlist(int id);
         IEnumerable<Book> GetUserCartDetails(int id);
         string AddToCart(int userID, int bookID);
+        void RemoveBookFormUserCart(int id);
     }
     public class UserBL : IUserBL
     {
@@ -105,6 +106,11 @@ namespace Book_Shoppe.BL
             if (IUserRepos.CheckBookInUserCart(userID, bookID))
                 return "Book already added in the Orders";
             return IUserRepos.AddToCart(userID, bookID);
+        }
+
+        public void RemoveBookFormUserCart(int id)
+        {
+           IUserRepos.RemoveBookFormUserCart(id);
         }
     }
 }

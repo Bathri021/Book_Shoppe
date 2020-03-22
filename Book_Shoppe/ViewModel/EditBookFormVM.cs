@@ -22,6 +22,9 @@ namespace Book_Shoppe.Models
         public int GenreID { get; set; }
 
         [Required]
+        public int LanguageID { get; set; }
+
+        [Required]
         [DataType(DataType.Currency)]
         public int Price { get; set; }
 

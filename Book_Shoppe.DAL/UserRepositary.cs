@@ -25,6 +25,7 @@ namespace Book_Shoppe.DAL
        bool CheckBookInUserCart(int userID, int bookID);
        string AddToCart(int userID, int bookID);
        IEnumerable<Book> GetUserCartDetails(int id);
+       void RemoveBookFormUserCart(int id);
     }
 
     public class UserRepositary : IUserRepositary
@@ -222,6 +223,16 @@ namespace Book_Shoppe.DAL
                 {
                     return null;
                 }
+            }
+        }
+
+        public void RemoveBookFormUserCart(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                CartBook cartBooks = _context.CartBooks.Where(cb => cb.BookID == id).SingleOrDefault();
+                _context.CartBooks.Remove(cartBooks);
+                _context.SaveChanges();
             }
         }
 }

@@ -178,22 +178,26 @@ namespace Book_Shoppe.Controllers
         }
 
         // Add the Book Into the Users WishList
+        [Authorize(Roles="Customer")]
         public ActionResult AddToWishList(int id)
         {
-            ViewBag.WishList_Message = null;
+            Session["CartList_Message"] = null;
+            Session["WishList_Message"] = null;
+
             if (CurrentUser==null)
             {
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewBag.WishList_Message = IUserBL.AddToWishList(userID, id);
+            Session["WishList_Message"] = IUserBL.AddToWishList(userID, id);
 
-            if (ViewBag.WishList_Message == null)
-                ViewBag.WishList_Message = "Book added into the wishlist";
+            if (Session["WishList_Message"] == null)
+                Session["WishList_Message"] = "Book added into the wishlist";
             return Redirect(Request.UrlReferrer.ToString());
         }
 
         // Remove the Book From The Users WishList
+        [Authorize(Roles = "Customer")]
         public ActionResult RemoveBookFormWishlist(int id)
         {
             IUserBL.RemoveBookFormWishlist(id);
@@ -209,9 +213,11 @@ namespace Book_Shoppe.Controllers
         }
 
         // Add The Book Into the Users Orders
+        [Authorize(Roles = "Customer")]
         public ActionResult AddToCart(int id)
         {
-            ViewBag.OrderList_Message = null;
+            Session["WishList_Message"] = null;
+            Session["CartList_Message"] = null;
             UserBL userBL = new UserBL();
 
             if (CurrentUser == null)
@@ -219,13 +225,19 @@ namespace Book_Shoppe.Controllers
                 return RedirectToAction("LogIn");
             }
             int userID = CurrentUser.UserID;
-            ViewBag.OrderList_Message = IUserBL.AddToCart(userID,id);
+            Session["CartList_Message"] = IUserBL.AddToCart(userID,id);
 
-            if (ViewBag.OrderList_Message == null)
-                ViewBag.OrderList_Message = "Book added into the Order List";
+            if (Session["CartList_Message"] == null)
+                Session["CartList_Message"] = "Book added into the Cart";
             return Redirect(Request.UrlReferrer.ToString());
         }
 
+        public ActionResult RemoveBookFormUserCart(int id)
+        {
+            IUserBL.RemoveBookFormUserCart(id);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        
         // Get the Book Details From Book List
         public JsonResult GetOrderedBookDetails(int BookID)
         {

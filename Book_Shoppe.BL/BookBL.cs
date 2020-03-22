@@ -12,11 +12,16 @@ namespace Book_Shoppe.BL
     {
         IEnumerable<Book> GetBooks();
         string GetGenreByGenreID(int id);
+        string GetLanguageByLanguageID(int id);
         string AddGenre(Genre genre);
+        string AddLanguage(Language language);
         string DeleteGenre(int id);
+        string DeleteLanguage(int id);
         IEnumerable<Book> GetBooksByGenre(int id);
+        IEnumerable<Book> GetBooksByLanguage(int id);
         IEnumerable<Book> SearchResult(string SearchValue);
         IEnumerable<Genre> GetAllGenres();
+        IEnumerable<Language> GetAllLanguages();
         IEnumerable<Book> GetUserBooks(int userID);
         string Add(Book book);
         string Edit(Book book);
@@ -42,10 +47,24 @@ namespace Book_Shoppe.BL
             return Generes;
         }
 
+        // Static Meathod To Get the Language for the Master page Nav
+        public static IEnumerable<Language> GetLanguages()
+        {
+            BookRepositary IBookRepos = new BookRepositary();
+            IEnumerable<Language> languages = IBookRepos.GetAllLanguages();
+            return languages;
+        }
+
         public string GetGenreByGenreID(int id)
         {
             string GenreName = IBookRepos.GetGenreByGenreID(id);
             return GenreName;
+        }
+
+        public string GetLanguageByLanguageID(int id)
+        {
+            string LanguageName = IBookRepos.GetLanguageByLanguageID(id);
+            return LanguageName;
         }
 
         public string AddGenre(Genre genre)
@@ -65,14 +84,42 @@ namespace Book_Shoppe.BL
             return "Duplication Not Allowed In Genre!";
         }
 
+        public string AddLanguage(Language language)
+        {
+            // Check the Language is already exists in the list
+            IEnumerable<Language> languages = IBookRepos.GetAllLanguages();
+            bool duplications = false;
+            foreach (Language item in languages)
+            {
+                if(item.LanguageName == language.LanguageName)
+                {
+                    duplications = true;
+                }
+            }
+            if (!duplications)
+                return IBookRepos.AddLanguage(language);
+            return "Duplications Not Allowed In Language!";            
+        }
+
         public string DeleteGenre(int id)
         {
             return IBookRepos.DeleteGenre(id);
         }
+
+        public string DeleteLanguage(int id)
+        {
+            return IBookRepos.DeleteLanguage(id);
+        }
+
         public IEnumerable<Book> GetBooksByGenre(int id)
         {
             IEnumerable<Book> BooksByGenre = IBookRepos.GetBooksByGenre(id);
             return BooksByGenre;
+        }
+
+        public IEnumerable<Book> GetBooksByLanguage(int id)
+        {
+            return IBookRepos.GetBooksByLanguage(id);
         }
 
         public IEnumerable<Book> SearchResult(string SearchValue)
@@ -85,6 +132,12 @@ namespace Book_Shoppe.BL
             IEnumerable<Genre> Generes = IBookRepos.GetAllGenres();
             return Generes;
         }
+
+        public IEnumerable<Language> GetAllLanguages()
+        {
+            return IBookRepos.GetAllLanguages();
+        }
+
         public IEnumerable<Book> GetUserBooks(int userID)
         {
             IEnumerable<Book> Books = IBookRepos.GetBookByUserID(userID);
@@ -113,15 +166,15 @@ namespace Book_Shoppe.BL
         {
             // Check the Book Title of the current requested Book from Existing Books
             IEnumerable<Book> Books = IBookRepos.GetAllBooks();
-            bool duplications = false;
+            short count = 0;
             foreach (var item in Books)
             {
                 if (item.Title == book.Title)
                 {
-                    duplications = true;
+                    count++;
                 }
             }
-            if (!duplications)
+            if (count<=1)
                 return IBookRepos.Edit(book);
             else
                 return "Duplication Not Allowed In Book Title!";

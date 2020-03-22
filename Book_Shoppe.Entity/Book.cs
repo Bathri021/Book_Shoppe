@@ -28,6 +28,8 @@ namespace Book_Shoppe.Entity
         [Required]
         public int GenreID { get; set; }
 
+        [Required]
+        public int LanguageID { get; set; }
 
         [Required]
         public int Price { get; set; }
@@ -40,6 +42,9 @@ namespace Book_Shoppe.Entity
 
         [ForeignKey("GenreID")]
         public Genre Genre { get; set; }
+
+        [ForeignKey("LanguageID")]
+        public Language Language { get; set; }
 
         public List<WishList> WishLists { get; set; }
 
@@ -56,5 +61,12 @@ namespace Book_Shoppe.Entity
         public string GenreName { get; set; }
     }
 
+    public class Language
+    {
+        public int LanguageID { get; set; }
 
+        [Required]
+        [MaxLength(16)]
+        public string LanguageName { get; set; }
+    }
 }

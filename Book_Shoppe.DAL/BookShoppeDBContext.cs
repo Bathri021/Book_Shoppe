@@ -18,6 +18,7 @@ namespace Book_Shoppe.DAL
         public DbSet<Role> Roles { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Language> Languages { get; set; }
         public DbSet<WishList> WishList { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
@@ -30,6 +31,7 @@ namespace Book_Shoppe.DAL
             builder.Entity<User>().HasIndex(u => u.UserName).IsUnique();
             builder.Entity<Book>().HasIndex(u => u.Title).IsUnique();
             builder.Entity<Genre>().HasIndex(u => u.GenreName).IsUnique();
+            builder.Entity<Language>().HasIndex(u => u.LanguageName).IsUnique();
             builder.Entity<User>().MapToStoredProcedures();
 
             builder.Entity<CartBook>().HasKey(cb => cb.CartBookID);

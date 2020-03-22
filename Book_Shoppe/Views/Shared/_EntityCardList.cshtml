@@ -1,16 +1,16 @@
 ﻿<div>
-    @if (ViewBag.WishList_Message!= null)
+    @if (Session["WishList_Message"]!= null)
     {
         <div class="alert alert-dismissible alert-primary">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.WishList_Message</strong>
+            <strong>@Session["WishList_Message"]</strong>
         </div>
     }
-    @if (ViewBag.OrderList_Message!= null)
+    @if (Session["CartList_Message"] != null)
     {
         <div class="alert alert-dismissible alert-primary">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>@ViewBag.OrderList_Message</strong>
+            <strong>@Session["CartList_Message"]</strong>
         </div>
     }
 </div>
@@ -29,6 +29,7 @@
                             @try
                             {
                                 <div class="card-text">Genere : @item.Genre.GenreName</div>
+                                <div class="card-text">Language : @item.Language.LanguageName</div>
                             }
                             catch (Exception)
                             {

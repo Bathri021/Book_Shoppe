@@ -21,6 +21,7 @@
             <th>Book Title</th>
             <th>Author</th>
             <th>Genere</th>
+            <th>Language</th>
             <th>Price</th>
             <th>Operations</th>
         </tr>
@@ -35,6 +36,7 @@
                     <td>@item.Title</td>
                     <td>@item.Author</td>
                     <td>@item.Genre.GenreName</td>
+                    <td>@item.Language.LanguageName</td>
                     <td>@item.Price</td>
                     <td class="btn-group" role="group" aria-label="Basic example">@Html.ActionLink("Edit", "Edit", new { id = item.BookID }, new { @class = "btn btn-secondary" }) @Html.ActionLink("Delete", "Delete", new { id = item.BookID }, new { @class = "btn btn-secondary" ,onclick="return confirm('Are you sure, you want delete this Book?');"})</td>
                 </tr>

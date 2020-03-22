@@ -16,10 +16,15 @@ namespace Book_Shoppe.DAL
         string Edit(Book book);
         IEnumerable<Book> GetAllBooks();
         IEnumerable<Genre> GetAllGenres();
+        IEnumerable<Language> GetAllLanguages();
         string GetGenreByGenreID(int id);
+        string GetLanguageByLanguageID(int id);
         string AddGenre(Genre genre);
+        string AddLanguage(Language language);
         string DeleteGenre(int id);
+        string DeleteLanguage(int id);
         IEnumerable<Book> GetBooksByGenre(int id);
+        IEnumerable<Book> GetBooksByLanguage(int id);
         IEnumerable<Book> GetBookByUserID(int userID);
         Book GetBookByID(int bookID);
         IEnumerable<Book> SearchResult(string SearchValue);
@@ -78,7 +83,7 @@ namespace Book_Shoppe.DAL
         {
             using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
-                return booksContext.Books.Include("Genre").ToList();
+                return booksContext.Books.Include("Genre").Include("Language").ToList();
             }
         }
 
@@ -91,12 +96,29 @@ namespace Book_Shoppe.DAL
             }
         }
 
+        public IEnumerable<Language> GetAllLanguages()
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                return _context.Languages.ToList();
+            }
+        }
+
         public string GetGenreByGenreID(int id)
         {
             using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
                 Genre genre = _context.Genres.Where(ID => ID.GenreID == id).SingleOrDefault();
                 return genre.GenreName;
+            }
+        }
+
+        public string GetLanguageByLanguageID(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                Language language = _context.Languages.Where(l => l.LanguageID == id).SingleOrDefault();
+                return language.LanguageName;
             }
         }
 
@@ -117,6 +139,24 @@ namespace Book_Shoppe.DAL
             }
         }
 
+        public string AddLanguage(Language language)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                _context.Languages.Add(language);
+                try
+                {
+                    _context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+
+                return null;
+            }
+        }
+
         public string DeleteGenre(int id)
         {
             using(BookShoppeDBContext _context = new BookShoppeDBContext())
@@ -128,11 +168,30 @@ namespace Book_Shoppe.DAL
             }
         }
 
+        public string DeleteLanguage(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                Language language = _context.Languages.Where(l => l.LanguageID == id).SingleOrDefault();
+                _context.Languages.Remove(language);
+                _context.SaveChanges();
+                return "Language Removed Successfully";
+            }
+        }
+
         public IEnumerable<Book> GetBooksByGenre(int id)
         {
             using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                return _context.Books.Include("Genre").Where(m => m.GenreID == id).ToList();
+                return _context.Books.Include("Genre").Include("Language").Where(m => m.GenreID == id).ToList();
+            }
+        }
+
+        public IEnumerable<Book> GetBooksByLanguage(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                return _context.Books.Include("Genre").Include("Language").Where(b => b.LanguageID == id).ToList();
             }
         }
 
@@ -140,7 +199,7 @@ namespace Book_Shoppe.DAL
         {
             using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                return _context.Books.Include("Genre").Where(m => m.UserID == userID).ToList();
+                return _context.Books.Include("Genre").Include("Language").Where(m => m.UserID == userID).ToList();
             }
         }
 
@@ -148,7 +207,7 @@ namespace Book_Shoppe.DAL
         {
             using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
             {
-                Book book = booksContext.Books.SingleOrDefault(ID => ID.BookID == bookID);
+                Book book = booksContext.Books.Include("Genre").Include("Language").SingleOrDefault(ID => ID.BookID == bookID);
                 return book;
             }
         }
@@ -175,7 +234,7 @@ namespace Book_Shoppe.DAL
         {
             using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                return _context.Books.Where(ID => ID.BookID == bookID).SingleOrDefault();
+                return _context.Books.Include("Genre").Where(ID => ID.BookID == bookID).SingleOrDefault();
             }
         }
     }

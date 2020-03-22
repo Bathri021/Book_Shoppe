@@ -19,97 +19,113 @@
 </div>
 
 <br />
-<div class="Users-BooksList">
-    <div class="WishList">
-        <h3>Wish List</h3>
-        @if (ViewBag.WishList.Count != 0)
-        {
-            <table class="table table-hover">
-                <thead>
-                    <tr class="table-primary">
-                        <td>Sno</td>
-                        <td>Book Title</td>
-                        <td>Operations</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int Sno = 1;
-                        foreach (var item in ViewBag.WishList)
-                        {
-                            <tr class="table-light">
-                                <td>@Sno</td>
-                                <td>@item.Title</td>
-                                <td>
-                                    <button type="button" id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                                    @Html.ActionLink("_Remove", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
-                                </td>
-                            </tr>
-
-                            Sno++;
-                        }
-
-                    }
-                </tbody>
-            </table>
-                        }
-                        else
-                        {
-                            <h5> There is no books available in your wishlist!</h5>
-                        }
-
-    </div>
-    <br />
+@if (HttpContext.Current.User.IsInRole("Admin"))
+{
+    <h3>Manage Operations</h3>
+    <hr />
     <div>
         <br />
-    </div>
-    <div class="OrderList">
-        <h3 class="OrderList-heading">Cart Details</h3>
-        @if (ViewBag.UserCartDetails != null)
-        {
-            <table class="table table-hover">
-                <thead>
-                    <tr class="table-primary">
-                        <td>Sno</td>
-                        <td>Book Title</td>
-                        <td>Operations</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int no = 1;
-                        if (ViewBag.UserCartDetails != null)
-                        {
+        @Html.ActionLink("Manage Users", "Index", "User", null, new { @class = "btn btn-secondary " })
 
-                            foreach (var item in ViewBag.UserCartDetails)
+        @Html.ActionLink("Manage Genre", "ManageBookCategory", "Book", null, new { @class = "btn btn-secondary" })
+
+        @Html.ActionLink("Manage Language", "ManageBookLanguage", "Book", null, new { @class = "btn btn-secondary" })
+        <br />
+    </div>
+}
+@if (HttpContext.Current.User.IsInRole("Customer"))
+{
+    <div class="Users-BooksList">
+        <div class="WishList">
+            <h3>Wish List</h3>
+            @if (ViewBag.WishList.Count != 0)
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <td>Sno</td>
+                            <td>Book Title</td>
+                            <td>Operations</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int Sno = 1;
+                            foreach (var item in ViewBag.WishList)
                             {
                                 <tr class="table-light">
-                                    <td>@no</td>
+                                    <td>@Sno</td>
                                     <td>@item.Title</td>
                                     <td>
-                                        <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
-                                        @*   @Html.ActionLink("Edit", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
+                                        <button type="button" id="btn-ViewDetails" class="btn btn-outline-primary btn-sm view-details" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                        @Html.ActionLink("_Remove", "RemoveBookFormWishlist", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm fas fa-heart-broken", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
                                     </td>
                                 </tr>
-                                no++;
+
+                                Sno++;
                             }
+
                         }
+                    </tbody>
+                </table>
+                            }
+                            else
+                            {
+                                <h5> There is no books available in your wishlist!</h5>
+                            }
 
-                    }
-                </tbody>
-            </table>
+        </div>
+        <div>
+            <br />
+        </div>
+        <div class="OrderList">
+            <h3 class="OrderList-heading">Cart Details</h3>
+            @if (ViewBag.UserCartDetails.Count != 0)
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <td>Sno</td>
+                            <td>Book Title</td>
+                            <td>Operations</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int no = 1;
+                            if (ViewBag.UserCartDetails != null)
+                            {
 
-            @Html.ActionLink("Place Order", "PlaceOrder", null, new { @class = "btn btn-outline-primary btn-sm" })
-            @Html.ActionLink("Edit Cart", "EditCart", null, new { @class = "btn btn-outline-info btn-sm" })
-        }
-        else
-        {
-            <h5>There is no books available in your cart!</h5>
-        }
+                                foreach (var item in ViewBag.UserCartDetails)
+                                {
+                                    <tr class="table-light">
+                                        <td>@no</td>
+                                        <td>@item.Title</td>
+                                        <td>
+                                            <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                            @Html.ActionLink("Remove", "RemoveBookFormUserCart", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })
+                                        </td>
+                                    </tr>
+                                    no++;
+                                }
+                            }
 
+                        }
+                    </tbody>
+                </table>
 
+                @Html.ActionLink("Place Order", "PlaceOrder", null, new { @class = "btn btn-outline-primary btn-sm" })
+                            @*Html.ActionLink("Edit Cart", "EditCart", null, new { @class = "btn btn-outline-info btn-sm EditCart" })
+                                <button class="btn btn-outline-info btn-sm" onclick="DisplayEdit()">Edit Cart</button>*@
+                            }
+                            else
+                            {
+                                <h5>There is no books available in your cart!</h5>
+                            }
+
+        </div>
     </div>
-</div>
+                            }
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script>
@@ -127,7 +143,7 @@
                         var Data = "<div>" +
                           "<div>Title : " + result.Title + "</div>" +
                           "<div>Author : " + result.Author + "</div>" +
-                          "<div>Genere :" + result.GenreID + "</div>" +
+                          "<div>Genere :" + result.Genre.GenreName + "</div>" +
                           "<div>Price :" + result.Price + "</div>" +
                         "</div>" +
                             "<div class=\"modal-footer\">" +
@@ -157,7 +173,7 @@
                         var Data = "<div>" +
                           "<div>Title : " + result.Title + "</div>" +
                           "<div>Author : " + result.Author + "</div>" +
-                          "<div>Genere :" + result.GenreID + "</div>" +
+                          "<div>Genere :" + result.Genre.GenreName + "</div>" +
                           "<div>Price :" + result.Price + "</div>" +
                         "</div>" +
                             "<div class=\"modal-footer\">" +
