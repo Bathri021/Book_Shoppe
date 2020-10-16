@@ -23,7 +23,10 @@ namespace Book_Shoppe.BL
         IEnumerable<Book> GetUserCartDetails(int id);
         string AddToCart(int userID, int bookID);
         void RemoveBookFormUserCart(int id);
+        bool AddShipment(Shipment shipment);
+        IEnumerable<Book> GetUserOrderDetails(int id);
     }
+
     public class UserBL : IUserBL
     {
         IUserRepositary IUserRepos = new UserRepositary();
@@ -98,19 +101,40 @@ namespace Book_Shoppe.BL
 
         public IEnumerable<Book> GetUserCartDetails(int id)
         {
+            //// Check wheather the cart is already added in the orders table
+            //if (IUserRepos.CheckCartInOrders(id))
+            //    return null; // If the cart is added then the cart details should not be shown
+
             return IUserRepos.GetUserCartDetails(id);
         }
 
         public string AddToCart(int userID,int bookID)
         {
             if (IUserRepos.CheckBookInUserCart(userID, bookID))
-                return "Book already added in the Orders";
-            return IUserRepos.AddToCart(userID, bookID);
+                return "Book already added in the Cart";
+
+            int userCartID = IUserRepos.AddToCart(userID, bookID);
+
+            if (userCartID != 0)
+            {
+              int cartRate = IUserRepos.GetCartRate(userCartID);
+            }
+            return null;
         }
 
         public void RemoveBookFormUserCart(int id)
         {
            IUserRepos.RemoveBookFormUserCart(id);
+        }
+
+        public bool AddShipment(Shipment shipment)
+        {
+           return IUserRepos.AddShipment(shipment);
+        }
+
+        public IEnumerable<Book> GetUserOrderDetails(int id)
+        {
+            return IUserRepos.GetUserOrderDetails(id);
         }
     }
 }

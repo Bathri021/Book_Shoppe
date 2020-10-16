@@ -27,6 +27,16 @@ namespace Book_Shoppe.Controllers
             return View(Books);
         }
 
+        // Get & Show The User Order Books
+        [Authorize(Roles ="Seller")]
+        public ActionResult UserOrder()
+        {
+            int userID = Convert.ToInt32(Session["UserID"]);
+            IEnumerable<Book> Books = IBookBL.GetUserOrdredBooks(userID);
+
+            return View(Books);
+        }
+
         // [AdminAuthorizationFilter]
         [Authorize(Roles ="Admin")]
         public ActionResult ManageBookCategory()

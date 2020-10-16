@@ -23,9 +23,14 @@ namespace Book_Shoppe.DAL
        bool CheckBookInWishList(int userID, int bookID);
        void RemoveBookFormWishlist(int id);
        bool CheckBookInUserCart(int userID, int bookID);
-       string AddToCart(int userID, int bookID);
+       int AddToCart(int userID, int bookID);
+       int GetCartRate(int cartID);
        IEnumerable<Book> GetUserCartDetails(int id);
        void RemoveBookFormUserCart(int id);
+       bool AddShipment(Shipment shipment);
+       bool PlaceOrder(Shipment shipment);
+       bool CheckCartInOrders(int id);
+       IEnumerable<Book> GetUserOrderDetails(int id);
     }
 
     public class UserRepositary : IUserRepositary
@@ -39,7 +44,7 @@ namespace Book_Shoppe.DAL
         public IEnumerable<Role> GetRoles()
         {
             BookShoppeDBContext RoleContext = new BookShoppeDBContext();
-            return RoleContext.Roles.Where(m => m.RoleName=="Seller"&&m.RoleName=="Customer").ToList();
+            return RoleContext.Roles.Where(m => m.RoleName=="Seller" || m.RoleName=="Customer").ToList();
         }
        
         public string AddUser(User user)
@@ -152,11 +157,11 @@ namespace Book_Shoppe.DAL
         {
             using (BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                Cart cart = _context.Carts.Where(u => u.UserID == userID).SingleOrDefault();
-
+                Cart cart = GetCartNotInOrder(userID);
+                //Order order = _context.Orders.Where(o => o.CartID == cart.CartID).SingleOrDefault();
                 if (cart == null)
                 {
-                    return false; 
+                    return false; // Book is not exist in User Cart
                 }
                 else
                 {
@@ -169,33 +174,256 @@ namespace Book_Shoppe.DAL
             }
         }
 
-        public string AddToCart(int userID, int bookID)
+        // Such a complex coding - to check the cart exist in the orders table and which cart is not in the order then the book is added in the cart
+        // if the user dont have any cart then it create a new cart and add the book
+        // if the user has only one cart in orders then it creates new cart and add the book in the cart
+        public int AddToCart(int userID, int bookID)
         {
             using(BookShoppeDBContext _context = new BookShoppeDBContext())
             {
-                Cart _cart = _context.Carts.Where(c => c.UserID == userID).SingleOrDefault();
+                List<Cart> user_carts = _context.Carts.Where(c => c.UserID == userID).ToList();
+                Cart _cart = new Cart();
 
-                if (_cart==null)
+                int no_of_carts = user_carts.Count();
+
+                if (no_of_carts == 2) // When User Has Two Carts Probably One In Orders Another One For New Add To Carts
                 {
+                    Cart cartOne = user_carts.ElementAt(0);
+                    Cart cartTwo = user_carts.ElementAt(1);
+
+                    if (cartOne.IsOrdered == false) // Check Wheather The First One Is Not In Orders To Add The New Book
+                    {
+                        CartBook cartbooks = new CartBook()
+                        {
+                            CartID = cartOne.CartID,
+                            BookID = bookID,
+                        };
+
+                        // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                        Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                        cartOne.CartRate = cartOne.CartRate + book.Price;
+
+                        _context.CartBooks.Add(cartbooks);
+                        _context.SaveChanges();
+                        return cartOne.CartID;
+                    }
+                    else if (cartTwo.IsOrdered == false) //Or Else Check Wheather The First Ssecond Is Not In Orders To Add The New Book
+                    {
+                        CartBook cartbooks = new CartBook()
+                        {
+                            CartID = cartTwo.CartID,
+                            BookID = bookID,
+                        };
+
+                        // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                        Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                        cartOne.CartRate = cartOne.CartRate + book.Price;
+
+                        _context.CartBooks.Add(cartbooks);
+                        _context.SaveChanges();
+                        return cartTwo.CartID;
+                    }
+                }
+                else if (no_of_carts == 1) // When The User Has One Cart That May Be In Orders Or In Carts To Add New Books 
+                {
+                    Cart cart = user_carts.ElementAt(0);
+
+                    if (cart.IsOrdered == false) // Check If the Cart Is Not Added Into the Orders
+                    {
+                        CartBook cartbooks = new CartBook()
+                        {
+                            CartID = cart.CartID,
+                            BookID = bookID,
+                        };
+
+                        // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                        Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                        cart.CartRate = cart.CartRate + book.Price;
+
+                        _context.CartBooks.Add(cartbooks);
+                        _context.SaveChanges();
+                        return cart.CartID;
+                    }
+                    else if (cart.IsOrdered != false)// Check If The Cart Is Already Added In To The Orders
+                    {
+                        // Create A New Cart For The User
+                        Cart new_cart = new Cart()
+                        {
+                            UserID = userID,
+                        };
+                        _context.Carts.Add(new_cart);
+                        _context.SaveChanges();
+                        _cart = GetCartNotInOrder(userID);
+
+                        if (_cart != null)
+                        {
+                            CartBook cartbooks = new CartBook()
+                            {
+                                CartID = _cart.CartID,
+                                BookID = bookID,
+                            };
+
+                            // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                            Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                            cart.CartRate = cart.CartRate + book.Price;
+
+                            _context.CartBooks.Add(cartbooks);
+                            _context.SaveChanges();
+                            return cart.CartID;
+                        }
+                    }
+                }
+                else if (no_of_carts==0) // Wheather The User Has No Carts
+                {
+                    // Create A New Cart For The User
                     Cart cart = new Cart()
                     {
                         UserID = userID,
                     };
                     _context.Carts.Add(cart);
                     _context.SaveChanges();
-                    _cart = _context.Carts.Where(c => c.UserID == userID).SingleOrDefault();
+                    _cart = GetCartNotInOrder(userID);
+
+                    CartBook cartbook = new CartBook()
+                    {
+                        CartID = _cart.CartID,
+                        BookID = bookID,
+                    };
+
+                    // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                    Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                    cart.CartRate = cart.CartRate + book.Price;
+
+                    _context.CartBooks.Add(cartbook);
+                    _context.SaveChanges();
+                    return cart.CartID;
                 }
 
+                //foreach (Cart cart in user_carts)
+                //{
+                //    // Order order = _context.Orders.Where(o => o.CartID == cart.CartID).SingleOrDefault();
 
-                CartBook cartbook = new CartBook()
+
+                //    if (cart.IsOrdered == false) // The Current Cart Is Not In The Orders Table
+                //    {
+                //        CartBook cartbooks = new CartBook()
+                //        {
+                //            CartID = cart.CartID,
+                //            BookID = bookID,
+                //        };
+
+                //        // Get Book Into Object And Add The Book Rate Into The Cart Rate
+                //        Book book = _context.Books.Where(b => b.BookID == bookID).SingleOrDefault();
+                //        cart.CartRate = book.Price + cart.CartRate;
+
+                //        _context.CartBooks.Add(cartbooks);
+                //        _context.SaveChanges();
+                //        return cart.CartID;
+                //    }
+                //    else if (cart.IsOrdered != false) // The Cart Is Already Added In The Orders
+                //    {
+                //        Cart new_cart = new Cart()
+                //        {
+                //            UserID = userID,
+                //        };
+                //        _context.Carts.Add(new_cart);
+                //        _context.SaveChanges();
+                //         _cart = GetCartNotInOrder(userID);
+
+                //        if (_cart!=null)
+                //        {
+                //            CartBook cartbooks = new CartBook()
+                //            {
+                //                CartID = _cart.CartID,
+                //                BookID = bookID,
+                //            };
+                //            _context.CartBooks.Add(cartbooks);
+                //            _context.SaveChanges();
+                //            return cart.CartID;
+                //        }
+                //    }
+                //}
+
+
+                //if (user_carts.Count==0)
+                //{
+                //    Cart cart = new Cart()
+                //    {
+                //        UserID = userID,
+                //    };
+                //    _context.Carts.Add(cart);
+                //    _context.SaveChanges();
+                //    _cart = GetCartNotInOrder(userID);
+
+                //    CartBook cartbook = new CartBook()
+                //    {
+                //         CartID = _cart.CartID,
+                //         BookID = bookID,
+                //    };
+                //    _context.CartBooks.Add(cartbook);
+                //    _context.SaveChanges();
+                //    return cart.CartID;
+                //}
+
+                return 0;
+            }
+        }
+
+        // Not written in the interface because it is used to access only with in this class
+        private Cart GetCartNotInOrder(int userID)
+        {
+            List<Cart> User_Carts = new List<Cart>();
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                User_Carts = _context.Carts.Where(c => c.UserID == userID).ToList();
+
+                foreach(Cart cart in User_Carts)
                 {
-                     CartID = _cart.CartID,
-                     BookID = bookID,
-                };
-                _context.CartBooks.Add(cartbook);
-                _context.SaveChanges();
+
+                    // Order order = _context.Orders.Where(o => o.CartID == cart.CartID).SingleOrDefault();
+
+                    if (cart.IsOrdered == false)
+                    {
+                        return cart;
+                    }
+                }
                 return null;
             }
+        }
+
+        // Not Used In Function
+        private Cart CheckCartInOrder(int cartID)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                    Cart cart= _context.Carts.Where(c => c.UserID == cartID).SingleOrDefault() ;
+               
+                    Order order = _context.Orders.Where(o => o.CartID == cartID).SingleOrDefault();
+
+                    if (order == null)
+                    {
+                        return cart;
+                    }
+                
+                return null;
+            }
+        }
+
+        public int GetCartRate(int cartID)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                int cartRate = 0;
+                List<CartBook> cartBooks = _context.CartBooks.Where(cb => cb.CartID == cartID).ToList();
+
+                foreach (var item in cartBooks)
+                {
+                    Book book = _context.Books.Where(ID => ID.BookID == item.BookID).SingleOrDefault();
+                    cartRate = cartRate + book.Price; 
+                }
+                return cartRate;
+            }
+
         }
 
         public IEnumerable<Book> GetUserCartDetails(int id)
@@ -206,7 +434,7 @@ namespace Book_Shoppe.DAL
                 try
                 {
                     Cart cart = new Cart();
-                    cart = _context.Carts.Where(ID => ID.UserID == id).SingleOrDefault();
+                    cart = GetCartNotInOrder(id);
 
                     int cartID = cart.CartID;
 
@@ -235,5 +463,105 @@ namespace Book_Shoppe.DAL
                 _context.SaveChanges();
             }
         }
-}
+
+        public bool AddShipment(Shipment shipment)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                Shipment _shipment = _context.Shipments.Where(s => s.Address == shipment.Address && s.UserID == shipment.UserID).FirstOrDefault();
+
+                if (_shipment==null)
+                {
+                    _context.Shipments.Add(shipment);
+                    _context.SaveChanges();
+                }
+                else if (_shipment.Address != shipment.Address && _shipment.UserID != shipment.UserID)
+                {
+                   _context.Shipments.Add(shipment);
+                   _context.SaveChanges();
+                }
+
+                _shipment = _context.Shipments.Where(s => s.Address == shipment.Address && s.UserID == shipment.UserID).SingleOrDefault() ;
+
+                return PlaceOrder(_shipment);
+            }
+        }
+
+        public bool PlaceOrder(Shipment shipment)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                Order order = new Order();
+                order.ShipmentID = shipment.ShipmentID;
+                Cart cart = _context.Carts.Where(c => c.UserID == shipment.UserID && c.IsOrdered == false).SingleOrDefault();
+                order.CartID = cart.CartID;
+
+                _context.Orders.Add(order);
+                cart.IsOrdered = true;
+
+                _context.SaveChanges();
+
+                return true;
+            }
+        }
+
+        public bool CheckCartInOrders(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                Cart cart = _context.Carts.Where(c => c.UserID == id).SingleOrDefault();
+                Order order = _context.Orders.Where(o => o.CartID == cart.CartID).Single();
+
+                if (order == null)
+                    return false; // Return false when the Cart is not in the orders
+
+                return true; // Return true when the cart is available in the orders
+            }
+
+        }
+
+        public IEnumerable<Book> GetUserOrderDetails(int id)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                try
+                {
+                    List<Book> UserOrderedBooks = new List<Book>();
+                    int cartID = 0;
+                    List<Cart> UserCarts = _context.Carts.Where(c => c.UserID == id).ToList();
+
+                    foreach(Cart cart in UserCarts)
+                    {
+                        Order order = _context.Orders.Where(o => o.CartID == cart.CartID).SingleOrDefault();
+                        if(order != null)
+                        {
+                            cartID = cart.CartID;
+                        }
+                    }
+
+
+                    if (cartID != 0)
+                    {
+                        List<CartBook> cartBooks = _context.CartBooks.Where(cb => cb.CartID == cartID).ToList();
+
+                        foreach (var item in cartBooks)
+                        {
+                            Book book = _context.Books.Where(ID => ID.BookID == item.BookID).SingleOrDefault();
+                            UserOrderedBooks.Add(book);
+                        }
+                        return UserOrderedBooks;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+        }
+    }
 }

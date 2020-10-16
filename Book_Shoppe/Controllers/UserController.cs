@@ -117,6 +117,8 @@ namespace Book_Shoppe.Controllers
             UpdateUserVM userModel = iMapper.Map<User, UpdateUserVM>(user);
             ViewBag.WishList= IUserBL.GetUserWishlist(id);
             ViewBag.UserCartDetails = IUserBL.GetUserCartDetails(id);
+            ViewBag.UserOrderDetails = IUserBL.GetUserOrderDetails(id);
+
             return View(userModel);
         }
 
@@ -212,7 +214,7 @@ namespace Book_Shoppe.Controllers
             return Json(book, JsonRequestBehavior.AllowGet);
         }
 
-        // Add The Book Into the Users Orders
+        // Add The Book Into the Users Cart
         [Authorize(Roles = "Customer")]
         public ActionResult AddToCart(int id)
         {
@@ -230,6 +232,49 @@ namespace Book_Shoppe.Controllers
             if (Session["CartList_Message"] == null)
                 Session["CartList_Message"] = "Book added into the Cart";
             return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        // Get the Shipment details and place order
+        [Authorize(Roles = "Customer")]
+        public ActionResult GetShipmentDetails()
+        {
+            return View();
+        }
+
+        public ActionResult PlaceOrder(GetShipmentDetailsVM shipment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("GetShipmentDetails", shipment);
+            }
+            else
+            {
+                var config = new MapperConfiguration(cfg => { cfg.CreateMap<GetShipmentDetailsVM, Shipment>(); });
+                IMapper iMapper = config.CreateMapper();
+                Shipment _shipment = iMapper.Map<GetShipmentDetailsVM, Shipment>(shipment);
+
+                if (CurrentUser == null)
+                {
+                    return RedirectToAction("LogIn");
+                }
+                int userID = CurrentUser.UserID;
+                _shipment.UserID = userID;
+                bool orderstatus = IUserBL.AddShipment(_shipment);
+                if (orderstatus)
+                {
+                    ViewBag.Message = "Order Placed Successfully";
+                }
+                else
+                {
+                    ViewBag.Message = "Placing Order Failed";
+                }
+
+                config = new MapperConfiguration(cfg => { cfg.CreateMap<Shipment, GetShipmentDetailsVM>(); });
+                iMapper = config.CreateMapper();
+                shipment = iMapper.Map<Shipment, GetShipmentDetailsVM>(_shipment);
+
+                return View("GetShipmentDetails", shipment);
+            }
         }
 
         public ActionResult RemoveBookFormUserCart(int id)

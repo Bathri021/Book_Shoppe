@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="ViewModel\AddBookFormVM.cs" />
     <Compile Include="ViewModel\EditBookFormVM.cs" />
+    <Compile Include="ViewModel\GetShipmentDetailsVM.cs" />
     <Compile Include="ViewModel\LogInFormViewModel.cs" />
     <Compile Include="ViewModel\RegistrationFormViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -248,6 +249,8 @@
     <Content Include="Views\User\EditProfile.cshtml" />
     <Content Include="Views\Book\ManageBookLanguage.cshtml" />
     <Content Include="Views\Book\Languages.cshtml" />
+    <Content Include="Views\User\GetShipmentDetails.cshtml" />
+    <Content Include="Views\Book\UserOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

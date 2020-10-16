@@ -23,6 +23,7 @@ namespace Book_Shoppe.BL
         IEnumerable<Genre> GetAllGenres();
         IEnumerable<Language> GetAllLanguages();
         IEnumerable<Book> GetUserBooks(int userID);
+        IEnumerable<Book> GetUserOrdredBooks(int userID);
         string Add(Book book);
         string Edit(Book book);
         Book GetBookByID(int id);
@@ -143,6 +144,13 @@ namespace Book_Shoppe.BL
             IEnumerable<Book> Books = IBookRepos.GetBookByUserID(userID);
             return Books;
         }
+
+        public IEnumerable<Book> GetUserOrdredBooks(int userID)
+        {
+            IEnumerable<Book> Books = IBookRepos.GetOrderedBookBySellerID(userID);
+            return Books;
+        }
+
         public string Add(Book book)
         {  
             // Check the Book Title of the current requested Book from Existing Books

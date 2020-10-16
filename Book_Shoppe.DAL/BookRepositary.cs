@@ -26,6 +26,7 @@ namespace Book_Shoppe.DAL
         IEnumerable<Book> GetBooksByGenre(int id);
         IEnumerable<Book> GetBooksByLanguage(int id);
         IEnumerable<Book> GetBookByUserID(int userID);
+        IEnumerable<Book> GetOrderedBookBySellerID(int userID);
         Book GetBookByID(int bookID);
         IEnumerable<Book> SearchResult(string SearchValue);
         Book GetBookDetails(int bookID);
@@ -203,6 +204,40 @@ namespace Book_Shoppe.DAL
             }
         }
 
+        public IEnumerable<Book> GetOrderedBookBySellerID(int userID)
+        {
+            using (BookShoppeDBContext _context = new BookShoppeDBContext())
+            {
+                IList<Book> sellerBooks = _context.Books.Where(m => m.UserID == userID).ToList();
+
+                IList<Book> orderedSellerBooks = new List<Book>();
+
+                foreach(Book book in sellerBooks)
+                {
+                    IList<CartBook> cartBooks = _context.CartBooks.Where(m => m.BookID == book.BookID).ToList();
+
+                    foreach(CartBook cartBook in cartBooks)
+                    {
+                        IList<Order> orders = _context.Orders.Where(m => m.CartID == cartBook.CartID).ToList();
+
+                        foreach(Order order in orders)
+                        {
+                            if(order.CartID == cartBook.CartID)
+                            {
+                                Book orderedBook = _context.Books.Include("Genre").Include("Language").Where(m => m.BookID == cartBook.BookID).SingleOrDefault();
+
+                                orderedSellerBooks.Add(orderedBook);
+                            }
+                        }
+
+                    }
+                }
+                if (orderedSellerBooks == null)
+                    return null;
+                return orderedSellerBooks;
+            }
+        }
+
         public Book GetBookByID(int bookID)
         {
             using (BookShoppeDBContext booksContext = new BookShoppeDBContext())
@@ -219,7 +254,7 @@ namespace Book_Shoppe.DAL
             {
                 try
                 {
-                  SearchedBooks = _context.Books.Include("Genre").Where(b => b.Title.Contains(SearchValue) || b.Author.Contains(SearchValue) || SearchValue == null).ToList();
+                  SearchedBooks = _context.Books.Include("Genre").Include("Language").Where(b => b.Title.Contains(SearchValue) || b.Author.Contains(SearchValue) || SearchValue == null).ToList();
                 }
                 catch (Exception)
                 {

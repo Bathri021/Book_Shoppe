@@ -33,6 +33,18 @@
         <br />
     </div>
 }
+@if (HttpContext.Current.User.IsInRole("Seller"))
+{
+    <h3>Manage Operations</h3>
+    <hr />
+    <div>
+        <br />
+        @Html.ActionLink("Manage Books","Index","Book",null,new { @class="btn btn-secondary"})
+        <br />
+        @Html.ActionLink("Manage Orders", "UserOrder", "Book", null, new { @class = "btn btn-secondary" })
+        <br />
+    </div>
+}
 @if (HttpContext.Current.User.IsInRole("Customer"))
 {
     <div class="Users-BooksList">
@@ -78,9 +90,9 @@
         <div>
             <br />
         </div>
-        <div class="OrderList">
+        <div class="CartList">
             <h3 class="OrderList-heading">Cart Details</h3>
-            @if (ViewBag.UserCartDetails.Count != 0)
+            @if (ViewBag.UserCartDetails !=null)
             {
                 <table class="table table-hover">
                     <thead>
@@ -114,13 +126,62 @@
                     </tbody>
                 </table>
 
-                @Html.ActionLink("Place Order", "PlaceOrder", null, new { @class = "btn btn-outline-primary btn-sm" })
+                @Html.ActionLink("Place Order", "GetShipmentDetails", null, new { @class = "btn btn-outline-primary btn-sm" })
                             @*Html.ActionLink("Edit Cart", "EditCart", null, new { @class = "btn btn-outline-info btn-sm EditCart" })
                                 <button class="btn btn-outline-info btn-sm" onclick="DisplayEdit()">Edit Cart</button>*@
                             }
                             else
                             {
                                 <h5>There is no books available in your cart!</h5>
+                            }
+
+        </div>
+
+        <div>
+            <br />
+        </div>
+        <div class="OrderList">
+            <h3 class="OrderList-heading">Order Details</h3>
+            @if (ViewBag.UserOrderDetails != null)
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <td>Sno</td>
+                            <td>Book Title</td>
+                            <td>Operations</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int no = 1;
+                            if (ViewBag.UserOrderDetails != null)
+                            {
+
+                                foreach (var item in ViewBag.UserOrderDetails)
+                                {
+                                    <tr class="table-light">
+                                        <td>@no</td>
+                                        <td>@item.Title</td>
+                                        <td>
+                                            <button type="button" id="btn-ViewOrderBookDetails" class="btn btn-outline-primary btn-sm viewOrderBookDetails" value="@item.BookID" onclick="displyModel(@item.BookID)">View Details <i class="fas fa-book-open"></i></button>
+                                          @*  @Html.ActionLink("Remove", "RemoveBookFormUserCart", new { id = @item.BookID }, new { @class = "btn btn-outline-info btn-sm", onclick = "return confirm('Are you sure, you want to remove this book from your wishlist?');" })*@
+                                        </td>
+                                    </tr>
+                                    no++;
+                                }
+                            }
+
+                        }
+                    </tbody>
+                </table>
+
+                @*@Html.ActionLink("Place Order", "GetShipmentDetails", null, new { @class = "btn btn-outline-primary btn-sm" })
+                            <button class="btn btn-outline-info btn-sm" onclick="DisplayEdit()">Edit Cart</button>*@
+                            }
+                            else
+                            {
+                                <h5>There is no books available in your Orders!</h5>
                             }
 
         </div>

@@ -111,6 +111,10 @@ namespace Book_Shoppe.Entity
         [ForeignKey("UserID")]
         public User User { get; set; }
 
+        public int CartRate { get; set; }
+
+        public bool IsOrdered { get; set; }
+
         public List<CartBook> CartBooks { get; set; }
     }
 

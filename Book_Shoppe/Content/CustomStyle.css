@@ -243,6 +243,12 @@ body {
 	align-content:flex-start;
 	margin-right:20px;
 }
+
+.CartList{
+	align-content:center;
+	margin-right:20px;
+}
+
 .OrderList{
 	align-content:flex-end;
 }

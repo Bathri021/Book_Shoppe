@@ -20,7 +20,7 @@ namespace Book_Shoppe.Controllers
         }
 
         public JsonResult GetSearchingData(string SearchValue)
-        {
+       {
             BookBL bookContext = new BookBL();
             IEnumerable<Book> BookList = bookContext.SearchResult(SearchValue);
             return Json(BookList, JsonRequestBehavior.AllowGet);
